@@ -10,7 +10,7 @@
 <script src="${pageContext.request.contextPath}/js/navbarScript.js"></script>
 
 
-<div class="example-megamenu">
+<div class="example-megamenu" style="padding-top: 8px;">
   
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -21,7 +21,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><strong>MegaMenu</strong></a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}"><strong>Lazaros</strong></a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
@@ -197,7 +197,9 @@
                   </form>
                 </div>
                 <div class="col-sm-6 col-md-8">
-                  <img src="https://via.placeholder.com/100x260?text=Map" class="img-responsive" alt="Map">
+                  <div class="ratio ratio-16x9">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.593675177369!2d36.177023676438786!3d41.36118469761945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40887f005ed7eb6f%3A0xeac58a07a907878b!2sSamsun%20Teknopark!5e0!3m2!1str!2str!4v1717947510339!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  </div>
                 </div>
               </div>
             </div>

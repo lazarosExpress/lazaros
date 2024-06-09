@@ -26,7 +26,7 @@
             <h3>Ürünler Listesi</h3>
             <table class="product-table">
                 <thead>
-                    <tr>
+                    <tr id="table-title">
                         <th>Ürün Adı</th>
                         <th>Fiyat</th>
                         <th>Stok Miktarı</th>

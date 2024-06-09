@@ -73,16 +73,25 @@ header img {
     /* table-layout: fixed; Bu satırı kaldırıyoruz */
 }
 
+#table-title {
+    color: orange;
+}
+
 .product-table th,
 .product-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    word-break: break-word; /* Uzun kelimelerin kırılmasını sağlıyor */
-    overflow: visible; /* İçeriğin taşmasını önler */
-    white-space: normal; /* Metnin aşağıya kaymasını sağlar */
-    text-overflow: clip; /* Metin kesme işlemini engeller */
-    max-width: 200px; /* İsteğe bağlı, hücrelerin maksimum genişliğini ayarlamak için */
+    word-break: break-word;
+    /* Uzun kelimelerin kırılmasını sağlıyor */
+    overflow: visible;
+    /* İçeriğin taşmasını önler */
+    white-space: normal;
+    /* Metnin aşağıya kaymasını sağlar */
+    text-overflow: clip;
+    /* Metin kesme işlemini engeller */
+    max-width: 200px;
+    /* İsteğe bağlı, hücrelerin maksimum genişliğini ayarlamak için */
 }
 
 .product-table th {

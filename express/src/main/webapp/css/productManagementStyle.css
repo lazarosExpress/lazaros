@@ -1,0 +1,164 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+header {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+header img {
+    height: 70px;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logout i {
+    color: red;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.logout:hover i {
+    color: #ffd700;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.back-button i {
+    color: #ffd700;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.back-button:hover i {
+    color: red;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* table-layout: fixed; Bu satırı kaldırıyoruz */
+}
+
+.product-table th,
+.product-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-break: break-word; /* Uzun kelimelerin kırılmasını sağlıyor */
+    overflow: visible; /* İçeriğin taşmasını önler */
+    white-space: normal; /* Metnin aşağıya kaymasını sağlar */
+    text-overflow: clip; /* Metin kesme işlemini engeller */
+    max-width: 200px; /* İsteğe bağlı, hücrelerin maksimum genişliğini ayarlamak için */
+}
+
+.product-table th {
+    background-color: #f5f5f5;
+}
+
+.product-table th:nth-child(1),
+.product-table td:nth-child(1) {
+    width: auto;
+    /* Sabit genişlik yerine otomatik genişlik kullanıyoruz */
+}
+
+.product-table th:nth-child(2),
+.product-table td:nth-child(2) {
+    width: auto;
+}
+
+.product-table th:nth-child(3),
+.product-table td:nth-child(3) {
+    width: auto;
+}
+
+.product-table th:nth-child(4),
+.product-table td:nth-child(4) {
+    width: auto;
+}
+
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+    width: auto;
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+    width: auto;
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+    width: auto;
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+    width: auto;
+}
+
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+    width: auto;
+}
+
+.product-table td img {
+    max-width: 100%;
+    height: auto;
+}
+
+.add-product-btn {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-product-btn:hover {
+    background-color: #218838;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}

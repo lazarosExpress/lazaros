@@ -1,0 +1,223 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+header {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+header img {
+    height: 70px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logout i {
+    color: red;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.logout:hover i {
+    color: #ffd700;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.back-button i {
+    color: #ffd700;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.back-button:hover i {
+    color: red;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+button {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: calc(100% - 22px);
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.table-container {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.form-submit {
+    display: inline-block;
+    background: #6dabe4;
+    color: #fff;
+    border: none;
+    padding: 15px 39px;
+    border-radius: 5px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+.form-submit:hover {
+    background: #ffde59;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.add-customer-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+.add-customer-btn:hover {
+    background-color: #218838;
+}
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* table-layout: fixed; Bu satırı kaldırıyoruz */
+}
+
+.customer-table th,
+.customer-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-break: break-word; /* Uzun kelimelerin kırılmasını sağlıyor */
+    overflow: visible; /* İçeriğin taşmasını önler */
+    white-space: normal; /* Metnin aşağıya kaymasını sağlar */
+    text-overflow: clip; /* Metin kesme işlemini engeller */
+    max-width: 200px; /* İsteğe bağlı, hücrelerin maksimum genişliğini ayarlamak için */
+}
+
+.customer-table th {
+    background-color: #f5f5f5;
+}
+
+.customer-table th:nth-child(1),
+.customer-table td:nth-child(1) {
+    width: auto;
+    /* Sabit genişlik yerine otomatik genişlik kullanıyoruz */
+}
+
+.customer-table th:nth-child(2),
+.customer-table td:nth-child(2) {
+    width: auto;
+}
+
+.customer-table th:nth-child(3),
+.customer-table td:nth-child(3) {
+    width: auto;
+}
+
+.customer-table th:nth-child(4),
+.customer-table td:nth-child(4) {
+    width: auto;
+}
+
+.customer-table th:nth-child(5),
+.customer-table td:nth-child(5) {
+    width: auto;
+}

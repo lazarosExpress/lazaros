@@ -73,10 +73,6 @@ header img {
     /* table-layout: fixed; Bu satırı kaldırıyoruz */
 }
 
-#table-title {
-    color: orange;
-}
-
 .product-table th,
 .product-table td {
     border: 1px solid #ddd;

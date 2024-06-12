@@ -131,7 +131,7 @@ public class CustomerController extends HttpServlet {
         CustomerBeans newCustomer = new CustomerBeans(0, eMail, firstName, lastName, password, number);
         customerDAO.insertCustomer(newCustomer);
 
-        response.sendRedirect(request.getContextPath() + "/express/views/login/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
     }
 
     private void createCustomerWithSupplier(HttpServletRequest request, HttpServletResponse response)

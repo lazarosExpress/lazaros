@@ -22,7 +22,6 @@ public class SupplierController extends HttpServlet {
     private SupplierDAO supplierDAO;
 
     public SupplierController() {
-        super();
         supplierDAO = new SupplierDAO();
     }
 
@@ -32,9 +31,13 @@ public class SupplierController extends HttpServlet {
         HttpSession session = request.getSession(false);
         String action = request.getParameter("action");
 
-        // Redirect to login if the session is invalid and the action is not LOGIN
+        // Debug çıktısı
+        System.out.println("Action parameter in doGet: " + action);
+
+        // Redirect to login if the session is invalid and the action is not LOGIN or
+        // CREATE
         if (session == null || session.getAttribute("loggedInSupplier") == null) {
-            if (action == null || !action.equals("LOGIN")) {
+            if (action == null || !(action.equals("LOGIN") || action.equals("CREATE"))) {
                 response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
                 return;
             }
@@ -48,6 +51,9 @@ public class SupplierController extends HttpServlet {
             case "LIST":
                 listSuppliers(request, response);
                 break;
+            case "CREATE":
+                createSupplier(request, response);
+                break;
             case "EDIT":
                 showEditForm(request, response);
                 break;
@@ -56,9 +62,6 @@ public class SupplierController extends HttpServlet {
                 break;
             case "LOGIN":
                 loginSupplier(request, response);
-                break;
-            case "CREATE":
-                createSupplier(request, response);
                 break;
             case "LOGOUT":
                 logoutSupplier(request, response);
@@ -73,11 +76,16 @@ public class SupplierController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+
+        // Debug çıktısı
+        System.out.println("Action parameter in doPost: " + action);
+
         HttpSession session = request.getSession(false);
 
-        // Redirect to login if the session is invalid and the action is not LOGIN
+        // Redirect to login if the session is invalid and the action is not LOGIN or
+        // CREATE
         if (session == null || session.getAttribute("loggedInSupplier") == null) {
-            if (action == null || !action.equals("LOGIN")) {
+            if (action == null || !(action.equals("LOGIN") || action.equals("CREATE"))) {
                 response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
                 return;
             }
@@ -96,8 +104,6 @@ public class SupplierController extends HttpServlet {
             throws ServletException, IOException {
         List<SupplierBeans> supplierList = SupplierDAO.getAllSuppliers();
         request.setAttribute("supplierList", supplierList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/login/login.jsp");
-        dispatcher.forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -114,30 +120,27 @@ public class SupplierController extends HttpServlet {
         String firstName = request.getParameter("supplier_firstName");
         String lastName = request.getParameter("supplier_lastName");
         String shopName = request.getParameter("supplier_shopName");
-        String iban = request.getParameter("supplier_iban");
         String eMail = request.getParameter("supplier_eMail");
         String password = request.getParameter("supplier_password");
-        String phoneNumber = request.getParameter("supplier_phoneNumber");
+        String iban = request.getParameter("supplier_iban");
+        String number = request.getParameter("supplier_phoneNumber");
 
-        // Önce e-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
         SupplierBeans existingSupplier = supplierDAO.getSupplierByEmail(eMail);
         if (existingSupplier != null) {
-            // E-posta adresi zaten kayıtlı, uyarı gösterin
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Bu e-posta adresi zaten kayıtlı!');");
-            out.println("window.location.href='" + request.getContextPath() + "/views/login/registration.jsp';");
+            out.println(
+                    "window.location.href='" + request.getContextPath() + "/supplierLogin/supplierRegistration.jsp';");
             out.println("</script>");
             return;
         }
 
-        // Kayıt işlemini gerçekleştirin
-        SupplierBeans newSupplier = new SupplierBeans(0, firstName, lastName, shopName, iban, eMail, password,
-                phoneNumber);
+        SupplierBeans newSupplier = new SupplierBeans(firstName, lastName, shopName, iban, eMail, password, number);
         supplierDAO.insertSupplier(newSupplier);
 
-        response.sendRedirect("/express/views/login/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/views/supplierLogin/supplierLogin.jsp");
     }
 
     private void updateSupplier(HttpServletRequest request, HttpServletResponse response)
@@ -185,7 +188,7 @@ public class SupplierController extends HttpServlet {
             if (rememberMe) {
                 Cookie cookie = new Cookie("supplier_eMail", eMail);
                 cookie.setPath("/");
-                cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                cookie.setMaxAge(7 * 24 * 60 * 60);
                 response.addCookie(cookie);
             }
 

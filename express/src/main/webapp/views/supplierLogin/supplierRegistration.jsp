@@ -13,9 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginStyle.css">
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/loginScript.js"></script>
-
 </head>
 <body>
 
@@ -26,33 +23,34 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Satıcımız Olun</h2>
-                    <form method="post" action="/express/SupplierController?action=CREATE" class="register-form" id="register-form">
+                    <form action="/express/SupplierController" method="post" id="register-form" class="register-form-supplier">
+                    <input type="hidden" name="action" value="CREATE" />
                         <div class="form-group">
-                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <label for="supplier_firstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input type="text" name="supplier_firstName" id="supplier_firstName" placeholder="İsim" required />
                         </div>
                         <div class="form-group">
-                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <label for="supplier_lastName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input type="text" name="supplier_lastName" id="supplier_lastName" placeholder="Soyisim" required />
                         </div>
                         <div class="form-group">
-                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <label for="supplier_shopName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input type="text" name="supplier_shopName" id="supplier_shopName" placeholder="Mağaza İsmi" required />
                         </div>
                         <div class="form-group">
-                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <label for="supplier_eMail"><i class="zmdi zmdi-email"></i></label>
                             <input type="email" name="supplier_eMail" id="supplier_eMail" placeholder="e-Posta" required />
                         </div>
                         <div class="form-group">
-                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                            <label for="supplier_password"><i class="zmdi zmdi-lock"></i></label>
                             <input type="password" name="supplier_password" id="supplier_password" placeholder="Şifre" required />
                         </div>
                         <div class="form-group">
-                            <label for="contact"><i class="zmdi zmdi-phone"></i></label>
-                            <input type="text" name="supplier_iban" id="supplier_iban" placeholder="iban" required />
+                            <label for="supplier_iban"><i class="zmdi zmdi-phone"></i></label>
+                            <input type="text" name="supplier_iban" id="supplier_iban" placeholder="IBAN" required />
                         </div>
                         <div class="form-group">
-                            <label for="contact"><i class="zmdi zmdi-phone"></i></label>
+                            <label for="supplier_phoneNumber"><i class="zmdi zmdi-phone"></i></label>
                             <input type="text" name="supplier_phoneNumber" id="supplier_phoneNumber" placeholder="Telefon numarası" required />
                         </div>
                         <div class="form-group">
@@ -74,7 +72,6 @@
             </div>
         </div>
     </section>
-
 </div>
 </body>
 </html>

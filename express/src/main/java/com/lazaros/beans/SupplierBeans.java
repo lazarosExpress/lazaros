@@ -10,6 +10,17 @@ public class SupplierBeans {
     private String supplier_password;
     private String supplier_phoneNumber;
 
+    public SupplierBeans(String supplier_firstName, String supplier_lastName, String supplier_shopName,
+            String supplier_iban, String supplier_eMail, String supplier_password, String supplier_phoneNumber) {
+        this.supplier_firstName = supplier_firstName;
+        this.supplier_lastName = supplier_lastName;
+        this.supplier_shopName = supplier_shopName;
+        this.supplier_iban = supplier_iban;
+        this.supplier_eMail = supplier_eMail;
+        this.supplier_password = supplier_password;
+        this.supplier_phoneNumber = supplier_phoneNumber;
+    }
+
     public SupplierBeans(String supplier_eMail, String supplier_password) {
         this.supplier_eMail = supplier_eMail;
         this.supplier_password = supplier_password;

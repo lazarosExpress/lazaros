@@ -13,9 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginStyle.css">
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/loginScript.js"></script>
-
 </head>
 <body>
 
@@ -48,7 +45,7 @@
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Giriş Yap" />
-                                <a href="supplierLogin.jsp" class="form-submit">Satıcı Girişi</a>
+                                <a href="${pageContext.request.contextPath}/views/supplierLogin/supplierLogin.jsp" class="form-submit">Satıcı Girişi</a>
                             </div>
                         </form>
                 </div>

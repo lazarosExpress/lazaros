@@ -13,10 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginStyle.css">
-
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/loginScript.js"></script>
-
 </head>
 <body>
 
@@ -49,7 +45,7 @@
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Giriş Yap" />
-                                    <a href="login.jsp" class="form-submit">Müşteri Girişi</a>
+                                    <a href="${pageContext.request.contextPath}/views/login/login.jsp" class="form-submit">Müşteri Girişi</a>
                             </div>
                         </form>
                 </div>

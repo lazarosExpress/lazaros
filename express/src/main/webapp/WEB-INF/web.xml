@@ -20,6 +20,14 @@
         <servlet-name>BasketController</servlet-name>
         <servlet-class>com.lazaros.controller.BasketController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddressController</servlet-name>
+        <servlet-class>com.lazaros.controller.AddressController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProvincesController</servlet-name>
+        <servlet-class>com.lazaros.controller.ProvincesController</servlet-class>
+    </servlet>
     <!-- Servlet Mapping -->
     <servlet-mapping>
         <servlet-name>CustomerController</servlet-name>
@@ -36,6 +44,14 @@
     <servlet-mapping>
         <servlet-name>BasketController</servlet-name>
         <url-pattern>/BasketController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddressController</servlet-name>
+        <url-pattern>/AddressController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProvincesController</servlet-name>
+        <url-pattern>/ProvincesController/*</url-pattern>
     </servlet-mapping>
     <!-- Filter Configuration -->
     <filter>

@@ -122,7 +122,7 @@ public class CustomerController extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Bu e-posta adresi zaten kayıtlı!');");
-            out.println("window.location.href='" + request.getContextPath() + "/views/login/registration.jsp';");
+            out.println("window.location.href='" + request.getContextPath() + "/login/registration.jsp';");
             out.println("</script>");
             return;
         }

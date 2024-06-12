@@ -13,9 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginStyle.css">
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/loginScript.js"></script>
-
 </head>
 <body>
 

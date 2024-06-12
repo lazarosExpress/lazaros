@@ -33,10 +33,9 @@
                         <button id="logout-button">Çıkış yap</button>
                     </div>
                     <ul>
-                        <li><a href="#list-item-1">Profil Bilgilerim</a></li>
+                        <li><a href="${pageContext.request.contextPath}/views/customerInformation.jsp">Profil Bilgilerim</a></li>
                         <li><a href="#list-item-2">Siparişlerim</a></li>
-                        <li><a href="#list-item-3">Adreslerim</a></li>
-                        <li><a href="#list-item-4">Yardım & Destek</a></li>
+                        <li><a href="${pageContext.request.contextPath}/views/address.jsp">Adreslerim</a></li>
                     </ul>
                 </div>
             </c:when>

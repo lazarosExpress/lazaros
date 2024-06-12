@@ -18,8 +18,8 @@ public class SupplierDAO {
         String query = "SELECT * FROM supplier";
 
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("supplier_id");
@@ -31,7 +31,8 @@ public class SupplierDAO {
                 String password = resultSet.getString("supplier_password");
                 String phoneNumber = resultSet.getString("supplier_phoneNumber");
 
-                SupplierBeans supplier = new SupplierBeans(id, firstName, lastName, shopName, iban, eMail, password, phoneNumber);
+                SupplierBeans supplier = new SupplierBeans(id, firstName, lastName, shopName, iban, eMail, password,
+                        phoneNumber);
                 suppliers.add(supplier);
             }
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class SupplierDAO {
         String query = "INSERT INTO supplier (supplier_firstName, supplier_lastName, supplier_shopName, supplier_iban, supplier_eMail, supplier_password, supplier_phoneNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, supplier.getSupplier_firstName());
             preparedStatement.setString(2, supplier.getSupplier_lastName());
@@ -53,9 +54,16 @@ public class SupplierDAO {
             preparedStatement.setString(5, supplier.getSupplier_eMail());
             preparedStatement.setString(6, supplier.getSupplier_password());
             preparedStatement.setString(7, supplier.getSupplier_phoneNumber());
-            preparedStatement.executeUpdate();
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new supplier was inserted successfully!");
+            } else {
+                System.out.println("Supplier insertion failed!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("SQLException: " + e.getMessage());
         }
     }
 
@@ -63,7 +71,7 @@ public class SupplierDAO {
         SupplierBeans supplier = null;
         String query = "SELECT * FROM supplier WHERE supplier_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -88,7 +96,7 @@ public class SupplierDAO {
     public void updateSupplier(SupplierBeans supplier) {
         String query = "UPDATE supplier SET supplier_firstName = ?, supplier_lastName = ?, supplier_shopName = ?, supplier_iban = ?, supplier_eMail = ?, supplier_password = ?, supplier_phoneNumber = ? WHERE supplier_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, supplier.getSupplier_firstName());
             preparedStatement.setString(2, supplier.getSupplier_lastName());
@@ -108,7 +116,7 @@ public class SupplierDAO {
     public void deleteSupplier(int id) {
         String query = "DELETE FROM supplier WHERE supplier_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -120,7 +128,7 @@ public class SupplierDAO {
     public boolean loginSupplier(String eMail, String password) {
         String query = "SELECT * FROM supplier WHERE supplier_eMail = ? AND supplier_password = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, eMail);
             preparedStatement.setString(2, password);
@@ -148,7 +156,7 @@ public class SupplierDAO {
         SupplierBeans supplier = null;
         String query = "SELECT * FROM supplier WHERE supplier_eMail = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, eMail);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

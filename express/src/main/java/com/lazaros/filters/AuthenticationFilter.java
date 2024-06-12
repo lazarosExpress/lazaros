@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/admin/*")
+@WebFilter({ "/admin/*", "/views/customerInformation.jsp", "/views/address.jsp", "/views/orders.jsp" })
 public class AuthenticationFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,11 +25,19 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
-        // Check if user is logged in
-        if (session == null || session.getAttribute("loggedInSupplier") == null) {
-            // Redirect to login page if user is not logged in
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/views/login/login.jsp");
-            return;
+        String requestURI = httpRequest.getRequestURI();
+        if (requestURI.startsWith(httpRequest.getContextPath() + "/admin/")) {
+            // Admin authentication check
+            if (session == null || session.getAttribute("loggedInSupplier") == null) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/views/login/login.jsp");
+                return;
+            }
+        } else {
+            // Customer authentication check
+            if (session == null || session.getAttribute("loggedInCustomer") == null) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/views/login/login.jsp");
+                return;
+            }
         }
 
         // Proceed to the next filter or target resource

@@ -1,4 +1,3 @@
-
 package com.lazaros.controller;
 
 import com.google.gson.Gson;
@@ -81,7 +80,6 @@ public class BasketController extends HttpServlet {
         if (session != null && session.getAttribute("loggedInCustomer") != null) {
             CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
             customerId = loggedInCustomer.getCustomer_id();
-            BasketDAO basketDAO = new BasketDAO();
             basket = basketDAO.getBasketByCustomerId(customerId);
             request.setAttribute("basket", basket);
         }
@@ -103,29 +101,12 @@ public class BasketController extends HttpServlet {
         response.getWriter().write(new Gson().toJson(basket));
     }
 
-    // private void listBasketItems(HttpServletRequest request, HttpServletResponse
-    // response)
-    // throws ServletException, IOException {
-    // HttpSession session = request.getSession(false);
-    // if (session == null || session.getAttribute("loggedInCustomer") == null) {
-    // response.sendRedirect("views/login/login.jsp");
-    // return;
-    // }
-
-    // CustomerBeans loggedInCustomer = (CustomerBeans)
-    // session.getAttribute("loggedInCustomer");
-    // int customerId = loggedInCustomer.getCustomer_id();
-
-    // List<BasketBeans> basket = basketDAO.getBasketByCustomerId(customerId);
-    // request.setAttribute("basket", basket);
-    // request.getRequestDispatcher("/views/basket.jsp").forward(request, response);
-    // }
-
     private void addBasketItem(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInCustomer") == null) {
-            response.sendRedirect("views/login/login.jsp");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
             return;
         }
 
@@ -142,11 +123,10 @@ public class BasketController extends HttpServlet {
         } else {
             success = basketDAO.increaseQuantity(productId, customerId);
         }
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", success)));
-        response.sendRedirect(request.getContextPath());
     }
 
     private void deleteBasketItem(HttpServletRequest request, HttpServletResponse response)
@@ -162,7 +142,8 @@ public class BasketController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInCustomer") == null) {
-            response.sendRedirect("views/login/login.jsp");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
             return;
         }
 
@@ -170,15 +151,19 @@ public class BasketController extends HttpServlet {
         CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
         int customerId = loggedInCustomer.getCustomer_id();
 
-        basketDAO.increaseQuantity(productId, customerId);
-        response.sendRedirect("BasketController?action=LISTBASKET");
+        boolean success = basketDAO.increaseQuantity(productId, customerId);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", success)));
     }
 
     private void decreaseQuantity(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInCustomer") == null) {
-            response.sendRedirect("views/login/login.jsp");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
             return;
         }
 
@@ -186,8 +171,11 @@ public class BasketController extends HttpServlet {
         CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
         int customerId = loggedInCustomer.getCustomer_id();
 
-        basketDAO.decreaseQuantity(productId, customerId);
-        response.sendRedirect("BasketController?action=LISTBASKET");
+        boolean success = basketDAO.decreaseQuantity(productId, customerId);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", success)));
     }
 
     private void completeOrder(HttpServletRequest request, HttpServletResponse response)

@@ -40,9 +40,12 @@ public class ProductController extends HttpServlet {
         categoryDAO = new CategoryDAO();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("get" + action);
+
         if (action == null)
             action = "LIST";
 
@@ -69,21 +72,20 @@ public class ProductController extends HttpServlet {
     }
 
     private void getProductDetails(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    int productId = Integer.parseInt(request.getParameter("id"));
-    ProductBeans product = productDAO.getProductByIdWithDetail(productId);
-    if (product == null) {
-        // Ürün bulunamadıysa hata mesajı göster veya başka bir sayfaya yönlendir.
-        request.setAttribute("errorMessage", "Ürün bulunamadı.");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/errorPage.jsp");
+            throws ServletException, IOException {
+        int productId = Integer.parseInt(request.getParameter("id"));
+        ProductBeans product = productDAO.getProductByIdWithDetail(productId);
+        if (product == null) {
+            // Ürün bulunamadıysa hata mesajı göster veya başka bir sayfaya yönlendir.
+            request.setAttribute("errorMessage", "Ürün bulunamadı.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/errorPage.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        request.setAttribute("product", product);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/productDetail/productPages.jsp");
         dispatcher.forward(request, response);
-        return;
     }
-    request.setAttribute("product", product);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/views/productDetail/productPages.jsp");
-    dispatcher.forward(request, response);
-}
-
 
     private void getCategoriesJson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -96,28 +98,27 @@ public class ProductController extends HttpServlet {
         out.flush();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (action != null) {
-            switch (action) {
-                case "ADD":
-                    try {
-                        addProduct(request, response);
-                    } catch (Exception e) {
-                        throw new ServletException(e);
-                    }
-                    break;
-                case "DELETE":
-                    deleteProduct(request, response);
-                    break;
-                default:
-                    listProducts(request, response);
-                    break;
-            }
-        } else {
-            listProducts(request, response);
+        System.out.println("post" + action);
+        switch (action) {
+            case "ADD":
+                try {
+                    addProduct(request, response);
+                } catch (Exception e) {
+                    throw new ServletException(e);
+                }
+                break;
+            case "DELETE":
+                deleteProduct(request, response);
+                break;
+            default:
+                listProducts(request, response);
+                break;
         }
+
     }
 
     private void listProducts(HttpServletRequest request, HttpServletResponse response)
@@ -135,8 +136,6 @@ public class ProductController extends HttpServlet {
             List<ProductBeans> products = productDAO.getProductsBySupplierId(supplierId);
             request.setAttribute("products", products);
             LOGGER.log(Level.INFO, "Products loaded for supplier: {0} - {1}", new Object[] { supplierId, products });
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/supplierControlPanel.jsp");
-            dispatcher.forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error listing products", e);
             throw new ServletException("Error listing products", e);
@@ -227,7 +226,8 @@ public class ProductController extends HttpServlet {
             throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         productDAO.deleteProduct(id);
-        response.sendRedirect(request.getContextPath() + "/ProductController?action=LIST");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.sendRedirect(request.getContextPath() + "/admin/productManagement.jsp");
     }
 
 }

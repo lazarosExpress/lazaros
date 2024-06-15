@@ -15,18 +15,7 @@
 </head>
 
 <body>
-    <header>
-        <div>
-            <a href="${pageContext.request.contextPath}/admin/supplierAdminPanel.jsp" class="back-button">
-                <i class="bi bi-arrow-left"></i>
-            </a>
-        </div>
-        <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo" />
-        <div class="logout">
-            <i id="logout-button" class="bi bi-box-arrow-right"></i>
-        </div>
-    </header>
-
+    <%@ include file="../components/adminHeader/adminHeader.jsp" %>
     <section class="container">
         <div class="card">
             <h3>Ürün Oluştur</h3>
@@ -37,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="product_prize">Fiyat:</label>
-                    <input name="product_prize" type="number" id="product_prize" required />
+                    <input name="product_prize" type="number" id="product_prize" step="0.01" required />
                 </div>
                 <div class="form-group">
                     <label for="product_stock">Stok Miktarı:</label>

@@ -31,8 +31,4 @@ completedOrders.forEach(order => {
     productCell.innerHTML = `<a href="urun_detay.html?product=${order.product}">${order.product}</a>`;
     customerCell.innerHTML = `<a href="musteri_detay.html?customer=${order.customer}">${order.customer}</a>`;
 });
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('logout-button').addEventListener('click', function () {
-        window.location.href = "/express/SupplierController?action=LOGOUT";
-    });
-});
+

@@ -14,17 +14,7 @@
 </head>
 
 <body>
-    <header>
-        <div></div>
-
-        <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo">
-
-        <div class="logout">
-            <i id="logout-button" class="bi bi-box-arrow-right"></i>
-        </div>
-
-    </header>
-
+    <%@ include file="../components/adminHeader/adminHeader.jsp" %>
     <div class="container">
         <div class="card" onclick="location.href='${pageContext.request.contextPath}/admin/productManagement.jsp';">
             <img src="${pageContext.request.contextPath}/images/productManagement.png" alt="Ürün Yönetimi">

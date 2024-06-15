@@ -7,6 +7,8 @@ import com.lazaros.dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/CustomerController")
 public class CustomerController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(CustomerController.class.getName());
     private static final long serialVersionUID = 1L;
     private CustomerDAO customerDAO;
 
@@ -31,6 +34,7 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("get" + action);
         if (action == null) {
             action = "LIST";
         }
@@ -67,14 +71,28 @@ public class CustomerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("CREATE".equals(action)) {
-            createCustomer(request, response);
-        } else if ("CREATEWITHSUPPLIER".equals(action)) {
-            createCustomerWithSupplier(request, response);
-        } else if ("UPDATE".equals(action)) {
-            updateCustomer(request, response);
-        } else if ("LOGIN".equals(action)) {
-            loginCustomer(request, response);
+        System.out.println("post" + action);
+        if (action != null) {
+            switch (action) {
+                case "ADD":
+                    try {
+                        createCustomer(request, response);
+                    } catch (Exception e) {
+                        throw new ServletException(e);
+                    }
+                    break;
+                case "DELETE":
+                    deleteCustomer(request, response);
+                    break;
+                case "LOGIN":
+                    loginCustomer(request, response);
+                    break;
+                default:
+                    listCustomers(request, response);
+                    break;
+            }
+        } else {
+            listCustomers(request, response);
         }
     }
 
@@ -88,13 +106,24 @@ public class CustomerController extends HttpServlet {
 
     private void listCustomersJson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<CustomerBeans> customerList = customerDAO.getAllCustomers();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        String json = new Gson().toJson(customerList);
-        out.write(json);
-        out.flush();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInSupplier") == null) {
+            response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
+            return;
+        }
+
+        try {
+            List<CustomerBeans> customers = customerDAO.getAllCustomers();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            String json = new Gson().toJson(customers);
+            out.write(json);
+            out.flush();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error listing customers", e);
+            throw new ServletException("Error listing customers", e);
+        }
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -178,10 +207,11 @@ public class CustomerController extends HttpServlet {
     }
 
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         customerDAO.deleteCustomer(id);
-        response.sendRedirect("CustomerController?action=LIST");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.sendRedirect(request.getContextPath() + "/admin/productManagement.jsp");
     }
 
     private void loginCustomer(HttpServletRequest request, HttpServletResponse response)

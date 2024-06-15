@@ -93,23 +93,27 @@ public class BasketDAO {
         return rowUpdated;
     }
 
-    public void decreaseQuantity(int productId, int customerId) {
+    public boolean decreaseQuantity(int productId, int customerId) {
+        boolean rowUpdated = false;
         try (Connection connection = DatabaseUtil.getConnection()) {
             String query = "UPDATE basket SET basket_qty = basket_qty - 1 WHERE customer_id = ? AND product_id = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, customerId);
             ps.setInt(2, productId);
-            ps.executeUpdate();
+            rowUpdated = ps.executeUpdate() > 0;
 
             // Miktar sıfırsa öğeyi sepetten kaldır
-            String deleteQuery = "DELETE FROM basket WHERE customer_id = ? AND product_id = ? AND basket_qty = 0";
-            PreparedStatement deletePs = connection.prepareStatement(deleteQuery);
-            deletePs.setInt(1, customerId);
-            deletePs.setInt(2, productId);
-            deletePs.executeUpdate();
+            if (rowUpdated) {
+                String deleteQuery = "DELETE FROM basket WHERE customer_id = ? AND product_id = ? AND basket_qty = 0";
+                PreparedStatement deletePs = connection.prepareStatement(deleteQuery);
+                deletePs.setInt(1, customerId);
+                deletePs.setInt(2, productId);
+                deletePs.executeUpdate();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return rowUpdated;
     }
 
     public boolean deleteBasketItem(int basketId) {

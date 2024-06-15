@@ -25,10 +25,9 @@ public class CustomerDAO {
                 String customerEMail = resultSet.getString("customer_eMail");
                 String firstName = resultSet.getString("customer_firstName");
                 String lastName = resultSet.getString("customer_lastName");
-                String password = resultSet.getString("customer_password");
                 String number = resultSet.getString("customer_phoneNumber");
 
-                CustomerBeans customer = new CustomerBeans(customerId, customerEMail, firstName, lastName, password, number);
+                CustomerBeans customer = new CustomerBeans(customerId, customerEMail, firstName, lastName, number, number);
                 customers.add(customer);
             }
         } catch (SQLException e) {

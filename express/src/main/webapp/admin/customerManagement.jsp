@@ -15,49 +15,29 @@
 
 </head>
 
-<style>
-    
-</style>
-
 <body>
-    <header>
-        <div>
-            <a href="${pageContext.request.contextPath}/admin/supplierAdminPanel.jsp" class="back-button">
-                <i class="bi bi-arrow-left"></i>
-            </a>
+    <%@ include file="../components/adminHeader/adminHeader.jsp" %>
+    <button class="add-customer-btn" onclick="location.href='${pageContext.request.contextPath}/admin/addCustomerManagement.jsp';">Müşteri Ekle</button>
+    <section class="container">
+        <h2 class="page-title">Müşteri Yönetimi</h2>
+        <div class="card container">
+            <h3>Müşteriler Listesi</h3>
+            <table class="customer-table">
+                <thead>
+                    <tr id="customer-tabel">
+                        <th>Müşteri Adı</th>
+                        <th>Müşteri Soyadı</th>
+                        <th>E-posta</th>
+                        <th>Telefon Numarası</th>
+                        <th>Düzenle</th>
+                    </tr>
+                </thead>
+                <tbody id="customerList">
+                    <!-- Müşteri bilgileri buraya eklenecek -->
+                </tbody>
+            </table>
         </div>
-        <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo" />
-        <div class="logout">
-            <i id="logout-button" class="bi bi-box-arrow-right"></i>
-        </div>
-    </header>
-    <div class="container">
-        <div class="section">
-            <div class="button-container">
-                <button class="add-customer-btn" onclick="location.href='${pageContext.request.contextPath}/admin/addCustomerManagement.jsp';">Müşteri Ekle</button>
-            </div>
-            <h2 class="page-title">Müşteri Yönetimi</h2>
-            <div class="card">
-                <h3>Müşteriler Listesi</h3>
-                <div class="table-container">
-                    <table id="customer-table">
-                        <thead>
-                            <tr>
-                                <th>Müşteri Adı</th>
-                                <th>Müşteri Soyadı</th>
-                                <th>E-posta</th>
-                                <th>Telefon Numarası</th>
-                                <th>Düzenle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Müşteri bilgileri buraya eklenecek -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>    
+    </section>    
     <%@ include file="../components/footer/footer.jsp" %>
 </body>
 

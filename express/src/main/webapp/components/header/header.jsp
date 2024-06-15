@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/headerStyle.css">
 <script src="${pageContext.request.contextPath}/js/headerScript.js"></script>
+<script>
+    const contextPath = '<%= request.getContextPath() %>';
+</script>
 
 <div class="header">
     <div class="logo" style="padding-left: 30px">
@@ -55,3 +58,4 @@
         </a>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/js/basket.js"></script>

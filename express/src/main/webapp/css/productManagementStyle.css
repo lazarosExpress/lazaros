@@ -8,50 +8,10 @@ body {
     background-color: #f5f5f5;
 }
 
-header {
-    width: 100%;
-    background-color: #333;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-header img {
-    height: 70px;
-}
-
-.logout {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.logout i {
-    color: red;
+.page-title {
+    text-align: center;
     font-size: 24px;
-    transition: color 0.3s;
-}
-
-.logout:hover i {
-    color: #ffd700;
-}
-
-.back-button {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.back-button i {
-    color: #ffd700;
-    font-size: 24px;
-    transition: color 0.3s;
-}
-
-.back-button:hover i {
-    color: red;
+    margin: 20px 0;
 }
 
 .card {
@@ -70,7 +30,6 @@ header img {
 .product-table {
     width: 100%;
     border-collapse: collapse;
-    /* table-layout: fixed; Bu satırı kaldırıyoruz */
 }
 
 .product-table th,
@@ -79,15 +38,10 @@ header img {
     padding: 8px;
     text-align: left;
     word-break: break-word;
-    /* Uzun kelimelerin kırılmasını sağlıyor */
     overflow: visible;
-    /* İçeriğin taşmasını önler */
     white-space: normal;
-    /* Metnin aşağıya kaymasını sağlar */
     text-overflow: clip;
-    /* Metin kesme işlemini engeller */
     max-width: 200px;
-    /* İsteğe bağlı, hücrelerin maksimum genişliğini ayarlamak için */
 }
 
 .product-table th {
@@ -97,7 +51,6 @@ header img {
 .product-table th:nth-child(1),
 .product-table td:nth-child(1) {
     width: auto;
-    /* Sabit genişlik yerine otomatik genişlik kullanıyoruz */
 }
 
 .product-table th:nth-child(2),
@@ -160,10 +113,4 @@ header img {
 
 .add-product-btn:hover {
     background-color: #218838;
-}
-
-.page-title {
-    text-align: center;
-    font-size: 24px;
-    margin: 20px 0;
 }

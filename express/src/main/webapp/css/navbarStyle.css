@@ -11,8 +11,14 @@
     border: 0;
     box-shadow: none;
     border-radius: 0;
+    justify-content: center;
   }
 }
+
+.navbar-right {
+  float: right !important;
+}
+
 
 .dropdown-megamenu>.dropdown-container {
   position: absolute;
@@ -58,12 +64,14 @@
 
 .list-links a {
   color: #555;
+
 }
 
 .list-links a:hover,
 .list-links a:focus,
 .list-links a:active {
   color: #22527b;
+
 }
 
 .example-megamenu {

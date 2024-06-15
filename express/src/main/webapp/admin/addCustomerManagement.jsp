@@ -21,12 +21,7 @@
 </style>
 
 <body>
-    <header>
-        <div><a href="${pageContext.request.contextPath}/admin/customerManagementStyle.jsp" class="back-button"><i class="bi bi-arrow-left"></i></a></div>
-        <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo" />
-        <div class="logout"><i id="logout-button" class="bi bi-box-arrow-right"></i></div>
-    </header>
-
+    <%@ include file="../components/adminHeader/adminHeader.jsp" %>
     <div class="container">
         <div class="section">
             <h2 class="page-title">Müşteri Yönetimi</h2>

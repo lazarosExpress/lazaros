@@ -1,0 +1,45 @@
+header {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+header img {
+    height: 70px;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logout i {
+    color: red;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.logout:hover i {
+    color: #ffd700;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.back-button i {
+    color: #ffd700;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.back-button:hover i {
+    color: red;
+}

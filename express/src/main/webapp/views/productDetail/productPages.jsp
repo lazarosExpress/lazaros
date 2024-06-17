@@ -22,7 +22,7 @@ if (product == null) {
     <div class="product-details">
         <h1 class="product-title"><%= product.getProduct_name() %></h1>
         <p class="product-category">Kategori: <span class="category-name"><%= product.getCategory_name() %></span></p>
-        <p class="product-category">Satıcı: <span class="shop-name"><%= product.getSupplier_shopName() %></span></p>
+        <p class="product-category">Satıcı: <a><span class="shop-name"><%= product.getSupplier_shopName() %></span></a></p>
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Description')" id="defaultOpen">Ürün Açıklaması</button>
             <button class="tablinks" onclick="openTab(event, 'Specifications')">Ürün Özellikleri</button>
@@ -39,9 +39,25 @@ if (product == null) {
             Ürünün Fiyatı: <span class="original-price">$<%= product.getProduct_prize() %></span>
             Ürünün Fiyatı: <span class="price">$<%= product.getProduct_prize() %></span>
         </p>
-        <a href="<%= request.getContextPath() %>/BasketController?action=ADD&id=<%= product.getProduct_id() %>" class="store-link">Add to Cart</a>
+        <a href="javascript:void(0);" onclick="addToCart(<%= product.getProduct_id() %>);" class="store-link">Add to Cart</a>
     </div>
 </div>
 <%
 }
 %>
+<script>
+    function addToCart(productId) {
+        fetch('<%= request.getContextPath() %>/BasketController?action=ADD&id=' + productId, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Ürün sepete eklendi.');
+            } else {
+                alert('Ürün sepete eklenirken bir hata oluştu.');
+            }
+        })
+        .catch(error => console.error('Error adding to cart:', error));
+    }
+</script>

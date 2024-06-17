@@ -30,7 +30,7 @@
                             <tr>
                                 <th>Ürün</th>
                                 <th>Müşteri</th>
-                                <th>Durumu</th>
+                                <th>Durumu</th><!-- burada ipat edildi yada tamamlandı seçeneklerinin yer alacağı başlık-->
                             </tr>
                         </thead>
                         <tbody>

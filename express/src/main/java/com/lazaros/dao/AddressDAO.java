@@ -62,7 +62,7 @@ public class AddressDAO {
                         rs.getString("address_title"),
                         rs.getInt("provinces_id"),
                         rs.getInt("customer_id"));
-                address.setProvinces_name(rs.getString("provinces_name")); // İl adını ekliyoruz
+                address.setProvinces_name(rs.getString("provinces_name"));
                 addressesList.add(address);
             }
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class AddressDAO {
         }
         return address;
     }
-    
+
     public boolean addAddress(AddressBeans address) {
         Connection connection = null;
         try {
@@ -116,7 +116,7 @@ public class AddressDAO {
             ps.setInt(7, address.getDistricts_id());
             ps.setInt(8, address.getSubDistricts_id());
             ps.setInt(9, address.getNeighbourhood_id());
-            ps.setInt(10, address.getCustomer_id()); 
+            ps.setInt(10, address.getCustomer_id());
             int result = ps.executeUpdate();
             return result > 0;
         } catch (Exception e) {

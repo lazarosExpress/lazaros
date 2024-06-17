@@ -5,14 +5,14 @@ public class BasketBeans {
     private int basket_qty;
     private int customer_id;
     private int product_id;
+    private ProductBeans product;
+
     public BasketBeans(int basket_id, int basket_qty, int customer_id, int product_id) {
         this.basket_id = basket_id;
         this.basket_qty = basket_qty;
         this.customer_id = customer_id;
         this.product_id = product_id;
     }
-
-    private ProductBeans product;
 
     public BasketBeans(int basket_id, int basket_qty, int customer_id, int product_id, ProductBeans product) {
         this.basket_id = basket_id;

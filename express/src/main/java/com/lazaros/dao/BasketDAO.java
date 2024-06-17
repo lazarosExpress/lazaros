@@ -13,10 +13,11 @@ import java.util.List;
 public class BasketDAO {
     public List<BasketBeans> getBasketByCustomerId(int customerId) {
         List<BasketBeans> basketList = new ArrayList<>();
-        String query = "SELECT b.basket_id, b.basket_qty, b.customer_id, b.product_id, p.product_name, p.product_prize, p.product_imgUrl "
+        String query = "SELECT b.basket_id, b.basket_qty, b.customer_id, b.product_id, p.product_name, p.product_prize, p.product_imgUrl, s.supplier_shopName "
                 +
                 "FROM basket b " +
                 "JOIN products p ON b.product_id = p.product_id " +
+                "JOIN supplier s ON p.supplier_id = s.supplier_id " +
                 "WHERE b.customer_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
                 PreparedStatement ps = connection.prepareStatement(query)) {
@@ -28,6 +29,7 @@ public class BasketDAO {
                 product.setProduct_name(rs.getString("product_name"));
                 product.setProduct_prize(rs.getDouble("product_prize"));
                 product.setProduct_imgUrl(rs.getString("product_imgUrl"));
+                product.setSupplier_shopName(rs.getString("supplier_shopName"));
 
                 BasketBeans basket = new BasketBeans(
                         rs.getInt("basket_id"),
@@ -78,7 +80,7 @@ public class BasketDAO {
         }
         return rowInserted;
     }
-    
+
     public boolean increaseQuantity(int productId, int customerId) {
         boolean rowUpdated = false;
         try (Connection connection = DatabaseUtil.getConnection()) {
@@ -105,6 +107,30 @@ public class BasketDAO {
             // Miktar sıfırsa öğeyi sepetten kaldır
             if (rowUpdated) {
                 String deleteQuery = "DELETE FROM basket WHERE customer_id = ? AND product_id = ? AND basket_qty = 0";
+                PreparedStatement deletePs = connection.prepareStatement(deleteQuery);
+                deletePs.setInt(1, customerId);
+                deletePs.setInt(2, productId);
+                deletePs.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowUpdated;
+    }
+
+    public boolean updateQuantity(int productId, int customerId, int quantity) {
+        boolean rowUpdated = false;
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            String query = "UPDATE basket SET basket_qty = ? WHERE customer_id = ? AND product_id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, quantity);
+            ps.setInt(2, customerId);
+            ps.setInt(3, productId);
+            rowUpdated = ps.executeUpdate() > 0;
+
+            // Miktar sıfırsa öğeyi sepetten kaldır
+            if (quantity == 0) {
+                String deleteQuery = "DELETE FROM basket WHERE customer_id = ? AND product_id = ?";
                 PreparedStatement deletePs = connection.prepareStatement(deleteQuery);
                 deletePs.setInt(1, customerId);
                 deletePs.setInt(2, productId);

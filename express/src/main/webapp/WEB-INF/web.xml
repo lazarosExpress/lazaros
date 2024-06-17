@@ -25,8 +25,8 @@
         <servlet-class>com.lazaros.controller.AddressController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProvincesController</servlet-name>
-        <servlet-class>com.lazaros.controller.ProvincesController</servlet-class>
+        <servlet-name>OrdersController</servlet-name>
+        <servlet-class>com.lazaros.controller.OrdersController</servlet-class>
     </servlet>
     <!-- Servlet Mapping -->
     <servlet-mapping>
@@ -50,8 +50,8 @@
         <url-pattern>/AddressController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProvincesController</servlet-name>
-        <url-pattern>/ProvincesController/*</url-pattern>
+        <servlet-name>OrdersController</servlet-name>
+        <url-pattern>/OrdersController/*</url-pattern>
     </servlet-mapping>
     <!-- Filter Configuration -->
     <filter>

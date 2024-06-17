@@ -1,6 +1,6 @@
 function addToCart(productId) {
     fetch(contextPath + '/BasketController?action=ADD&id=' + productId, {
-        method: 'GET'
+        method: 'POST'
     })
         .then(response => response.json())
         .then(data => {

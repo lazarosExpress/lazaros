@@ -17,8 +17,8 @@ public class CustomerDAO {
         String query = "SELECT * FROM customer";
 
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 int customerId = resultSet.getInt("customer_id");
@@ -27,7 +27,8 @@ public class CustomerDAO {
                 String lastName = resultSet.getString("customer_lastName");
                 String number = resultSet.getString("customer_phoneNumber");
 
-                CustomerBeans customer = new CustomerBeans(customerId, customerEMail, firstName, lastName, number, number);
+                CustomerBeans customer = new CustomerBeans(customerId, customerEMail, firstName, lastName, number,
+                        number);
                 customers.add(customer);
             }
         } catch (SQLException e) {
@@ -35,7 +36,6 @@ public class CustomerDAO {
         }
         return customers;
     }
-
 
     public void insertCustomer(CustomerBeans customer) {
         String query = "INSERT INTO customer (customer_eMail, customer_firstName, customer_lastName, customer_password, customer_phoneNumber) VALUES (?, ?, ?, ?, ?)";
@@ -95,14 +95,33 @@ public class CustomerDAO {
     }
 
     public void deleteCustomer(int id) {
-        String query = "DELETE FROM customer WHERE customer_id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        String deleteAddressQuery = "DELETE FROM address WHERE customer_id = ?";
+        String deleteCustomerQuery = "DELETE FROM customer WHERE customer_id = ?";
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            // Otomatik commit özelliğini kapatın, böylece işlemi yönetebilirsiniz
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement deleteAddressStmt = connection.prepareStatement(deleteAddressQuery)) {
+                deleteAddressStmt.setInt(1, id);
+                deleteAddressStmt.executeUpdate();
+            }
+
+            try (PreparedStatement deleteCustomerStmt = connection.prepareStatement(deleteCustomerQuery)) {
+                deleteCustomerStmt.setInt(1, id);
+                deleteCustomerStmt.executeUpdate();
+            }
+
+            // İşlem başarılı olduğunda commit yapın
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try (Connection connection = DatabaseUtil.getConnection()) {
+                // Eğer bir hata oluşursa işlemi geri alın
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
         }
     }
 

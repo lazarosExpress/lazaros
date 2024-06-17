@@ -16,10 +16,6 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
-<style>
-    
-</style>
-
 <body>
     <%@ include file="../components/adminHeader/adminHeader.jsp" %>
     <div class="container">

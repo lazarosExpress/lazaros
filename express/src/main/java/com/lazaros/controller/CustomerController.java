@@ -84,6 +84,12 @@ public class CustomerController extends HttpServlet {
                 case "DELETE":
                     deleteCustomer(request, response);
                     break;
+                case "CREATE":
+                    createCustomer(request, response);
+                    break;
+                case "CREATEWITHSUPPLIER":
+                    createCustomerWithSupplier(request, response);
+                    break;
                 case "LOGIN":
                     loginCustomer(request, response);
                     break;

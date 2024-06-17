@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('BasketController?action=LISTBASKET')
             .then(response => response.json())
             .then(data => {
+                console.log('Basket Data:', data);
                 if (data.length > 0) {
                     dropdownBasket.innerHTML = '';
                     let totalPrice = 0;
@@ -53,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     dropdownBasket.innerHTML += `
                         <div class="basket-footer">
-                            <p class="total-price">Toplam Fiyat: ${totalPrice} TL</p>
-                            <a href="BasketController?action=COMPLETE" class="complete-order-btn">Siparişi Tamamla</a>
+                            <p class="total-price" >Toplam Fiyat: ${totalPrice.toFixed(2)} TL</p>
+                            <a class="complete-order-btn">Siparişi Tamamla</a>
                         </div>
                     `;
                 } else {
@@ -68,18 +69,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const increaseQtyButtons = document.querySelectorAll('.increase-qty');
         const decreaseQtyButtons = document.querySelectorAll('.decrease-qty');
         const removeButtons = document.querySelectorAll('.remove-btn');
+        const completeOrderButton = document.querySelector('.complete-order-btn');
 
         increaseQtyButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
-                const qtyElement = this.previousElementSibling;
                 fetch(`BasketController?action=INCREASE&id=${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            qtyElement.innerText = parseInt(qtyElement.innerText) + 1;
                             loadBasket();
                         }
                     });
@@ -89,14 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
         decreaseQtyButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
-                const qtyElement = this.nextElementSibling;
                 fetch(`BasketController?action=DECREASE&id=${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            qtyElement.innerText = parseInt(qtyElement.innerText) - 1;
                             loadBasket();
                         }
                     });
@@ -106,24 +104,26 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const basketId = this.getAttribute('data-id');
-                console.log(`Deleting basket item with id: ${basketId}`);
                 fetch(`BasketController?action=DELETE&id=${basketId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
                     .then(data => {
-                        console.log(data); // Check the response
                         if (data.success) {
                             loadBasket();
-                        } else {
-                            console.error('Failed to delete the basket item');
                         }
-                    }).catch(error => {
-                        console.error('Error:', error);
                     });
             });
         });
+
+        if (completeOrderButton) {
+            completeOrderButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Bu satırı kaldırabilirsiniz, çünkü bu butonun bir link olduğunu farz ediyoruz.
+                window.location.href = "/express/views/orderPage.jsp"; // Yönlendirme işlemini gerçekleştirin.
+            });
+        }
     };
+
 
     const addToBasket = (productId) => {
         fetch(`BasketController?action=ADD&id=${productId}`, {
@@ -131,14 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' }
         }).then(response => response.json())
             .then(data => {
-                console.log(data); // Check the response
                 if (data.success) {
                     loadBasket();
-                } else {
-                    console.error('Failed to add item to the basket');
                 }
-            }).catch(error => {
-                console.error('Error:', error);
             });
     };
 

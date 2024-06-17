@@ -35,7 +35,7 @@
 <script>
     function addToCart(productId) {
         fetch('<%= request.getContextPath() %>/BasketController?action=ADD&id=' + productId, {
-            method: 'GET'
+            method: 'POST'
         })
         .then(response => response.json())
         .then(data => {

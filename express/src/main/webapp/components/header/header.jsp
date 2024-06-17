@@ -10,52 +10,52 @@
 <script>
     const contextPath = '<%= request.getContextPath() %>';
 </script>
-
-<div class="header">
-    <div class="logo" style="padding-left: 30px">
-        <figure>
-            <img src="${pageContext.request.contextPath}/images/lazaros.png" alt="LAZAROS" height="50">
-        </figure>
-    </div>
-    <div class="search-container">
-        <form action="#" class="search-form">
-            <input type="search" placeholder="Ara" class="search-input" id="search-input">
-            <button type="submit" class="search-button" id="search-button">Ara</button>
-        </form>
-    </div>
-    <div class="icons">
-        <c:choose>
-            <c:when test="${not empty customer_eMail}">
-                <a href="" class="icon-link" id="user-icon">
-                    <i class="fas fa-user"></i>
-                    <span>Hesabım</span>
-                </a>
-                <div class="user-menu" id="user-menu">
-                    <div class="user-menu-header">
-                        <span>Hoşgeldin, ${loggedInCustomer.customer_firstName}</span>
-                        <button id="logout-button">Çıkış yap</button>
+<div class="component-header-css">
+    <div class="header">
+        <div class="logo" style="padding-left: 30px">
+            <figure>
+                <a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/images/lazaros.png" alt="LAZAROS" height="50"></a>
+            </figure>
+        </div>
+        <div class="search-container">
+            <form action="#" class="search-form">
+                <input type="search" placeholder="Ara" class="search-input" id="search-input">
+                <button type="submit" class="search-button" id="search-button">Ara</button>
+            </form>
+        </div>
+        <div class="icons">
+            <c:choose>
+                <c:when test="${not empty customer_eMail}">
+                    <a href="" class="icon-link" id="user-icon">
+                        <i class="fas fa-user"></i>
+                        <span>Hesabım</span>
+                    </a>
+                    <div class="user-menu" id="user-menu">
+                        <div class="user-menu-header">
+                            <span>Hoşgeldin, ${loggedInCustomer.customer_firstName}</span>
+                            <button id="logout-button">Çıkış yap</button>
+                        </div>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/views/customerInformation.jsp">Profil Bilgilerim</a></li>
+                            <li><a href="${pageContext.request.contextPath}/views/customerOrder.jsp">Siparişlerim</a></li>
+                            <li><a href="${pageContext.request.contextPath}/views/address.jsp">Adreslerim</a></li>
+                        </ul>
                     </div>
-                    <ul>
-                        <li><a href="${pageContext.request.contextPath}/views/customerInformation.jsp">Profil Bilgilerim</a></li>
-                        <li><a href="#list-item-2">Siparişlerim</a></li>
-                        <li><a href="${pageContext.request.contextPath}/views/address.jsp">Adreslerim</a></li>
-                    </ul>
+                </c:when>
+                <c:otherwise>
+                    <a href="views/login/login.jsp" class="icon-link">
+                        <i class="fas fa-user"></i>
+                        <span>Giriş Yap</span>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+            <a href="" class="icon-link" id="basket-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Sepet</span>
+                <div class="dropdown-basket" id="dropdown-basket">
+                    <p>Sepetiniz boş.</p>
                 </div>
-            </c:when>
-            <c:otherwise>
-                <a href="views/login/login.jsp" class="icon-link">
-                    <i class="fas fa-user"></i>
-                    <span>Giriş Yap</span>
-                </a>
-            </c:otherwise>
-        </c:choose>
-        <a href="" class="icon-link" id="basket-icon">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Sepet</span>
-            <div class="dropdown-basket" id="dropdown-basket">
-                <p>Sepetiniz boş.</p>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
-</div>
-<script src="${pageContext.request.contextPath}/js/basket.js"></script>
+</div> 

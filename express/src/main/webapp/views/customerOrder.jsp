@@ -1,10 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="tr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Siparişlerim</title>
-        <link rel="stylesheet" href="lib/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerOrderStyle.css">
+        <script src="${pageContext.request.contextPath}/lib/customerOrderScript.js"></script>
+
     </head>
     <body>
         <div class="header-card">
@@ -37,6 +41,5 @@
             </div>
             <!-- Diğer sipariş kartları aynı şekilde buraya eklenecek -->
         </div>
-        <script src="lib/script.js"></script>
     </body>
 </html>

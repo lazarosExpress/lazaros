@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Basket</title>
+  <title>Sipariş Ekranı</title>
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/orderPageStyle.css" />
   <script src="${pageContext.request.contextPath}/js/orderPageScript.js"></script>
@@ -18,16 +18,16 @@
   <main>
     <div class="basket">
       <div class="basket-module">
-        <label for="promo-code">Enter a promotional code</label>
+        <label for="promo-code">Promosyon Kodunuzu Giriniz</label>
         <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field">
         <button class="promo-code-cta">Apply</button>
       </div>
       <div class="basket-labels">
         <ul>
-          <li class="item item-heading">Item</li>
-          <li class="price">Price</li>
-          <li class="quantity">Quantity</li>
-          <li class="subtotal">Subtotal</li>
+          <li class="item item-heading">Ürün</li>
+          <li class="price">Tutar</li>
+          <li class="quantity">Adet</li>
+          <li class="subtotal">Toplam</li>
         </ul>
       </div>
       <div id="basket-products">
@@ -36,33 +36,33 @@
     </div>
     <aside>
       <div class="summary">
-        <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div>
+        <div class="summary-total-items"><span class="total-items"></span>Teslimat ve Ödeme Bilgileri</div>
         <div class="summary-subtotal">
-          <div class="subtotal-title">Subtotal</div>
+          <div class="subtotal-title">Toplam Tutar</div>
           <div class="subtotal-value final-value" id="basket-subtotal">0.00</div>
           <div class="summary-promo hide">
-            <div class="promo-title">Promotion</div>
+            <div class="promo-title">Promosyonn</div>
             <div class="promo-value final-value" id="basket-promo"></div>
           </div>
         </div>
         <div class="summary-delivery">
           <select name="delivery-collection" class="summary-delivery-selection">
-            <option value="0" selected="selected">Select Address</option>
+            <option value="0" selected="selected">Teslimat Adresi Seçin</option>
           </select>
         </div>
         <div class="summary-payment">
           <select name="payment-collection" class="summary-payment-selection">
-            <option value="0" selected="selected">Select Payment Method</option>
-            <option value="cash-on-delivery">Cash on Delivery</option>
-            <option value="credit-card">Credit Card</option>
+            <option value="0" selected="selected">Ödeme Yöntemi Seçiniz</option>
+            <option value="cash-on-delivery">Kapıda Ödeme</option>
+            <option value="credit-card">Kredi/Banka Kartı</option>
           </select>
         </div>
         <div class="summary-total">
-          <div class="total-title">Total</div>
+          <div class="total-title">Toplam</div>
           <div class="total-value final-value" id="basket-total">0.00</div>
         </div>
         <div class="summary-checkout">
-          <button class="checkout-cta">Go to Secure Checkout</button>
+          <button class="checkout-cta">Siparişinizi Tamamlayın</button>
         </div>
       </div>
     </aside>

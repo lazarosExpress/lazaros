@@ -45,6 +45,8 @@ if (product == null) {
 <%
 }
 %>
+<div id="message-box" style="display: none; padding: 10px; background-color: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; border-radius: 4px; margin-top: 10px;"></div>
+
 <script>
     function addToCart(productId) {
         fetch('<%= request.getContextPath() %>/BasketController?action=ADD&id=' + productId, {
@@ -52,12 +54,31 @@ if (product == null) {
         })
         .then(response => response.json())
         .then(data => {
+            const messageBox = document.getElementById('message-box');
             if (data.success) {
-                alert('Ürün sepete eklendi.');
+                messageBox.textContent = 'Ürün sepete eklendi.';
+                messageBox.style.backgroundColor = '#dff0d8';
+                messageBox.style.color = '#3c763d';
             } else {
-                alert('Ürün sepete eklenirken bir hata oluştu.');
+                messageBox.textContent = 'Ürün sepete eklenirken bir hata oluştu.';
+                messageBox.style.backgroundColor = '#f2dede';
+                messageBox.style.color = '#a94442';
             }
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000); // 3 saniye sonra mesajı gizler
         })
-        .catch(error => console.error('Error adding to cart:', error));
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+            const messageBox = document.getElementById('message-box');
+            messageBox.textContent = 'Ürün sepete eklenirken bir hata oluştu.';
+            messageBox.style.backgroundColor = '#f2dede';
+            messageBox.style.color = '#a94442';
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        });
     }
 </script>

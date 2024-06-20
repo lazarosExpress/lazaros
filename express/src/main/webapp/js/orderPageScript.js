@@ -3,17 +3,30 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchAddresses();
 
     document.querySelector('.checkout-cta').addEventListener('click', function () {
-        fetch('http://localhost:8080/express/BasketController?action=COMPLETE', {
-            method: 'POST'
-        }).then(response => {
-            if (response.ok) {
-                window.location.href = 'orders.jsp';
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-    });
+        const addressSelect = document.querySelector('.summary-delivery-selection');
+        const addressId = addressSelect.value;
 
+        if (addressId === "0") {
+            alert("Lütfen bir teslimat adresi seçin.");
+            return;
+        }
+        fetch(`http://localhost:8080/express/BasketController?action=COMPLETE&address_id=${addressId}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order completed successfully!');
+                    window.location.href = '/express/views/customerOrder.jsp';
+                } else {
+                    alert('Failed to complete the order.');
+                }
+            })
+            .catch(error => {
+                console.error('Error completing the order:', error);
+                alert('An error occurred while completing the order.');
+            });
+    });
     document.querySelector('.promo-code-cta').addEventListener('click', applyPromoCode);
 });
 
@@ -116,10 +129,10 @@ const applyPromoCode = () => {
         const subtotalElement = document.getElementById('basket-subtotal');
         const subtotal = parseFloat(subtotalElement.innerText);
         const newTotal = subtotal - discount;
-        subtotalElement.innerText = newTotal.toFixed(2) + '₺';
-        document.getElementById('basket-total').innerText = newTotal.toFixed(2) + '₺';
+        subtotalElement.innerText = newTotal.toFixed(2);
+        document.getElementById('basket-total').innerText = newTotal.toFixed(2);
         document.querySelector('.summary-promo').classList.remove('hide');
-        document.getElementById('basket-promo').innerText = discount.toFixed(2) + '₺';
+        document.getElementById('basket-promo').innerText = discount.toFixed(2);
     } else {
         alert('Geçersiz promo kodu');
     }
@@ -140,12 +153,12 @@ function populateAddressDropdown(addresses) {
 
     const defaultOption = document.createElement('option');
     defaultOption.value = "0";
-    defaultOption.textContent = "Select Address";
+    defaultOption.textContent = "Teslimat Adresi Seçin";
     addressSelect.appendChild(defaultOption);
 
     addresses.forEach(address => {
         const option = document.createElement('option');
-        option.value = address.address_id; 
+        option.value = address.address_id;
         option.textContent = `${address.address_description}, ${address.address_title}`; // Customize as needed
         addressSelect.appendChild(option);
     });

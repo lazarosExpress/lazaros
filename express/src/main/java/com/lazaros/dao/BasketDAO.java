@@ -1,12 +1,16 @@
 package com.lazaros.dao;
 
 import com.lazaros.beans.BasketBeans;
+import com.lazaros.beans.CustomerOrderProductsBeans;
+import com.lazaros.beans.OrdersBeans;
 import com.lazaros.beans.ProductBeans;
 import com.lazaros.utils.DatabaseUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,4 +158,69 @@ public class BasketDAO {
         }
         return rowDeleted;
     }
+
+    public int createOrder(OrdersBeans order) throws SQLException {
+        String sql = "INSERT INTO orders (order_date, order_state, order_totalPrize, customer_id, address_id) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setDate(1, order.getOrder_date());
+            stmt.setBoolean(2, order.isOrder_state());
+            stmt.setDouble(3, order.getOrder_totalPrize());
+            stmt.setInt(4, order.getCustomer_id());
+            stmt.setInt(5, order.getAddress_id());
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return 0;
+    }
+
+    public void addOrderProduct(CustomerOrderProductsBeans orderProduct) throws SQLException {
+        String sql = "INSERT INTO customer_order_products (order_id, product_id, product_qty) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, orderProduct.getOrder_id());
+            stmt.setInt(2, orderProduct.getProduct_id());
+            stmt.setInt(3, orderProduct.getProduct_qty());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public double getBasketTotal(int customerId) throws SQLException {
+        String sql = "SELECT SUM(p.product_prize * b.basket_qty) " +
+                "FROM basket b " +
+                "JOIN products p ON b.product_id = p.product_id " +
+                "WHERE b.customer_id = ?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return 0;
+    }
+
+    public void clearBasket(int customerId) throws SQLException {
+        String sql = "DELETE FROM basket WHERE customer_id = ?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 }

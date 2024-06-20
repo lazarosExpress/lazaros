@@ -18,11 +18,12 @@
             </figure>
         </div>
         <div class="search-container">
-            <form action="#" class="search-form">
-                <input type="search" placeholder="Ara" class="search-input" id="search-input">
-                <button type="submit" class="search-button" id="search-button">Ara</button>
-            </form>
-        </div>
+                <form action="#" class="search-form" id="search-form">
+                    <input type="search" placeholder="Ara" class="search-input" id="search-input">
+                    <button type="submit" class="search-button" id="search-button">Ara</button>
+                </form>
+                <div id="search-results" class="dropdown-search-results"></div>
+            </div>
         <div class="icons">
             <c:choose>
                 <c:when test="${not empty customer_eMail}">

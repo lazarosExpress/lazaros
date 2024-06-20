@@ -1,45 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="tr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Siparişlerim</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerOrderStyle.css">
-        <script src="${pageContext.request.contextPath}/lib/customerOrderScript.js"></script>
-
-    </head>
-    <body>
-        <div class="header-card">
-            <h1>Siparişlerim</h1>
-            <input type="text" id="search-bar" placeholder="Ürün ismi veya Marka ara">
-            <div class="filters">
-                <button class="filter-btn" onclick="filterOrders('all')">Tümü</button>
-                <button class="filter-btn" onclick="filterOrders('delivered')">Teslim Edilen</button>
-                <button class="filter-btn" onclick="filterOrders('ongoing')">Devam Eden</button>
-                <button class="filter-btn" onclick="filterOrders('returned')">İade Edilen</button>
-                <button class="filter-btn" onclick="filterOrders('cancelled')">İptal Olan</button>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siparişlerim</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerOrderStyle.css">
+    <script src="${pageContext.request.contextPath}/js/customerOrderScript.js"></script>
+</head>
+<body>
+    <div class="header-card">
+        <h1>Siparişlerim</h1>
+        <input type="text" id="search-bar" placeholder="Ürün ismi veya Marka ara">
+        <div class="filters">
+            <button class="filter-btn" onclick="filterOrders('all')">Tümü</button>
+            <button class="filter-btn" onclick="filterOrders('delivered')">Teslim Edilen</button>
+            <button class="filter-btn" onclick="filterOrders('ongoing')">Devam Eden</button>
+            <button class="filter-btn" onclick="filterOrders('returned')">İade Edilen</button>
+            <button class="filter-btn" onclick="filterOrders('cancelled')">İptal Olan</button>
         </div>
-        <div class="orders-container">
-            <div class="order-card" data-status="delivered">
-                <div class="order-summary">
-                    <p><strong>Sipariş Tarihi:</strong> 26 Mayıs 2024 - 13:18</p>
-                    <p><strong>Alıcı:</strong> Berkay Karagöz</p>
-                    <p><strong>Tutar:</strong> 936 TL</p>
-                    <button>Sipariş Detayı</button>
-                </div>
-                <div class="product-info">
-                    <p class="status">Teslim Edildi</p>
-                    <p>1 ürün 29 Mayıs tarihinde teslim edilmiştir.</p>
-                    <img
-                        src="https://cdn.discordapp.com/attachments/940199738127577140/1245743963932196987/67d63ca7de337a5112464a7f7aacb74b.jpg?ex=666c51f9&is=666b0079&hm=b2b858d705c95ad5ccde33e69a8b7e2306994f2d7d6aed697fec49ca5f4805b8&"
-                        alt="Ürün Fotoğrafı">
-                    <p class="shipping-info">Kargo Bilgisi</p>
-                </div>
-            </div>
-            <!-- Diğer sipariş kartları aynı şekilde buraya eklenecek -->
-        </div>
-    </body>
+    </div>
+    <div class="orders-container">
+        <!-- Dynamic orders will be loaded here -->
+    </div>
+</body>
 </html>

@@ -34,6 +34,7 @@ public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProductDAO productDAO;
     private CategoryDAO categoryDAO;
+    private Gson gson = new Gson();
 
     public void init() {
         productDAO = new ProductDAO();
@@ -52,6 +53,9 @@ public class ProductController extends HttpServlet {
         switch (action) {
             case "LIST":
                 listProducts(request, response);
+                break;
+            case "SEARCH":
+                searchProducts(request, response);
                 break;
             case "LIST_JSON":
                 listProductsJson(request, response);
@@ -228,6 +232,18 @@ public class ProductController extends HttpServlet {
         productDAO.deleteProduct(id);
         response.setStatus(HttpServletResponse.SC_OK);
         response.sendRedirect(request.getContextPath() + "/admin/productManagement.jsp");
+    }
+
+    private void searchProducts(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String query = request.getParameter("query");
+        List<ProductBeans> products = productDAO.searchProductsByName(query);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        String json = gson.toJson(products);
+        out.write(json);
+        out.flush();
     }
 
 }

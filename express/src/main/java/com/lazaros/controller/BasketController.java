@@ -3,6 +3,8 @@ package com.lazaros.controller;
 import com.google.gson.Gson;
 import com.lazaros.beans.BasketBeans;
 import com.lazaros.beans.CustomerBeans;
+import com.lazaros.beans.CustomerOrderProductsBeans;
+import com.lazaros.beans.OrdersBeans;
 import com.lazaros.dao.BasketDAO;
 
 import jakarta.servlet.ServletException;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Collections;
 
@@ -40,7 +43,7 @@ public class BasketController extends HttpServlet {
                 listBasket(request, response);
                 break;
             case "COMPLETE":
-                completeBasket(request, response);
+                completeOrder(request, response);
                 break;
             default:
                 listBasketAPI(request, response);
@@ -69,7 +72,7 @@ public class BasketController extends HttpServlet {
                 updateBasketQuantity(request, response);
                 break;
             case "COMPLETE":
-                completeBasket(request, response);
+                completeOrder(request, response);
                 break;
             case "INCREASE":
                 increaseQuantity(request, response);
@@ -196,15 +199,6 @@ public class BasketController extends HttpServlet {
         response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", success)));
     }
 
-    private void completeBasket(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('Satın alım sayfasına yönlendiriliyorsunuz!');");
-        out.println("window.location.href='" + request.getContextPath() + "/views/orderPage.jsp';");
-        out.println("</script>");
-    }
-
     private void increaseQuantity(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -244,4 +238,68 @@ public class BasketController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", success)));
     }
+
+    private void completeOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+    
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInCustomer") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.write(new Gson().toJson(Collections.singletonMap("success", false)));
+            return;
+        }
+    
+        int address_id;
+        try {
+            address_id = Integer.parseInt(request.getParameter("address_id"));
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres ID")));
+            return;
+        }
+    
+        if (address_id == 0) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres seçimi.")));
+            return;
+        }
+    
+        try {
+            CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
+            int customerId = loggedInCustomer.getCustomer_id();
+    
+            OrdersBeans order = new OrdersBeans();
+            order.setOrder_date(new java.sql.Date(System.currentTimeMillis()));
+            order.setOrder_state(true);
+            order.setCustomer_id(customerId);
+            order.setAddress_id(address_id);
+            order.setOrder_totalPrize(basketDAO.getBasketTotal(customerId));
+    
+            int orderId = basketDAO.createOrder(order);
+            if (orderId == 0) {
+                throw new SQLException("Failed to create order.");
+            }
+    
+            List<BasketBeans> basketItems = basketDAO.getBasketByCustomerId(customerId);
+            for (BasketBeans item : basketItems) {
+                CustomerOrderProductsBeans orderProduct = new CustomerOrderProductsBeans(orderId, item.getProduct_id(), item.getBasket_qty());
+                basketDAO.addOrderProduct(orderProduct);
+            }
+    
+            basketDAO.clearBasket(customerId);
+    
+            out.write(new Gson().toJson(Collections.singletonMap("success", true)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.write(new Gson().toJson(Collections.singletonMap("error", "Database error: " + e.getMessage())));
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.write(new Gson().toJson(Collections.singletonMap("error", "Internal Server Error: " + e.getMessage())));
+        }
+    }
+    
 }

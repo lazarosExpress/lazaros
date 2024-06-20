@@ -238,4 +238,35 @@
   .complete-order-btn:hover {
     background-color: darkorange;
   }
+
+  /* Existing styles */
+  .dropdown-search-results {
+    display: none;
+    position: absolute;
+    top: 60px;
+    width: 85%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .dropdown-search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dropdown-search-results li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .dropdown-search-results li:hover {
+    background-color: #f0f0f0;
+  }
+
 }

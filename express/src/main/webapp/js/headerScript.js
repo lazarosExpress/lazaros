@@ -2,7 +2,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const basketIcon = document.getElementById("basket-icon");
     const dropdownBasket = document.getElementById("dropdown-basket");
     const dropdownUserMenu = document.getElementById("user-menu");
+    const searchForm = document.getElementById('search-form');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
 
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const query = searchInput.value.trim();
+        if (query) {
+            performSearch(query);
+        }
+    });
+
+    const performSearch = (query) => {
+        fetch(`ProductController?action=SEARCH&query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            });
+    };
+
+    const displaySearchResults = (products) => {
+        if (products.length > 0) {
+            searchResults.innerHTML = '<ul>' + products.map(product => `
+                <li>
+                    <a href="ProductController?action=DETAILS&id=${product.product_id}">${product.product_name}</a>
+                </li>
+            `).join('') + '</ul>';
+            searchResults.style.display = 'block';
+        } else {
+            searchResults.innerHTML = '<p>Sonuç bulunamadı.</p>';
+            searchResults.style.display = 'block';
+        }
+    };
+
+    document.addEventListener("click", function (event) {
+        if (!searchResults.contains(event.target) && !searchForm.contains(event.target)) {
+            searchResults.style.display = "none";
+        }
+    });
     const toggleDropdown = (element) => {
         element.style.display = element.style.display === "block" ? "none" : "block";
     };

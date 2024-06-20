@@ -19,10 +19,12 @@
                             </ul>
                         </div>
                         <div class="part-2">
-                            <h3 class="product-name-title"><%=p.getProduct_name() %></h3>
-                            <h3 class="product-category-title"><%=p.getCategory_name()%></h3>
-                            <h4 class="product-old-price">$79.99</h4>
-                            <h4 class="product-price">$<%=p.getProduct_prize()%></h4>
+                            <div class="product-name-title"> <%=p.getProduct_name() %> </div>
+                            <div class="product-category-title"><%=p.getCategory_name()%></div>
+                            <div class="price-container">
+                                <span class="product-old-price">$79.99</span>
+                                <span class="product-price">$<%= p.getProduct_prize() %></span>
+                            </div>
                         </div>
                     </div>
                 </div>

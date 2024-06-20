@@ -233,4 +233,24 @@ public class ProductDAO {
         }
         return product;
     }
+
+    public List<ProductBeans> searchProductsByName(String query) {
+        List<ProductBeans> products = new ArrayList<>();
+        try (Connection connection = DatabaseUtil.getConnection();
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("SELECT * FROM products WHERE product_name LIKE ?")) {
+            preparedStatement.setString(1, "%" + query + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ProductBeans product = new ProductBeans();
+                product.setProduct_id(resultSet.getInt("product_id"));
+                product.setProduct_name(resultSet.getString("product_name"));
+                // Set other fields...
+                products.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
 }

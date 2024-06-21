@@ -13,6 +13,8 @@
 </head>
 
 <%@ include file="../components/header/header.jsp" %>
+<%@ include file="../components/footer/footer.jsp" %>
+
 <body class="order-page">
 
   <main>

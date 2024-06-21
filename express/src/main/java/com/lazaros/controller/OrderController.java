@@ -36,6 +36,9 @@ public class OrderController extends HttpServlet {
             case "LISTCUSTOMERORDERS":
                 listCustomerOrders(request, response);
                 break;
+            case "ORDERDETAILS":
+                getOrderDetails(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -83,5 +86,17 @@ public class OrderController extends HttpServlet {
             this.ongoing = ongoing;
             this.completed = completed;
         }
+    }
+
+    private void getOrderDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        List<OrdersBeans> orderDetails = orderDAO.getOrderDetailsById(orderId);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.write(new Gson().toJson(orderDetails));
+        out.flush();
     }
 }

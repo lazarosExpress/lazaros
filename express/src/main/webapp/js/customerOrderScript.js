@@ -7,19 +7,13 @@ const loadCustomerOrders = () => {
 
             data.forEach(order => {
                 ordersContainer.innerHTML += `
-                    <div class="order-card" data-status="${order.status}">
+                    <div class="order-card">
                         <div class="order-summary">
+                            <p class="status">${order.order_status}</p>
                             <p><strong>Sipariş Tarihi:</strong> ${order.order_date}</p>
-                            <p><strong>Alıcı:</strong> ${order.customer_name}</p>
-                            <p><strong>Tutar:</strong> ${order.total_price} TL</p>
+                            <p><strong>Alıcı:</strong> ${order.customerFirstName}</p>
+                            <p><strong>Tutar:</strong> ${(order.order_totalPrize).toFixed(2)} TL</p>
                             <button onclick="viewOrderDetails(${order.order_id})">Sipariş Detayı</button>
-                        </div>
-                        <div class="product-info">
-                            <p class="status">${order.status}</p>
-                            <p>${order.product_qty} ürün ${order.delivery_date} tarihinde teslim edilmiştir.</p>
-                            <img src="${order.product_imgUrl}" alt="Ürün Fotoğrafı">
-                            <p class="shipping-info">Kargo Bilgisi</p>
-                            </div>
                         </div>
                     `;
             });
@@ -28,9 +22,10 @@ const loadCustomerOrders = () => {
 };
 
 const viewOrderDetails = (orderId) => {
-    // Implement the logic to view order details
-    // You might want to open a modal or redirect to a detailed order page
+    window.location.href = `orderDetail.jsp?orderId=${orderId}`;
 };
+
+
 
 document.addEventListener('DOMContentLoaded', loadCustomerOrders);
 
@@ -44,17 +39,3 @@ const filterOrders = (status) => {
         }
     });
 };
-
-document.getElementById('search-bar').addEventListener('input', function () {
-    const searchText = this.value.toLowerCase();
-    const orders = document.querySelectorAll('.order-card');
-    orders.forEach(order => {
-        const productName = order.querySelector('.product-info p').textContent.toLowerCase();
-        if (productName.includes(searchText)) {
-            order.style.display = '';
-        } else {
-            order.style.display = 'none';
-        }
-    });
-});
-

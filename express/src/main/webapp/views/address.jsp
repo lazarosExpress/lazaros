@@ -11,7 +11,10 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+<%@ include file="../components/header/header.jsp" %>
+<%@ include file="../components/footer/footer.jsp" %>
 <body>
+<div  class="address-style-css">
     <div class="container">
         <div class="address-header-card">
             <h1>Adres Bilgilerim</h1>
@@ -77,7 +80,7 @@
             </form>
         </div>
     </div>
-
+</div>
     <script src="${pageContext.request.contextPath}/js/addressScript.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="../attributes/headerAttributes.jsp"%>
+<%@ include file="../components/footer/footer.jsp" %>
 
 <div class="basket">
     <h2>Sepetiniz</h2>

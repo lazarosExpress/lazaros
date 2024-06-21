@@ -20,8 +20,8 @@ const loadOrders = () => {
             data.completed.forEach(order => {
                 completedOrdersTable.innerHTML += `
                     <tr>
-                        <td>${order.product_name}</td>
-                        <td>${order.customer_name}</td>
+                        <td>${order.productName}</td>
+                        <td>${order.customerFirstName}</td>
                     </tr>
                 `;
             });

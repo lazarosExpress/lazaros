@@ -8,8 +8,10 @@
     <title>Kullanıcı Bilgilerim</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerInformationStyle.css" />
   </head>
+  <%@ include file="../components/header/header.jsp" %>
+  <%@ include file="../components/footer/footer.jsp" %>
   <body>
-    <div class="container">
+    <div class="container customer-inf-style-css">
       <h1>Kullanıcı Bilgilerim</h1>
       <div class="card-container">
         <div class="card user-info">

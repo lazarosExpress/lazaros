@@ -13,7 +13,7 @@
                             <img src="<%= request.getContextPath() %>/productImg/<%= p.getProduct_imgUrl() %>" alt="<%= p.getProduct_name() %>">
                             <ul>
                                 <li><a href="javascript:void(0);" onclick="addToCart(<%=p.getProduct_id()%>);" class="cart-btn"><i class="fas fa-shopping-cart"></i></a></li>
-                                <li><a href="javascript:void(1);" onclick="getSupplierProductList(<%=p.getSupplier_id()%>)"><i class="fas fa-heart"></i></a></li>
+                                <li><a href="javascript:void(1);" onclick="getSupplierProductList(<%=p.getSupplier_id()%>)"><i class="fa-solid fa-shop"></i></a></li>
                                 <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                 <li><a href="<%= request.getContextPath() %>/ProductController?action=DETAILS&id=<%=p.getProduct_id()%>"><i class="fas fa-expand"></i></a></li>
                             </ul>

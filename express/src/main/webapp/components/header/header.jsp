@@ -44,7 +44,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <a href="views/login/login.jsp" class="icon-link">
+                    <a href="${pageContext.request.contextPath}/views/login/login.jsp" class="icon-link">
                         <i class="fas fa-user"></i>
                         <span>Giriş Yap</span>
                     </a>

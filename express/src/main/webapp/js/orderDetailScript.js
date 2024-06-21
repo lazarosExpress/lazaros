@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <p><strong>Ürün Fiyatı:</strong> ${item.productPrice.toFixed(2)} TL</p>
                                     <p><strong>Ürünün Toplam Fiyatı:</strong> ${(item.productQty * item.productPrice).toFixed(2)} TL</p>
                                     <p><strong>Satıcı:</strong> ${item.sellerName}</p>
-                                </div>
+                                    </div>
                             </div>
                         `).join('')}
                         <div class="total-amount">

@@ -19,10 +19,10 @@ if (product == null) {
     <div class="product-image">
         <img id="mainImage" src="<%= request.getContextPath() %>/productImg/<%= product.getProduct_imgUrl() %>" alt="<%= product.getProduct_name() %>">
     </div>
-    <div class="product-details">
+    <div class="product-details" >
         <h1 class="product-title"><%= product.getProduct_name() %></h1>
         <p class="product-category">Kategori: <span class="category-name"><%= product.getCategory_name() %></span></p>
-        <p class="product-category">Satıcı: <a><span class="shop-name"><%= product.getSupplier_shopName() %></span></a></p>
+        <p class="product-category">Satıcı: <a href="javascript:void(0)" onclick="getSupplierProductList(<%=product.getSupplier_id()%>)"><span class="shop-name"><%= product.getSupplier_shopName() %></span></a></p>
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Description')" id="defaultOpen">Ürün Açıklaması</button>
             <button class="tablinks" onclick="openTab(event, 'Specifications')">Ürün Özellikleri</button>
@@ -80,5 +80,9 @@ if (product == null) {
                 messageBox.style.display = 'none';
             }, 3000);
         });
+    }
+
+    function getSupplierProductList(supplierId) {
+        window.location.href = '<%= request.getContextPath() %>/views/suppliersProductPage.jsp?supplierId=' + supplierId;
     }
 </script>

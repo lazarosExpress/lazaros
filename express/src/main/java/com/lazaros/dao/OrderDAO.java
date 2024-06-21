@@ -80,7 +80,7 @@ public class OrderDAO {
                 "JOIN customer_order_products op ON o.order_id = op.order_id " +
                 "JOIN products p ON op.product_id = p.product_id " +
                 "JOIN supplier s ON p.supplier_id = s.supplier_id " +
-                "JOIN customer c ON c.customer_id = s.customer_id " +
+                "JOIN customer c ON c.customer_id = o.customer_id " +
                 "WHERE o.order_id = ?";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, orderId);

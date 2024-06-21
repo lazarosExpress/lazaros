@@ -66,6 +66,9 @@ public class ProductController extends HttpServlet {
             case "DETAILS":
                 getProductDetails(request, response);
                 break;
+            case "UPDATEDETAILS":
+                getProductDetailsJson(request, response);
+                break;
             case "DELETE":
                 deleteProduct(request, response);
                 break;
@@ -102,6 +105,32 @@ public class ProductController extends HttpServlet {
         out.flush();
     }
 
+    private void getProductDetailsJson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int productId;
+        try {
+            productId = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Invalid product ID format");
+            return;
+        }
+
+        ProductBeans product = productDAO.getProductByIdWithDetail(productId);
+        if (product == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Product not found");
+            return;
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        String json = new Gson().toJson(product);
+        out.write(json);
+        out.flush();
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,6 +146,13 @@ public class ProductController extends HttpServlet {
                 break;
             case "DELETE":
                 deleteProduct(request, response);
+                break;
+            case "UPDATE":
+                try {
+                    updateProduct(request, response);
+                } catch (Exception e) {
+                    throw new ServletException(e);
+                }
                 break;
             default:
                 listProducts(request, response);
@@ -244,6 +280,41 @@ public class ProductController extends HttpServlet {
         String json = gson.toJson(products);
         out.write(json);
         out.flush();
+    }
+
+    private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int productId = Integer.parseInt(request.getParameter("id"));
+        String productName = request.getParameter("product_name");
+        double productPrize = Double.parseDouble(request.getParameter("product_prize"));
+        int productStock = Integer.parseInt(request.getParameter("product_stock"));
+        String brandName = request.getParameter("brand_name");
+        String productExplanation = request.getParameter("product_explanation");
+        String productProperties = request.getParameter("product_properties");
+        int categoryId = Integer.parseInt(request.getParameter("category_id"));
+        Part filePart = request.getPart("product_imgUrl");
+        String fileName = getFileName(filePart);
+
+        ProductBeans product = productDAO.getUpdateProductById(productId);
+        product.setProduct_name(productName);
+        product.setProduct_prize(productPrize);
+        product.setProduct_stock(productStock);
+        product.setBrand_name(brandName);
+        product.setProduct_explanation(productExplanation);
+        product.setProduct_properties(productProperties);
+        product.setCategory_id(categoryId);
+
+        if (filePart != null && filePart.getSize() > 0) {
+            String uploadPath = System.getProperty("user.home") + "/Desktop/lazaros/express/src/main/webapp/productImg";
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            filePart.write(uploadPath + File.separator + fileName);
+            product.setProduct_imgUrl(fileName);
+        }
+
+        productDAO.updateProduct(product);
+        response.sendRedirect(request.getContextPath() + "/admin/productManagement.jsp");
     }
 
 }

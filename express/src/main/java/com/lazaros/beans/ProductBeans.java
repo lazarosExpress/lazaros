@@ -39,8 +39,8 @@ public class ProductBeans {
     }
 
     public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
-                        int product_stock, String product_explanation, String product_properties,
-                        String supplier_shopName, int category_id) {
+            int product_stock, String product_explanation, String product_properties,
+            String supplier_shopName, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_prize = product_prize;
@@ -53,8 +53,8 @@ public class ProductBeans {
     }
 
     public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
-                        int product_stock, String product_explanation, String product_properties, String brand_name,
-                        int supplier_id, int category_id) {
+            int product_stock, String product_explanation, String product_properties, String brand_name,
+            int supplier_id, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_prize = product_prize;
@@ -68,7 +68,7 @@ public class ProductBeans {
     }
 
     public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
-                        int product_stock, String product_explanation, String product_properties) {
+            int product_stock, String product_explanation, String product_properties) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_prize = product_prize;
@@ -83,7 +83,7 @@ public class ProductBeans {
     }
 
     public ProductBeans(int productId, String productName, double productPrize, String productImgUrl, int productStock,
-                        String productExplanation, String productProperties, int supplierId, int categoryId) {
+            String productExplanation, String productProperties, int supplier_id, int categoryId) {
         this.product_id = productId;
         this.product_name = productName;
         this.product_prize = productPrize;
@@ -91,7 +91,7 @@ public class ProductBeans {
         this.product_stock = productStock;
         this.product_explanation = productExplanation;
         this.product_properties = productProperties;
-        this.supplier_id = supplierId;
+        this.supplier_id = supplier_id;
         this.category_id = categoryId;
     }
 

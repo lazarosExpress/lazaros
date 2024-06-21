@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const performSearch = (query) => {
-        fetch(`ProductController?action=SEARCH&query=${encodeURIComponent(query)}`)
+        fetch(`http://localhost:8080/express/ProductController?action=SEARCH&query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 displaySearchResults(data);
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (products.length > 0) {
             searchResults.innerHTML = '<ul>' + products.map(product => `
                 <li>
-                    <a href="ProductController?action=DETAILS&id=${product.product_id}">${product.product_name}</a>
+                    <a href="http://localhost:8080/express/ProductController?action=DETAILS&id=${product.product_id}">${product.product_name}</a>
                 </li>
             `).join('') + '</ul>';
             searchResults.style.display = 'block';
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const loadBasket = () => {
-        fetch('BasketController?action=LISTBASKET')
+        fetch('http://localhost:8080/express/BasketController?action=LISTBASKET')
             .then(response => response.json())
             .then(data => {
                 console.log('Basket Data:', data);
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         increaseQtyButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
-                fetch(`BasketController?action=INCREASE&id=${productId}`, {
+                fetch(`http://localhost:8080/express/BasketController?action=INCREASE&id=${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         decreaseQtyButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
-                fetch(`BasketController?action=DECREASE&id=${productId}`, {
+                fetch(`http://localhost:8080/express/BasketController?action=DECREASE&id=${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const basketId = this.getAttribute('data-id');
-                fetch(`BasketController?action=DELETE&id=${basketId}`, {
+                fetch(`http://localhost:8080/express/BasketController?action=DELETE&id=${basketId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 }).then(response => response.json())
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const addToBasket = (productId) => {
-        fetch(`BasketController?action=ADD&id=${productId}`, {
+        fetch(`http://localhost:8080/express/BasketController?action=ADD&id=${productId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         }).then(response => response.json())
@@ -184,6 +184,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('logout-button').addEventListener('click', function () {
-        window.location.href = "CustomerController?action=LOGOUT";
+        window.location.href = "http://localhost:8080/express/CustomerController?action=LOGOUT";
     });
 });

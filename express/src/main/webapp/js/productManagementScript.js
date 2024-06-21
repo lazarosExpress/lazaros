@@ -20,7 +20,7 @@ function fetchProducts() {
                     <td>${product.product_properties}</td>
                     <td><img src="${window.location.origin}${window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2))}/productImg/${product.product_imgUrl}" alt="Product Image" width="50"></td>
                     <td>
-                        <a href="/express/ProductController?action=EDIT&id=${product.product_id}">Düzenle</a>
+                        <button onclick="viewProductDetails(${product.product_id})">Düzenle</button>
                         <button onclick="deleteProduct(${product.product_id})">Sil</button>
                     </td>
                 `;
@@ -29,7 +29,9 @@ function fetchProducts() {
         })
         .catch(error => console.error("Error fetching products:", error));
 }
-
+const viewProductDetails = (productId) => {
+    window.location.href = `updateProductManagement.jsp?productId=${productId}`;
+};
 function deleteProduct(productId) {
     if (confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
         fetch(`/express/ProductController?action=DELETE&id=${productId}`, {

@@ -19,7 +19,7 @@ function loadProductDetails(productId) {
         .then(product => {
             document.getElementById('product_id').value = product.product_id;
             document.getElementById('product_name').value = product.product_name;
-            document.getElementById('product_prize').value = product.product_prize;
+            document.getElementById('product_price').value = product.product_price;
             document.getElementById('product_stock').value = product.product_stock;
             document.getElementById('brand_name').value = product.brand_name;
             document.getElementById('product_explanation').value = product.product_explanation;

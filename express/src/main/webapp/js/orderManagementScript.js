@@ -1,29 +1,29 @@
 const loadOrders = () => {
-    fetch('http://localhost:8080/express/OrderController?action=LISTORDERS')
-        .then(response => response.json())
+    fetch('http://localhost:8080/express/OrderController?action=LISTSUPPLIERORDERS')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             const ongoingOrdersTable = document.getElementById('ongoingOrdersTable').querySelector('tbody');
             const completedOrdersTable = document.getElementById('completedOrdersTable').querySelector('tbody');
             ongoingOrdersTable.innerHTML = '';
             completedOrdersTable.innerHTML = '';
 
-            data.ongoing.forEach(order => {
-                ongoingOrdersTable.innerHTML += `
+            data.forEach(order => {
+                const orderRow = `
                     <tr>
-                        <td>${order.product_name}</td>
-                        <td>${order.customer_name}</td>
-                        <td>${order.status}</td>
+                        <td>${order.order_totalPrice.toFixed(2)}</td>
+                        <td>${order.address_customerFirstName} ${order.address_customerLastName}</td>
                     </tr>
                 `;
-            });
-
-            data.completed.forEach(order => {
-                completedOrdersTable.innerHTML += `
-                    <tr>
-                        <td>${order.productName}</td>
-                        <td>${order.customerFirstName}</td>
-                    </tr>
-                `;
+                if (order.order_state) {
+                    completedOrdersTable.innerHTML += orderRow;
+                } else {
+                    ongoingOrdersTable.innerHTML += orderRow;
+                }
             });
         })
         .catch(error => console.error('Error loading orders:', error));

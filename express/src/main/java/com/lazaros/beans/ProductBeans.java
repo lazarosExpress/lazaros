@@ -3,7 +3,7 @@ package com.lazaros.beans;
 public class ProductBeans {
     private int product_id;
     private String product_name;
-    private double product_prize;
+    private double product_price;
     private String product_imgUrl;
     private int product_stock;
     private String product_explanation;
@@ -47,12 +47,12 @@ public class ProductBeans {
         this.brand_name = brand_name;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties,
             String supplier_shopName, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
-        this.product_prize = product_prize;
+        this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
         this.product_explanation = product_explanation;
@@ -61,12 +61,12 @@ public class ProductBeans {
         this.category_id = category_id;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties, String brand_name,
             int supplier_id, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
-        this.product_prize = product_prize;
+        this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
         this.product_explanation = product_explanation;
@@ -76,11 +76,11 @@ public class ProductBeans {
         this.category_id = category_id;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_prize, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties) {
         this.product_id = product_id;
         this.product_name = product_name;
-        this.product_prize = product_prize;
+        this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
         this.product_explanation = product_explanation;
@@ -91,11 +91,11 @@ public class ProductBeans {
         // TODO Auto-generated constructor stub
     }
 
-    public ProductBeans(int productId, String productName, double productPrize, String productImgUrl, int productStock,
+    public ProductBeans(int productId, String productName, double productPrice, String productImgUrl, int productStock,
             String productExplanation, String productProperties, int supplier_id, int categoryId) {
         this.product_id = productId;
         this.product_name = productName;
-        this.product_prize = productPrize;
+        this.product_price = productPrice;
         this.product_imgUrl = productImgUrl;
         this.product_stock = productStock;
         this.product_explanation = productExplanation;
@@ -120,12 +120,12 @@ public class ProductBeans {
         this.product_name = product_name;
     }
 
-    public double getProduct_prize() {
-        return product_prize;
+    public double getProduct_price() {
+        return product_price;
     }
 
-    public void setProduct_prize(double product_prize) {
-        this.product_prize = product_prize;
+    public void setProduct_price(double product_price) {
+        this.product_price = product_price;
     }
 
     public String getProduct_imgUrl() {

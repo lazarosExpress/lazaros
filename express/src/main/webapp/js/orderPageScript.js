@@ -47,7 +47,7 @@ const loadBasket = () => {
                 let totalPrice = 0;
                 data.forEach(item => {
                     const product = item.product;
-                    const subtotal = product.product_prize * item.basket_qty;
+                    const subtotal = product.product_price * item.basket_qty;
                     totalPrice += subtotal;
                     basketHtml += `
                         <div class="basket-product">
@@ -60,7 +60,7 @@ const loadBasket = () => {
                                     <p>Mağaza: <a>${product.supplier_shopName}</a></p>
                                 </div>
                             </div>
-                            <div class="price">${product.product_prize.toFixed(2)}</div>
+                            <div class="price">${product.product_price.toFixed(2)}</div>
                             <div class="quantity">
                                 <input type="number" value="${item.basket_qty}" min="1" class="quantity-field" data-product-id="${product.product_id}">
                             </div>

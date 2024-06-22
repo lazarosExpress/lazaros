@@ -12,7 +12,7 @@ const loadCustomerOrders = () => {
                             <p class="status">${order.order_status}</p>
                             <p><strong>Sipariş Tarihi:</strong> ${order.order_date}</p>
                             <p><strong>Alıcı:</strong> ${order.customerFirstName} ${order.customerLastName}</p>
-                            <p><strong>Tutar:</strong> ${(order.order_totalPrize).toFixed(2)} TL</p>
+                            <p><strong>Tutar:</strong> ${(order.order_totalPrice).toFixed(2)} TL</p>
                             <button onclick="viewOrderDetails(${order.order_id})">Sipariş Detayı</button>
                         </div>
                     `;

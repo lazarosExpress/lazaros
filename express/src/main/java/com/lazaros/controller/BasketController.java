@@ -291,7 +291,7 @@ public class BasketController extends HttpServlet {
             order.setOrder_state(true);
             order.setCustomer_id(customerId);
             order.setAddress_id(address_id);
-            order.setOrder_totalPrize(basketDAO.getBasketTotal(customerId));
+            order.setOrder_totalPrice(basketDAO.getBasketTotal(customerId));
 
             int orderId = basketDAO.createOrder(order);
             if (orderId == 0) {

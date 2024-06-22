@@ -75,14 +75,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     let totalPrice = 0;
                     data.forEach(item => {
                         const product = item.product;
-                        totalPrice += product.product_prize * item.basket_qty;
+                        totalPrice += product.product_price * item.basket_qty;
                         dropdownBasket.innerHTML += `
                             <div class="basket-item">
                                 <img src="http://localhost:8080/express/productImg/${product.product_imgUrl}" alt="${product.product_name}">
                                 <div class="basket-item-info">
                                     <h3>${product.product_name}</h3>
                                     <p>Adet: <span class="item-qty">${item.basket_qty}</span></p>
-                                    <p class="price">${product.product_prize} TL</p>
+                                    <p class="price">${product.product_price}₺</p>
                                     <button class="qty-btn decrease-qty" data-id="${item.product_id}">-</button>
                                     <button class="qty-btn increase-qty" data-id="${item.product_id}">+</button>
                                 </div>
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     dropdownBasket.innerHTML += `
                         <div class="basket-footer">
-                            <p class="total-price" >Toplam Fiyat: ${totalPrice.toFixed(2)} TL</p>
+                            <p class="total-price" >Toplam Fiyat: ${totalPrice.toFixed(2)} ₺</p>
                             <a class="complete-order-btn">Siparişi Tamamla</a>
                         </div>
                     `;

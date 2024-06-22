@@ -6,7 +6,7 @@ public class OrdersBeans {
     private int order_id;
     private Date order_date;
     private boolean order_state;
-    private double order_totalPrize;
+    private double order_totalPrice;
     private int customer_id;
     private int address_id;
     private String customerFirstName;
@@ -18,25 +18,35 @@ public class OrdersBeans {
     private String sellerName;
     private int sellerId;
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrize, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice,
+            String customerFirstName, String customerLastName) {
+        this.order_id = order_id;
+        this.order_date = order_date;
+        this.order_state = order_state;
+        this.order_totalPrice = order_totalPrice;
+        this.customerFirstName = customerFirstName;
+        this.customerLastName = customerLastName;
+    }
+
+    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
             int address_id, String customerFirstName, String customerLastName) {
         this.order_id = order_id;
         this.order_date = order_date;
         this.order_state = order_state;
-        this.order_totalPrize = order_totalPrize;
+        this.order_totalPrice = order_totalPrice;
         this.customer_id = customer_id;
         this.address_id = address_id;
         this.customerFirstName = customerFirstName;
         this.customerLastName = customerLastName;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrize, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
             int address_id, String productName, String productImgUrl, double productPrice, int productQty,
             String sellerName, int sellerId, String customerFirstName) {
         this.order_id = order_id;
         this.order_date = order_date;
         this.order_state = order_state;
-        this.order_totalPrize = order_totalPrize;
+        this.order_totalPrice = order_totalPrice;
         this.customer_id = customer_id;
         this.address_id = address_id;
         this.productName = productName;
@@ -72,12 +82,12 @@ public class OrdersBeans {
         this.sellerId = sellerId;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrize, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
             int address_id) {
         this.order_id = order_id;
         this.order_date = order_date;
         this.order_state = order_state;
-        this.order_totalPrize = order_totalPrize;
+        this.order_totalPrice = order_totalPrice;
         this.customer_id = customer_id;
         this.address_id = address_id;
     }
@@ -126,14 +136,14 @@ public class OrdersBeans {
         this.order_id = order_id;
         this.order_date = order_date;
         this.order_state = order_state;
-        this.order_totalPrize = order_totalPrize;
+        this.order_totalPrice = order_totalPrice;
         this.customer_id = customer_id;
         this.address_id = address_id;
     }
 
     public OrdersBeans(int order_id, Date order_date, boolean order_state, int customer_id, int address_id,
-            double order_totalPrize) {
-        this(order_id, order_date, order_state, order_totalPrize, customer_id, address_id);
+            double order_totalPrice) {
+        this(order_id, order_date, order_state, order_totalPrice, customer_id, address_id);
     }
 
     public int getAddress_id() {
@@ -168,12 +178,12 @@ public class OrdersBeans {
         this.order_state = order_state;
     }
 
-    public double getOrder_totalPrize() {
-        return order_totalPrize;
+    public double getOrder_totalPrice() {
+        return order_totalPrice;
     }
 
-    public void setOrder_totalPrize(double order_totalPrize) {
-        this.order_totalPrize = order_totalPrize;
+    public void setOrder_totalPrice(double order_totalPrice) {
+        this.order_totalPrice = order_totalPrice;
     }
 
     public int getCustomer_id() {

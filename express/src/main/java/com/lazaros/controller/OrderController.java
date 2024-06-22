@@ -2,7 +2,7 @@ package com.lazaros.controller;
 
 import com.google.gson.Gson;
 import com.lazaros.beans.OrdersBeans;
-import com.lazaros.beans.CustomerBeans;
+import com.lazaros.beans.SupplierBeans;
 import com.lazaros.dao.OrderDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,12 +29,16 @@ public class OrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("get " + action);
         switch (action) {
             case "LISTORDERS":
                 listOrders(request, response);
                 break;
             case "LISTCUSTOMERORDERS":
                 listCustomerOrders(request, response);
+                break;
+            case "LISTSUPPLIERORDERS":
+                getOrdersBySupplierId(request, response);
                 break;
             case "ORDERDETAILS":
                 getOrderDetails(request, response);
@@ -59,22 +63,49 @@ public class OrderController extends HttpServlet {
 
     private void listCustomerOrders(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loggedInCustomer") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
+        if (session == null || session.getAttribute("loggedInSupplier") == null) {
+            response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
             return;
         }
 
-        CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
-        int customerId = loggedInCustomer.getCustomer_id();
+        SupplierBeans loggedInSupplier = (SupplierBeans) session.getAttribute("loggedInSupplier");
+        int supplierId = loggedInSupplier.getSupplier_id();
 
-        List<OrdersBeans> customerOrders = orderDAO.getOrdersByCustomerId(customerId);
+        List<OrdersBeans> customerOrders = orderDAO.getOrdersByCustomerId(supplierId);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         PrintWriter out = response.getWriter();
         out.write(new Gson().toJson(customerOrders));
+        out.flush();
+    }
+
+    private void getOrdersBySupplierId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInSupplier") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
+            return;
+        }
+
+        SupplierBeans loggedInSupplier = (SupplierBeans) session.getAttribute("loggedInSupplier");
+        if (loggedInSupplier == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(new Gson().toJson(Collections.singletonMap("success", false)));
+            return;
+        }
+
+        int supplierId = loggedInSupplier.getSupplier_id();
+        System.out.println("supplierID: " + supplierId);
+
+        List<OrdersBeans> supplierOrders = orderDAO.getOrdersBySupplierId(supplierId);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.write(new Gson().toJson(supplierOrders));
         out.flush();
     }
 

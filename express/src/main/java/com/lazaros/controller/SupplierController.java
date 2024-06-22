@@ -185,11 +185,17 @@ public class SupplierController extends HttpServlet {
             boolean rememberMe = request.getParameter("rememberMe") != null;
             request.getSession().setAttribute("supplier_eMail", eMail);
 
+            // Satıcı ID'sini çerezlere eklemek
             if (rememberMe) {
-                Cookie cookie = new Cookie("supplier_eMail", eMail);
-                cookie.setPath("/");
-                cookie.setMaxAge(7 * 24 * 60 * 60);
-                response.addCookie(cookie);
+                Cookie emailCookie = new Cookie("supplier_eMail", eMail);
+                emailCookie.setPath("/");
+                emailCookie.setMaxAge(7 * 24 * 60 * 60);
+                response.addCookie(emailCookie);
+
+                Cookie idCookie = new Cookie("supplier_id", String.valueOf(supplier.getSupplier_id()));
+                idCookie.setPath("/");
+                idCookie.setMaxAge(7 * 24 * 60 * 60);
+                response.addCookie(idCookie);
             }
 
         } else {
@@ -203,14 +209,15 @@ public class SupplierController extends HttpServlet {
     }
 
     private void logoutSupplier(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.invalidate();
+        throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    session.invalidate();
 
-        String cookieName = "supplier_eMail";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
+    String[] cookieNames = {"supplier_eMail", "supplier_id"};
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            for (String cookieName : cookieNames) {
                 if (cookie.getName().equals(cookieName)) {
                     cookie.setValue(null);
                     cookie.setMaxAge(0);
@@ -218,7 +225,9 @@ public class SupplierController extends HttpServlet {
                 }
             }
         }
-
-        response.sendRedirect(request.getContextPath());
     }
+
+    response.sendRedirect(request.getContextPath());
+}
+
 }

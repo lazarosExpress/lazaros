@@ -17,7 +17,7 @@ import java.util.List;
 public class BasketDAO {
     public List<BasketBeans> getBasketByCustomerId(int customerId) {
         List<BasketBeans> basketList = new ArrayList<>();
-        String query = "SELECT b.basket_id, b.basket_qty, b.customer_id, b.product_id, p.product_name, p.product_prize, p.product_imgUrl, s.supplier_shopName "
+        String query = "SELECT b.basket_id, b.basket_qty, b.customer_id, b.product_id, p.product_name, p.product_price, p.product_imgUrl, s.supplier_shopName "
                 +
                 "FROM basket b " +
                 "JOIN products p ON b.product_id = p.product_id " +
@@ -31,7 +31,7 @@ public class BasketDAO {
                 ProductBeans product = new ProductBeans();
                 product.setProduct_id(rs.getInt("product_id"));
                 product.setProduct_name(rs.getString("product_name"));
-                product.setProduct_prize(rs.getDouble("product_prize"));
+                product.setProduct_price(rs.getDouble("product_price"));
                 product.setProduct_imgUrl(rs.getString("product_imgUrl"));
                 product.setSupplier_shopName(rs.getString("supplier_shopName"));
 
@@ -160,12 +160,12 @@ public class BasketDAO {
     }
 
     public int createOrder(OrdersBeans order) throws SQLException {
-        String sql = "INSERT INTO orders (order_date, order_state, order_totalPrize, customer_id, address_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (order_date, order_state, order_totalPrice, customer_id, address_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setDate(1, order.getOrder_date());
             stmt.setBoolean(2, order.isOrder_state());
-            stmt.setDouble(3, order.getOrder_totalPrize());
+            stmt.setDouble(3, order.getOrder_totalPrice());
             stmt.setInt(4, order.getCustomer_id());
             stmt.setInt(5, order.getAddress_id());
             stmt.executeUpdate();
@@ -195,7 +195,7 @@ public class BasketDAO {
     }
 
     public double getBasketTotal(int customerId) throws SQLException {
-        String sql = "SELECT SUM(p.product_prize * b.basket_qty) " +
+        String sql = "SELECT SUM(p.product_price * b.basket_qty) " +
                 "FROM basket b " +
                 "JOIN products p ON b.product_id = p.product_id " +
                 "WHERE b.customer_id = ?";

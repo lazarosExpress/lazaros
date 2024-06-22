@@ -18,7 +18,7 @@ public class OrderDAO {
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
                         rs.getBoolean("order_state"),
-                        rs.getDouble("order_totalPrize"),
+                        rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"));
                 orders.add(order);
@@ -39,7 +39,7 @@ public class OrderDAO {
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
                         rs.getBoolean("order_state"),
-                        rs.getDouble("order_totalPrize"),
+                        rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"));
                 orders.add(order);
@@ -52,7 +52,7 @@ public class OrderDAO {
 
     public List<OrdersBeans> getOrdersByCustomerId(int customerId) {
         List<OrdersBeans> orders = new ArrayList<>();
-        String sql = "SELECT o.*, a.address_customerFirstNAme, a.address_customerLastName " +
+        String sql = "SELECT o.*, a.address_customerFirstName, a.address_customerLastName " +
                 "FROM orders o " +
                 "JOIN address a ON o.address_id = a.address_id " +
                 "WHERE o.customer_id = ?";
@@ -64,10 +64,41 @@ public class OrderDAO {
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
                         rs.getBoolean("order_state"),
-                        rs.getDouble("order_totalPrize"),
+                        rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
-                        rs.getString("address_customerFirstNAme"),
+                        rs.getString("address_customerFirstName"),
+                        rs.getString("address_customerLastName"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    public List<OrdersBeans> getOrdersBySupplierId(int supplierId) {
+        List<OrdersBeans> orders = new ArrayList<>();
+        String sql = "SELECT o.order_id, o.order_date, o.order_state, " +
+                "SUM(p.product_price * cop.product_qty) AS order_totalPrice, " +
+                "a.address_customerFirstName, a.address_customerLastName " +
+                "FROM orders o " +
+                "JOIN address a ON o.address_id = a.address_id " +
+                "JOIN customer_order_products cop ON o.order_id = cop.order_id " +
+                "JOIN products p ON cop.product_id = p.product_id " +
+                "WHERE p.supplier_id = ? " +
+                "GROUP BY o.order_id, o.order_date, o.order_state, " +
+                "a.address_customerFirstName, a.address_customerLastName";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, supplierId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                OrdersBeans order = new OrdersBeans(
+                        rs.getInt("order_id"),
+                        rs.getDate("order_date"),
+                        rs.getBoolean("order_state"),
+                        rs.getDouble("order_totalPrice"),
+                        rs.getString("address_customerFirstName"),
                         rs.getString("address_customerLastName"));
                 orders.add(order);
             }
@@ -95,7 +126,7 @@ public class OrderDAO {
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
                         rs.getBoolean("order_state"),
-                        rs.getDouble("order_totalPrize"),
+                        rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
                         rs.getString("product_name"),

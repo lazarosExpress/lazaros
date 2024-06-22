@@ -15,7 +15,7 @@
                     <div class="basket-item-info">
                         <h3>${product.product_name}</h3>
                         <p>Adet: <span class="item-qty">${item.basket_qty}</span></p>
-                        <p class="price">${product.product_prize} TL</p>
+                        <p class="price">${product.product_price} TL</p>
                         <button class="qty-btn decrease-qty" data-id="${item.product_id}">-</button>
                         <button class="qty-btn increase-qty" data-id="${item.product_id}">+</button>
                     </div>

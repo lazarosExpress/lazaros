@@ -36,8 +36,8 @@ if (product == null) {
             </ul>
         </div>
         <p class="product-price">
-            Ürünün Fiyatı: <span class="original-price"><%= product.getProduct_prize() %>₺</span>
-            Ürünün Fiyatı: <span class="price"><%= product.getProduct_prize() %>₺</span>
+            Ürünün Fiyatı: <span class="original-price"><%= product.getProduct_price() %>₺</span>
+            Ürünün Fiyatı: <span class="price"><%= product.getProduct_price() %>₺</span>
         </p>
         <a href="javascript:void(0);" onclick="addToCart(<%= product.getProduct_id() %>);" class="store-link">Add to Cart</a>
     </div>

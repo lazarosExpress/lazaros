@@ -41,6 +41,7 @@
                             <tr>
                                 <th>Ürün</th>
                                 <th>Müşteri</th>
+                                <th>Detay</th>
                             </tr>
                         </thead>
                         <tbody>

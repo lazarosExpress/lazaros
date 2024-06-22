@@ -218,7 +218,7 @@ public class ProductController extends HttpServlet {
         int supplierId = loggedInSupplier.getSupplier_id();
 
         String productName = request.getParameter("product_name");
-        double productPrize = Double.parseDouble(request.getParameter("product_prize"));
+        double productPrice = Double.parseDouble(request.getParameter("product_price"));
         int productStock = Integer.parseInt(request.getParameter("product_stock"));
         String brandName = request.getParameter("brand_name");
         String productExplanation = request.getParameter("product_explanation");
@@ -237,7 +237,7 @@ public class ProductController extends HttpServlet {
 
         ProductBeans product = new ProductBeans();
         product.setProduct_name(productName);
-        product.setProduct_prize(productPrize);
+        product.setProduct_price(productPrice);
         product.setProduct_stock(productStock);
         product.setBrand_name(brandName);
         product.setProduct_explanation(productExplanation);
@@ -285,7 +285,7 @@ public class ProductController extends HttpServlet {
     private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int productId = Integer.parseInt(request.getParameter("id"));
         String productName = request.getParameter("product_name");
-        double productPrize = Double.parseDouble(request.getParameter("product_prize"));
+        double productPrice = Double.parseDouble(request.getParameter("product_price"));
         int productStock = Integer.parseInt(request.getParameter("product_stock"));
         String brandName = request.getParameter("brand_name");
         String productExplanation = request.getParameter("product_explanation");
@@ -296,7 +296,7 @@ public class ProductController extends HttpServlet {
 
         ProductBeans product = productDAO.getUpdateProductById(productId);
         product.setProduct_name(productName);
-        product.setProduct_prize(productPrize);
+        product.setProduct_price(productPrice);
         product.setProduct_stock(productStock);
         product.setBrand_name(brandName);
         product.setProduct_explanation(productExplanation);

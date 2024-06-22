@@ -25,8 +25,8 @@
                     <input name="product_name" type="text" id="product_name" required />
                 </div>
                 <div class="form-group">
-                    <label for="product_prize">Fiyat:</label>
-                    <input name="product_prize" type="number" id="product_prize" step="0.01" required />
+                    <label for="product_price">Fiyat:</label>
+                    <input name="product_price" type="number" id="product_price" step="0.01" required />
                 </div>
                 <div class="form-group">
                     <label for="product_stock">Stok Miktarı:</label>

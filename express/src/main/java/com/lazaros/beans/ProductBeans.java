@@ -13,6 +13,15 @@ public class ProductBeans {
     private String brand_name;
     private int category_id;
     private String category_name;
+    private String displayCategory;
+
+    public String getDisplayCategory() {
+        return displayCategory;
+    }
+
+    public void setDisplayCategory(String displayCategory) {
+        this.displayCategory = displayCategory;
+    }
 
     public String getSupplier_shopName() {
         return supplier_shopName;

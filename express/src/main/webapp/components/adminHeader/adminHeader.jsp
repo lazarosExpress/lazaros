@@ -7,7 +7,9 @@
             <i class="bi bi-arrow-left"></i>
         </a>
     </div>
-    <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo" />
+    <a href="${pageContext.request.contextPath}/admin/supplierAdminPanel.jsp">
+        <img src="${pageContext.request.contextPath}/images/lazarosSupplier.png" alt="Logo" />
+    </a>
     <div class="logout">
         <i id="logout-button" class="bi bi-box-arrow-right"></i>
     </div>

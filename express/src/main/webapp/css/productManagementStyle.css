@@ -114,3 +114,28 @@ body {
 .add-product-btn:hover {
     background-color: #218838;
 }
+
+.update-button,
+.delete-button {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-button {
+    background-color: cornflowerblue;
+}
+
+.update-button:hover {
+    background-color: darkturquoise;
+}
+
+.delete-button {
+    background-color: darkred;
+}
+
+.delete-button:hover {
+    background-color: firebrick;
+}

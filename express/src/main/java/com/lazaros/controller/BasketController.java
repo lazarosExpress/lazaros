@@ -5,7 +5,9 @@ import com.lazaros.beans.BasketBeans;
 import com.lazaros.beans.CustomerBeans;
 import com.lazaros.beans.CustomerOrderProductsBeans;
 import com.lazaros.beans.OrdersBeans;
+import com.lazaros.beans.ProductBeans;
 import com.lazaros.dao.BasketDAO;
+import com.lazaros.dao.ProductDAO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,10 +26,12 @@ import java.util.Collections;
 public class BasketController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BasketDAO basketDAO;
+    private ProductDAO productDAO;
 
     public BasketController() {
         super();
         basketDAO = new BasketDAO();
+        productDAO = new ProductDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -243,14 +247,14 @@ public class BasketController extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-    
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInCustomer") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.write(new Gson().toJson(Collections.singletonMap("success", false)));
             return;
         }
-    
+
         int address_id;
         try {
             address_id = Integer.parseInt(request.getParameter("address_id"));
@@ -259,37 +263,53 @@ public class BasketController extends HttpServlet {
             out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres ID")));
             return;
         }
-    
+
         if (address_id == 0) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres seçimi.")));
             return;
         }
-    
+
         try {
             CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
             int customerId = loggedInCustomer.getCustomer_id();
-    
+
+            // Sepetteki ürünleri kontrol et
+            List<BasketBeans> basketItems = basketDAO.getBasketByCustomerId(customerId);
+            for (BasketBeans item : basketItems) {
+                ProductBeans product = productDAO.getProductById(item.getProduct_id());
+                if (product.getProduct_stock() < item.getBasket_qty()) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    out.write(new Gson()
+                            .toJson(Collections.singletonMap("error", "Yetersiz stok: " + product.getProduct_name())));
+                    return;
+                }
+            }
+
             OrdersBeans order = new OrdersBeans();
             order.setOrder_date(new java.sql.Date(System.currentTimeMillis()));
             order.setOrder_state(true);
             order.setCustomer_id(customerId);
             order.setAddress_id(address_id);
             order.setOrder_totalPrize(basketDAO.getBasketTotal(customerId));
-    
+
             int orderId = basketDAO.createOrder(order);
             if (orderId == 0) {
                 throw new SQLException("Failed to create order.");
             }
-    
-            List<BasketBeans> basketItems = basketDAO.getBasketByCustomerId(customerId);
+
+            // Sipariş ve stok güncellemesi
             for (BasketBeans item : basketItems) {
-                CustomerOrderProductsBeans orderProduct = new CustomerOrderProductsBeans(orderId, item.getProduct_id(), item.getBasket_qty());
+                CustomerOrderProductsBeans orderProduct = new CustomerOrderProductsBeans(orderId, item.getProduct_id(),
+                        item.getBasket_qty());
                 basketDAO.addOrderProduct(orderProduct);
+
+                // Stok güncellemesi
+                productDAO.updateProductStock(item.getProduct_id(), -item.getBasket_qty());
             }
-    
+
             basketDAO.clearBasket(customerId);
-    
+
             out.write(new Gson().toJson(Collections.singletonMap("success", true)));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -301,5 +321,5 @@ public class BasketController extends HttpServlet {
             out.write(new Gson().toJson(Collections.singletonMap("error", "Internal Server Error: " + e.getMessage())));
         }
     }
-    
+
 }

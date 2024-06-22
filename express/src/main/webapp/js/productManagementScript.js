@@ -20,8 +20,8 @@ function fetchProducts() {
                     <td>${product.product_properties}</td>
                     <td><img src="${window.location.origin}${window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2))}/productImg/${product.product_imgUrl}" alt="Product Image" width="50"></td>
                     <td>
-                        <button onclick="viewProductDetails(${product.product_id})">Düzenle</button>
-                        <button onclick="deleteProduct(${product.product_id})">Sil</button>
+                        <button class="update-button" onclick="viewProductDetails(${product.product_id})">Düzenle</button>
+                        <button class="delete-button" onclick="deleteProduct(${product.product_id})">Sil</button>
                     </td>
                 `;
                 productList.appendChild(row);

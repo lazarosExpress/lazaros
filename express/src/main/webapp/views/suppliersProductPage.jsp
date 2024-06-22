@@ -28,6 +28,7 @@ String supplierShopName = products.isEmpty() ? "" : products.get(0).getSupplier_
 <%@ include file="../components/navbar/navbar.jsp" %>
 <%@ include file="../components/footer/footer.jsp" %>
 <body>
+<div class="sup-pro-page-style-css">
     <div class="container">
         <div class="header">
             <div><%=supplierShopName%></div>
@@ -40,30 +41,35 @@ String supplierShopName = products.isEmpty() ? "" : products.get(0).getSupplier_
             <h2>Ürünler</h2>
             <section class="section-products">
                 <div class="container">
-                    <div class="row" id="productList">
+                    <div class="row">
                         <% if(!products.isEmpty()) {
-                            for(ProductBeans p : products) { %>
-                            <div class="col-md-3 col-lg-3 col-xl-3">
-                                <div class="single-product">
-                                    <div class="part-1">
-                                        <img src="<%= request.getContextPath() %>/productImg/<%= p.getProduct_imgUrl() %>" alt="<%= p.getProduct_name() %>">
-                                        <ul>
-                                            <li><a href="javascript:void(0);" onclick="addToCart(<%=p.getProduct_id()%>);" class="cart-btn"><i class="fas fa-shopping-cart"></i></a></li>
-                                            <li><a href="javascript:void(1);" onclick="getSupplierProductList(<%=p.getSupplier_id()%>)"><i class="fa-solid fa-shop"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                            <li><a href="<%= request.getContextPath() %>/ProductController?action=DETAILS&id=<%=p.getProduct_id()%>"><i class="fas fa-expand"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="part-2">
-                                        <div class="product-name-title"> <%=p.getProduct_name() %> </div>
-                                        <div class="product-category-title"><%=p.getCategory_name()%></div>
-                                        <div class="price-container">
-                                            <span class="product-old-price">$79.99</span>
-                                            <span class="product-price">$<%= p.getProduct_prize() %></span>
+                            for(ProductBeans p : products) { 
+                                String categoryName = p.getCategory_name();
+                                String[] parts = categoryName.split(">");
+                                String displayCategory = parts[parts.length - 1].trim();
+                        %>
+                                <div class="col-md-2 col-lg-3 col-xl-3">
+                                    <div class="single-product">
+                                        <div class="part-1">
+                                            <img src="<%= request.getContextPath() %>/productImg/<%= p.getProduct_imgUrl() %>" alt="<%= p.getProduct_name() %>">
+                                            <ul>
+                                                <li><a href="javascript:void(0);" onclick="addToCart(<%=p.getProduct_id()%>);" class="cart-btn"><i class="fas fa-shopping-cart"></i></a></li>
+                                                <li><a href="javascript:void(1);" onclick="getSupplierProductList(<%=p.getSupplier_id()%>)"><i class="fas fa-shop"></i></a></li>
+                                                <li><a href="javascript:void(2);" onclick="getCategoryProductList(<%=p.getCategory_id()%>)"><i class="fa-solid fa-list"></i></a></li>
+                                                <li><a href="<%= request.getContextPath() %>/ProductController?action=DETAILS&id=<%=p.getProduct_id()%>"><i class="fas fa-expand"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="part-2">
+                                            <div class="product-name-title"> <%=p.getProduct_name() %> </div>
+                                            <div class="product-category-title"><%= displayCategory %></div>
+                                            <div class="price-container">
+                                                <span class="product-old-price">₺79.99</span>
+                                                <span class="product-price"><%= p.getProduct_prize() %>₺</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                
                             <% }
                         } %>
                     </div>
@@ -71,6 +77,7 @@ String supplierShopName = products.isEmpty() ? "" : products.get(0).getSupplier_
             </section>
         </div>
     </div>
+</div>
 </body>
 </html>
 <script>
@@ -109,5 +116,8 @@ String supplierShopName = products.isEmpty() ? "" : products.get(0).getSupplier_
     }
     function getSupplierProductList (supplierId) {
         window.location.href = `<%= request.getContextPath() %>/views/suppliersProductPage.jsp?supplierId=` + supplierId;
+    }
+    function getCategoryProductList (categoryId) {
+        window.location.href = `<%= request.getContextPath() %>/views/categoryProductList.jsp?categoryId=` + categoryId;
     }
 </script>

@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         totalPrice += product.product_prize * item.basket_qty;
                         dropdownBasket.innerHTML += `
                             <div class="basket-item">
-                                <img src="productImg/${product.product_imgUrl}" alt="${product.product_name}">
+                                <img src="http://localhost:8080/express/productImg/${product.product_imgUrl}" alt="${product.product_name}">
                                 <div class="basket-item-info">
                                     <h3>${product.product_name}</h3>
                                     <p>Adet: <span class="item-qty">${item.basket_qty}</span></p>

@@ -57,7 +57,7 @@ body {
 }
 
 .btn-primary {
-    background-color: #f69337;
+    background-color: cornflowerblue;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -68,7 +68,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #FFA959;
+    background-color: darkturquoise;
     color: white;
 }
 

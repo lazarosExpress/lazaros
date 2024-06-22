@@ -1,7 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/homepageListProdcutStyle.css">
-<%@ include file="../attributes/homepageListProdcutAttributes.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="java.util.*"%>
+<%@ page import="com.lazaros.dao.ProductDAO" %>
+<%@ page import="com.lazaros.beans.ProductBeans" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/categoryProductListStyle.css">
+<%@ include file="../components/header/header.jsp" %>
+<%@ include file="../components/navbar/navbar.jsp" %>
+<%@ include file="../components/footer/footer.jsp" %>
+<%
+int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+ProductDAO productDAO = new ProductDAO();
+List<ProductBeans> products = productDAO.getCategoryProduct(categoryId);
 
+%>
 <section class="section-products">
     <div class="container">
         <div class="row">
@@ -32,6 +43,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 <% }
             } %>
         </div>
@@ -79,10 +91,10 @@
             }, 3000);
         });
     }
-    function getSupplierProductList(supplierId) {
+    function getSupplierProductList (supplierId) {
         window.location.href = `<%= request.getContextPath() %>/views/suppliersProductPage.jsp?supplierId=` + supplierId;
     }
-    function getCategoryProductList(categoryId) {
+    function getCategoryProductList (categoryId) {
         window.location.href = `<%= request.getContextPath() %>/views/categoryProductList.jsp?categoryId=` + categoryId;
     }
 </script>

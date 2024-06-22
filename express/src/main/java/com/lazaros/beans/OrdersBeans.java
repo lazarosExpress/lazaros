@@ -19,6 +19,18 @@ public class OrdersBeans {
     private int sellerId;
 
     public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrize, int customer_id,
+            int address_id, String customerFirstName, String customerLastName) {
+        this.order_id = order_id;
+        this.order_date = order_date;
+        this.order_state = order_state;
+        this.order_totalPrize = order_totalPrize;
+        this.customer_id = customer_id;
+        this.address_id = address_id;
+        this.customerFirstName = customerFirstName;
+        this.customerLastName = customerLastName;
+    }
+
+    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrize, int customer_id,
             int address_id, String productName, String productImgUrl, double productPrice, int productQty,
             String sellerName, int sellerId, String customerFirstName) {
         this.order_id = order_id;

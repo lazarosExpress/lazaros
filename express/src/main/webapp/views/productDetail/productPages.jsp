@@ -21,8 +21,8 @@ if (product == null) {
     </div>
     <div class="product-details" >
         <h1 class="product-title"><%= product.getProduct_name() %></h1>
-        <p class="product-category">Kategori: <span class="category-name"><%= product.getCategory_name() %></span></p>
-        <p class="product-category">Satıcı: <a href="javascript:void(0)" onclick="getSupplierProductList(<%=product.getSupplier_id()%>)"><span class="shop-name"><%= product.getSupplier_shopName() %></span></a></p>
+        <p class="product-category">Kategori: <a href="javascript:void(0)" onclick="getCategoryProductList(<%=product.getCategory_id()%>)"><span class="category-name"><%= product.getCategory_name() %></span></a></p>
+        <p class="product-category">Satıcı: <a href="javascript:void(1)" onclick="getSupplierProductList(<%=product.getSupplier_id()%>)"><span class="shop-name"><%= product.getSupplier_shopName() %></span></a></p>
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Description')" id="defaultOpen">Ürün Açıklaması</button>
             <button class="tablinks" onclick="openTab(event, 'Specifications')">Ürün Özellikleri</button>
@@ -36,8 +36,8 @@ if (product == null) {
             </ul>
         </div>
         <p class="product-price">
-            Ürünün Fiyatı: <span class="original-price">$<%= product.getProduct_prize() %></span>
-            Ürünün Fiyatı: <span class="price">$<%= product.getProduct_prize() %></span>
+            Ürünün Fiyatı: <span class="original-price"><%= product.getProduct_prize() %>₺</span>
+            Ürünün Fiyatı: <span class="price"><%= product.getProduct_prize() %>₺</span>
         </p>
         <a href="javascript:void(0);" onclick="addToCart(<%= product.getProduct_id() %>);" class="store-link">Add to Cart</a>
     </div>
@@ -81,7 +81,9 @@ if (product == null) {
             }, 3000);
         });
     }
-
+    function getCategoryProductList (categoryId) {
+        window.location.href = `<%= request.getContextPath() %>/views/categoryProductList.jsp?categoryId=` + categoryId;
+    }
     function getSupplierProductList(supplierId) {
         window.location.href = '<%= request.getContextPath() %>/views/suppliersProductPage.jsp?supplierId=' + supplierId;
     }

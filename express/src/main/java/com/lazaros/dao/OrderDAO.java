@@ -52,7 +52,10 @@ public class OrderDAO {
 
     public List<OrdersBeans> getOrdersByCustomerId(int customerId) {
         List<OrdersBeans> orders = new ArrayList<>();
-        String sql = "SELECT * FROM orders WHERE customer_id = ?";
+        String sql = "SELECT o.*, a.address_customerFirstNAme, a.address_customerLastName " +
+                "FROM orders o " +
+                "JOIN address a ON o.address_id = a.address_id " +
+                "WHERE o.customer_id = ?";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, customerId);
             ResultSet rs = stmt.executeQuery();
@@ -63,7 +66,9 @@ public class OrderDAO {
                         rs.getBoolean("order_state"),
                         rs.getDouble("order_totalPrize"),
                         rs.getInt("customer_id"),
-                        rs.getInt("address_id"));
+                        rs.getInt("address_id"),
+                        rs.getString("address_customerFirstNAme"),
+                        rs.getString("address_customerLastName"));
                 orders.add(order);
             }
         } catch (SQLException e) {

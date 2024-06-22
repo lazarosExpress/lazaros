@@ -11,7 +11,7 @@ const loadCustomerOrders = () => {
                         <div class="order-summary">
                             <p class="status">${order.order_status}</p>
                             <p><strong>Sipariş Tarihi:</strong> ${order.order_date}</p>
-                            <p><strong>Alıcı:</strong> ${order.customerFirstName}</p>
+                            <p><strong>Alıcı:</strong> ${order.customerFirstName} ${order.customerLastName}</p>
                             <p><strong>Tutar:</strong> ${(order.order_totalPrize).toFixed(2)} TL</p>
                             <button onclick="viewOrderDetails(${order.order_id})">Sipariş Detayı</button>
                         </div>
@@ -20,6 +20,7 @@ const loadCustomerOrders = () => {
         })
         .catch(error => console.error('Error loading customer orders:', error));
 };
+
 
 const viewOrderDetails = (orderId) => {
     window.location.href = `orderDetail.jsp?orderId=${orderId}`;

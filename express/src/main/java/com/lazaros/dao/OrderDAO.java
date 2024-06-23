@@ -17,7 +17,7 @@ public class OrderDAO {
                 OrdersBeans order = new OrdersBeans(
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"));
@@ -31,14 +31,14 @@ public class OrderDAO {
 
     public List<OrdersBeans> getCompletedOrders() {
         List<OrdersBeans> orders = new ArrayList<>();
-        String sql = "SELECT * FROM orders WHERE order_state = true";
+        String sql = "SELECT * FROM orders";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 OrdersBeans order = new OrdersBeans(
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"));
@@ -63,7 +63,7 @@ public class OrderDAO {
                 OrdersBeans order = new OrdersBeans(
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
@@ -98,7 +98,7 @@ public class OrderDAO {
                         rs.getInt("order_id"),
                         rs.getInt("supplier_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getString("address_customerFirstName"),
                         rs.getString("address_customerLastName"));
@@ -129,7 +129,7 @@ public class OrderDAO {
                 OrdersBeans detail = new OrdersBeans(
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
@@ -165,7 +165,7 @@ public class OrderDAO {
                 OrdersBeans detail = new OrdersBeans(
                         rs.getInt("order_id"),
                         rs.getDate("order_date"),
-                        rs.getBoolean("order_state"),
+                        rs.getInt("order_state"),
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),

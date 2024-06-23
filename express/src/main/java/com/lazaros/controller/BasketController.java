@@ -288,7 +288,7 @@ public class BasketController extends HttpServlet {
 
             OrdersBeans order = new OrdersBeans();
             order.setOrder_date(new java.sql.Date(System.currentTimeMillis()));
-            order.setOrder_state(true);
+            order.setOrder_state(0);
             order.setCustomer_id(customerId);
             order.setAddress_id(address_id);
             order.setOrder_totalPrice(basketDAO.getBasketTotal(customerId));

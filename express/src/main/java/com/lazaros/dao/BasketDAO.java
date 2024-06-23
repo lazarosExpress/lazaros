@@ -164,7 +164,7 @@ public class BasketDAO {
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setDate(1, order.getOrder_date());
-            stmt.setBoolean(2, order.isOrder_state());
+            stmt.setInt(2, order.isOrder_state());
             stmt.setDouble(3, order.getOrder_totalPrice());
             stmt.setInt(4, order.getCustomer_id());
             stmt.setInt(5, order.getAddress_id());

@@ -6,27 +6,32 @@ const loadCustomerOrders = () => {
             ordersContainer.innerHTML = '';
 
             data.forEach(order => {
+                let orderStatus = '';
+                if (order.order_state == 0) {
+                    orderStatus = 'Devam Ediyor';
+                } else if (order.order_state == 1) {
+                    orderStatus = 'Tamamlandı';
+                }
+
                 ordersContainer.innerHTML += `
-                    <div class="order-card">
+                    <div class="order-card" data-status="${order.order_state}">
                         <div class="order-summary">
-                            <p class="status">${order.order_status}</p>
+                            <p class="status">${orderStatus}</p>                    
                             <p><strong>Sipariş Tarihi:</strong> ${order.order_date}</p>
                             <p><strong>Alıcı:</strong> ${order.customerFirstName} ${order.customerLastName}</p>
                             <p><strong>Tutar:</strong> ${(order.order_totalPrice).toFixed(2)} TL</p>
                             <button onclick="viewOrderDetails(${order.order_id})">Sipariş Detayı</button>
                         </div>
-                    `;
+                    </div>
+                `;
             });
         })
         .catch(error => console.error('Error loading customer orders:', error));
 };
 
-
 const viewOrderDetails = (orderId) => {
     window.location.href = `orderDetail.jsp?orderId=${orderId}`;
 };
-
-
 
 document.addEventListener('DOMContentLoaded', loadCustomerOrders);
 

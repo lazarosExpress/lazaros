@@ -5,7 +5,7 @@ import java.sql.Date;
 public class OrdersBeans {
     private int order_id;
     private Date order_date;
-    private boolean order_state;
+    private int order_state;
     private double order_totalPrice;
     private int customer_id;
     private int address_id;
@@ -18,7 +18,7 @@ public class OrdersBeans {
     private String sellerName;
     private int sellerId;
 
-    public OrdersBeans(int order_id, int sellerId, Date order_date, boolean order_state, double order_totalPrice,
+    public OrdersBeans(int order_id, int sellerId, Date order_date, int order_state, double order_totalPrice,
             String customerFirstName, String customerLastName) {
         this.order_id = order_id;
         this.sellerId = sellerId;
@@ -29,7 +29,7 @@ public class OrdersBeans {
         this.customerLastName = customerLastName;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, int order_state, double order_totalPrice, int customer_id,
             int address_id, String customerFirstName, String customerLastName) {
         this.order_id = order_id;
         this.order_date = order_date;
@@ -41,7 +41,7 @@ public class OrdersBeans {
         this.customerLastName = customerLastName;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, int order_state, double order_totalPrice, int customer_id,
             int address_id, String productName, String productImgUrl, double productPrice, int productQty,
             String sellerName, int sellerId, String customerFirstName) {
         this.order_id = order_id;
@@ -83,7 +83,7 @@ public class OrdersBeans {
         this.sellerId = sellerId;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice, int customer_id,
+    public OrdersBeans(int order_id, Date order_date, int order_state, double order_totalPrice, int customer_id,
             int address_id) {
         this.order_id = order_id;
         this.order_date = order_date;
@@ -142,7 +142,7 @@ public class OrdersBeans {
         this.address_id = address_id;
     }
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, int customer_id, int address_id,
+    public OrdersBeans(int order_id, Date order_date, int order_state, int customer_id, int address_id,
             double order_totalPrice) {
         this(order_id, order_date, order_state, order_totalPrice, customer_id, address_id);
     }
@@ -171,11 +171,11 @@ public class OrdersBeans {
         this.order_date = order_date;
     }
 
-    public boolean isOrder_state() {
+    public int isOrder_state() {
         return order_state;
     }
 
-    public void setOrder_state(boolean order_state) {
+    public void setOrder_state(int order_state) {
         this.order_state = order_state;
     }
 

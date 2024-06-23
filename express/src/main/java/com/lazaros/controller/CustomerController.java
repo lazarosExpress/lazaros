@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +39,7 @@ public class CustomerController extends HttpServlet {
         if (action == null) {
             action = "LIST";
         }
-
+        System.out.println("CustomerController GET: " + action);
         switch (action) {
             case "LIST":
                 listCustomers(request, response);
@@ -64,6 +65,9 @@ public class CustomerController extends HttpServlet {
             case "LOGOUT":
                 logoutCustomer(request, response);
                 break;
+            case "FETCH_USER_INFO":
+                fetchUserInfo(request, response);
+                break;
             default:
                 listCustomers(request, response);
                 break;
@@ -74,6 +78,8 @@ public class CustomerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("CustomerController POST: " + action);
+
         if (action != null) {
             switch (action) {
                 case "ADD":
@@ -96,6 +102,15 @@ public class CustomerController extends HttpServlet {
                     break;
                 case "UPDATESUPPLIER":
                     updateCustomerWithSupplier(request, response);
+                    break;
+                case "UPDATE_USER_INFO":
+                    updateUserInfo(request, response);
+                    break;
+                case "UPDATE_PASSWORD":
+                    updatePassword(request, response);
+                    break;
+                case "DELETE_ACCOUNT":
+                    deleteAccount(request, response);
                     break;
                 default:
                     listCustomers(request, response);
@@ -344,5 +359,126 @@ public class CustomerController extends HttpServlet {
             response.getWriter().write("Müşteri güncellenemedi.");
         }
     }
+
+    private void fetchUserInfo(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession();
+        CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
+        if (loggedInCustomer != null) {
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            String json = new Gson().toJson(loggedInCustomer);
+            out.write(json);
+            out.flush();
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+    }
+
+    private void updateUserInfo(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession();
+        CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
+
+        if (loggedInCustomer == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        BufferedReader reader = request.getReader();
+        Gson gson = new Gson();
+        CustomerBeans updatedCustomer = gson.fromJson(reader, CustomerBeans.class);
+
+        // Log incoming data for debugging
+        LOGGER.info("Received updated customer data: " + gson.toJson(updatedCustomer));
+
+        // Validate that none of the fields are null
+        if (updatedCustomer.getCustomer_firstName() == null || updatedCustomer.getCustomer_lastName() == null ||
+                updatedCustomer.getCustomer_eMail() == null || updatedCustomer.getCustomer_phoneNumber() == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "All fields are required.");
+            return;
+        }
+
+        loggedInCustomer.setCustomer_firstName(updatedCustomer.getCustomer_firstName());
+        loggedInCustomer.setCustomer_lastName(updatedCustomer.getCustomer_lastName());
+        loggedInCustomer.setCustomer_phoneNumber(updatedCustomer.getCustomer_phoneNumber());
+
+        boolean isUpdated = customerDAO.updateCustomerWithSupplier(loggedInCustomer);
+
+        if (isUpdated) {
+            response.getWriter().write("Bilgiler başarıyla güncellendi.");
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Bilgiler güncellenemedi.");
+        }
+    }
+
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession();
+        CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
+
+        if (loggedInCustomer == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        BufferedReader reader = request.getReader();
+        Gson gson = new Gson();
+        Map<String, String> passwordInfo = gson.fromJson(reader, Map.class);
+
+        String currentPassword = passwordInfo.get("currentPassword");
+        String newPassword = passwordInfo.get("newPassword");
+        String confirmPassword = passwordInfo.get("confirmPassword");
+
+        if (!loggedInCustomer.getCustomer_password().equals(currentPassword)) {
+            response.getWriter().write("Şu anki şifre yanlış.");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            response.getWriter().write("Yeni şifreler eşleşmiyor.");
+            return;
+        }
+        int customerId = loggedInCustomer.getCustomer_id();
+        boolean isUpdated = customerDAO.updateCustomerPassword(newPassword, customerId);
+
+        if (isUpdated) {
+            response.getWriter().write("Şifre başarıyla güncellendi.");
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Şifre güncellenemedi.");
+        }
+    }
+
+    private void deleteAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        BufferedReader reader = request.getReader();
+        Gson gson = new Gson();
+        Map<String, String> deleteInfo = gson.fromJson(reader, Map.class);
+    
+        String email = deleteInfo.get("email");
+        String password = deleteInfo.get("password");
+    
+        CustomerBeans customer = customerDAO.getCustomerByEmail(email);
+    
+        if (customer != null && customer.getCustomer_password().equals(password)) {
+            customerDAO.deleteCustomer(customer.getCustomer_id());
+            
+            // Oturumu sonlandır
+            logoutCustomerDeleteAccount(request, response);
+    
+            response.getWriter().write("Hesap başarıyla silindi.");
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "E-posta veya şifre yanlış.");
+        }
+    }
+    
+    private void logoutCustomerDeleteAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Oturumu sonlandır
+        HttpSession session = request.getSession(false); // mevcut oturumu al
+        if (session != null) {
+            session.invalidate(); // oturumu geçersiz kıl
+        }
+        response.getWriter().write("Çıkış yapıldı.");
+    }
+    
 
 }

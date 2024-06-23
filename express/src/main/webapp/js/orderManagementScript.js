@@ -46,8 +46,8 @@ const loadOrders = () => {
                         <td>${(order.order_totalPrice).toFixed(2)}</td>
                         <td>${order.customerFirstName} ${order.customerLastName}</td>
                         <td>
-                            <button onclick="getSupplerOrderDetail(${order.order_id},${order.sellerId})">Detay</button>
-                            <button onclick="changeOrderStatus(${order.order_id})">Durum Değiştir</button>
+                            <button class="order-detail-btn" onclick="getSupplerOrderDetail(${order.order_id},${order.sellerId})">Detay</button>
+                            <button class="change-order-btn" onclick="changeOrderStatus(${order.order_id})">Durum Değiştir</button>
                         </td>
                     </tr>
                 `;

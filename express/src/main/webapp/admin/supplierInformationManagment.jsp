@@ -6,17 +6,17 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Kullanıcı Bilgilerim</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customerInformationStyle.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/supplierInformationManagmenetStyle.css"/>
 </head>
-<%@ include file="../components/header/header.jsp" %>
+<%@ include file="../components/adminHeader/adminHeader.jsp" %>
 <%@ include file="../components/footer/footer.jsp" %>
 <body>
-    <div class="container customer-inf-style-css">
+    <div class="container">
         <h1>Kullanıcı Bilgilerim</h1>
         <div class="card-container">
             <div class="card user-info">
                 <h2>Üyelik Bilgilerim</h2>
-                <form id="userForm">
+                <form id="supplierForm">
                     <div class="form-group">
                         <label for="first_name">Ad</label>
                         <input type="text" id="first_name" name="first_name"/>
@@ -24,6 +24,14 @@
                     <div class="form-group">
                         <label for="last_name">Soyad</label>
                         <input type="text" id="last_name" name="last_name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="shop_name">Mağaza Adı</label>
+                        <input type="text" id="shop_name" name="shop_name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="iban">IBAN</label>
+                        <input type="text" id="iban" name="iban"/>
                     </div>
                     <div class="form-group">
                         <label for="email">E-Mail</label>
@@ -54,9 +62,7 @@
                         <label for="confirm_password">Yeni Şifre (Tekrar)</label>
                         <input type="password" id="confirm_password" name="confirm_password"/>
                     </div>
-                    <div class="form-group">
-                        <button type="button" class="update-btn" onclick="updatePassword()">Güncelle</button>
-                    </div>
+                    <button type="button" class="update-btn" onclick="updatePassword()">Güncelle</button>
                 </form>
             </div>
             
@@ -76,6 +82,6 @@
             </div>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/js/customerInformationScript.js"></script>
+    <script src="${pageContext.request.contextPath}/js/supplierInformationManagmenetScript.js"></script>
 </body>
 </html>

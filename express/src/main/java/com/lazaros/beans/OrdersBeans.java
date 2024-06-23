@@ -17,6 +17,24 @@ public class OrdersBeans {
     private int productQty;
     private String sellerName;
     private int sellerId;
+    private int paymentId;
+    private String paymentName;
+
+    public int getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getPaymentName() {
+        return paymentName;
+    }
+
+    public void setPaymentName(String paymentName) {
+        this.paymentName = paymentName;
+    }
 
     public OrdersBeans(int order_id, int sellerId, Date order_date, int order_state, double order_totalPrice,
             String customerFirstName, String customerLastName) {

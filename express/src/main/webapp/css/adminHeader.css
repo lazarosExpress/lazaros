@@ -16,6 +16,7 @@ header img {
     display: flex;
     align-items: center;
     cursor: pointer;
+    z-index: 1001;
 }
 
 .logout i {
@@ -32,6 +33,8 @@ header img {
     display: flex;
     align-items: center;
     cursor: pointer;
+    z-index: 1001;
+
 }
 
 .back-button i {

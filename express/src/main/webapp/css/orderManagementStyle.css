@@ -65,3 +65,29 @@ td {
 th {
     background-color: #f2f2f2;
 }
+
+.order-detail-btn,
+.change-order-btn {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.order-detail-btn {
+    background-color: rgb(226, 158, 31);
+}
+
+.order-detail-btn:hover {
+    background-color: rgb(226, 180, 93)
+}
+
+.change-order-btn {
+    background-color: rgb(2, 80, 143);
+}
+
+.change-order-btn:hover {
+    background-color: rgb(49, 101, 143);
+    ;
+}

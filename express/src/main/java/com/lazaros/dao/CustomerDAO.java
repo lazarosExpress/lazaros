@@ -1,7 +1,6 @@
 package com.lazaros.dao;
 
 import com.lazaros.beans.CustomerBeans;
-import com.lazaros.beans.ProductBeans;
 import com.lazaros.utils.DatabaseUtil;
 
 import java.sql.Connection;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
+
+    private static final Connection connection = null;
 
     public List<CustomerBeans> getAllCustomers() {
         List<CustomerBeans> customers = new ArrayList<>();
@@ -97,29 +98,80 @@ public class CustomerDAO {
         }
     }
 
+    public boolean updateCustomerPassword(String password, int customerId) {
+        String query = "UPDATE customer SET customer_password = ? WHERE customer_id = ?";
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, customerId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void deleteCustomer(int id) {
+        String deleteOrderProductsQuery = "DELETE FROM customer_order_products WHERE order_id IN (SELECT order_id FROM orders WHERE customer_id = ?)";
+        String deleteOrderQuery = "DELETE FROM orders WHERE customer_id = ?";
+        String deleteOrderAddressQuery = "DELETE FROM orders WHERE address_id IN (SELECT address_id FROM address WHERE customer_id = ?)";
         String deleteAddressQuery = "DELETE FROM address WHERE customer_id = ?";
         String deleteCustomerQuery = "DELETE FROM customer WHERE customer_id = ?";
-
+        String selectAddressIdsQuery = "SELECT address_id FROM address WHERE customer_id = ?";
+    
         try (Connection connection = DatabaseUtil.getConnection()) {
             // Otomatik commit özelliğini kapatın, böylece işlemi yönetebilirsiniz
             connection.setAutoCommit(false);
-
+    
+            // 1. Adım: Customer'a ait tüm address_id'leri alın
+            List<Integer> addressIds = new ArrayList<>();
+            try (PreparedStatement selectAddressIdsStmt = connection.prepareStatement(selectAddressIdsQuery)) {
+                selectAddressIdsStmt.setInt(1, id);
+                try (ResultSet rs = selectAddressIdsStmt.executeQuery()) {
+                    while (rs.next()) {
+                        addressIds.add(rs.getInt("address_id"));
+                    }
+                }
+            }
+    
+            // 2. Adım: Alınan address_id'lere göre orders tablosunda silme işlemi yapın
+            try (PreparedStatement deleteOrderAddressStmt = connection.prepareStatement(deleteOrderAddressQuery)) {
+                for (int addressId : addressIds) {
+                    deleteOrderAddressStmt.setInt(1, addressId);
+                    deleteOrderAddressStmt.executeUpdate();
+                }
+            }
+    
+            // 3. Adım: Customer'a ait order product kayıtlarını silin
+            try (PreparedStatement deleteOrderProductsStmt = connection.prepareStatement(deleteOrderProductsQuery)) {
+                deleteOrderProductsStmt.setInt(1, id);
+                deleteOrderProductsStmt.executeUpdate();
+            }
+    
+            // 4. Adım: Customer'a ait order'ları silin
+            try (PreparedStatement deleteOrderStmt = connection.prepareStatement(deleteOrderQuery)) {
+                deleteOrderStmt.setInt(1, id);
+                deleteOrderStmt.executeUpdate();
+            }
+    
+            // 5. Adım: Customer'a ait address'leri silin
             try (PreparedStatement deleteAddressStmt = connection.prepareStatement(deleteAddressQuery)) {
                 deleteAddressStmt.setInt(1, id);
                 deleteAddressStmt.executeUpdate();
             }
-
+    
+            // 6. Adım: Customer'ı silin
             try (PreparedStatement deleteCustomerStmt = connection.prepareStatement(deleteCustomerQuery)) {
                 deleteCustomerStmt.setInt(1, id);
                 deleteCustomerStmt.executeUpdate();
             }
-
+    
             // İşlem başarılı olduğunda commit yapın
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            try (Connection connection = DatabaseUtil.getConnection()) {
+            try {
                 // Eğer bir hata oluşursa işlemi geri alın
                 connection.rollback();
             } catch (SQLException rollbackEx) {

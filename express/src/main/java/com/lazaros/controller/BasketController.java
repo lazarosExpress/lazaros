@@ -256,8 +256,10 @@ public class BasketController extends HttpServlet {
         }
 
         int address_id;
+        int payment_id;
         try {
             address_id = Integer.parseInt(request.getParameter("address_id"));
+            payment_id = Integer.parseInt(request.getParameter("payment_id"));
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres ID")));
@@ -267,6 +269,11 @@ public class BasketController extends HttpServlet {
         if (address_id == 0) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz adres seçimi.")));
+            return;
+        }
+        if (payment_id == 0) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write(new Gson().toJson(Collections.singletonMap("error", "Geçersiz ödeme seçimi.")));
             return;
         }
 
@@ -291,6 +298,7 @@ public class BasketController extends HttpServlet {
             order.setOrder_state(0);
             order.setCustomer_id(customerId);
             order.setAddress_id(address_id);
+            order.setPaymentId(payment_id);
             order.setOrder_totalPrice(basketDAO.getBasketTotal(customerId));
 
             int orderId = basketDAO.createOrder(order);

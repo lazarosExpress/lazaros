@@ -55,8 +55,6 @@
         <div class="summary-payment">
           <select name="payment-collection" class="summary-payment-selection">
             <option value="0" selected="selected">Ödeme Yöntemi Seçiniz</option>
-            <option value="cash-on-delivery">Kapıda Ödeme</option>
-            <option value="credit-card">Kredi/Banka Kartı</option>
           </select>
         </div>
         <div class="summary-total">

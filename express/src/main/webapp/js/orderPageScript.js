@@ -1,23 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
     loadBasket();
     fetchAddresses();
+    fetchPayment();
 
     document.querySelector('.checkout-cta').addEventListener('click', function () {
         const addressSelect = document.querySelector('.summary-delivery-selection');
         const addressId = addressSelect.value;
+        const paymentSelect = document.querySelector('.summary-payment-selection');
+        const paymentId = paymentSelect.value;
 
         if (addressId === "0") {
             alert("Lütfen bir teslimat adresi seçin.");
             return;
         }
-        fetch(`http://localhost:8080/express/BasketController?action=COMPLETE&address_id=${addressId}`, {
+        if (paymentId === "0") {
+            alert("Lütfen bir ödeme yöntemi seçin.");
+            return;
+        }
+        fetch(`http://localhost:8080/express/BasketController?action=COMPLETE&address_id=${addressId}&payment_id=${paymentId}`, {
             method: 'POST'
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('Order completed successfully!');
-                    window.location.href = '/express/views/customerOrder.jsp';
+                    window.location.href = 'http://localhost:8080/express/views/customerOrder.jsp';
                 } else {
                     alert('Failed to complete the order.');
                 }
@@ -161,6 +168,29 @@ function populateAddressDropdown(addresses) {
         option.value = address.address_id;
         option.textContent = `${address.address_description}, ${address.address_title}`; // Customize as needed
         addressSelect.appendChild(option);
+    });
+}
+function fetchPayment() {
+    fetch('http://localhost:8080/express/PaymentController?action=list')
+        .then(response => response.json())
+        .then(payment => populatePaymentDropdown(payment))
+        .catch(error => console.error('Error fetching payments:', error));
+}
+
+function populatePaymentDropdown(payment) {
+    const paymentSelect = document.querySelector('.summary-payment-selection');
+    paymentSelect.innerHTML = ''; // Clear existing options
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "0";
+    defaultOption.textContent = "Ödeme Yöntemi Seçin";
+    paymentSelect.appendChild(defaultOption);
+
+    payment.forEach(payment => {
+        const option = document.createElement('option');
+        option.value = payment.payment_id;
+        option.textContent = `${payment.payment_name}`; // Customize as needed
+        paymentSelect.appendChild(option);
     });
 }
 

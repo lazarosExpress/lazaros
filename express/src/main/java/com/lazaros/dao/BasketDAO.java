@@ -160,7 +160,7 @@ public class BasketDAO {
     }
 
     public int createOrder(OrdersBeans order) throws SQLException {
-        String sql = "INSERT INTO orders (order_date, order_state, order_totalPrice, customer_id, address_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (order_date, order_state, order_totalPrice, customer_id, address_id, payment_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setDate(1, order.getOrder_date());
@@ -168,6 +168,7 @@ public class BasketDAO {
             stmt.setDouble(3, order.getOrder_totalPrice());
             stmt.setInt(4, order.getCustomer_id());
             stmt.setInt(5, order.getAddress_id());
+            stmt.setInt(6, order.getPaymentId());
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();

@@ -29,8 +29,8 @@
         <servlet-class>com.lazaros.controller.OrderController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreditCardController</servlet-name>
-        <servlet-class>com.lazaros.controller.CreditCardController</servlet-class>
+        <servlet-name>PaymentController</servlet-name>
+        <servlet-class>com.lazaros.controller.PaymentController</servlet-class>
     </servlet>
     <!-- Servlet Mapping -->
     <servlet-mapping>
@@ -58,8 +58,8 @@
         <url-pattern>/OrderController/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreditCardController</servlet-name>
-        <url-pattern>/CreditCardController/*</url-pattern>
+        <servlet-name>PaymentController</servlet-name>
+        <url-pattern>/PaymentController/*</url-pattern>
     </servlet-mapping>
     <!-- Filter Configuration -->
     <filter>

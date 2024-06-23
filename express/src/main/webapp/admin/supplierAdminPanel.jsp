@@ -28,7 +28,7 @@
             <img src="${pageContext.request.contextPath}/images/orderManagement.png" alt="Sipariş Yönetimi">
             <p>Sipariş Yönetimi</p>
         </div>
-        <div class="card" onclick="location.href='${pageContext.request.contextPath}/admin/storeManagement.jsp';">
+        <div class="card" onclick="location.href='${pageContext.request.contextPath}/admin/supplierInformationManagment.jsp';">
             <img src="${pageContext.request.contextPath}/images/storeManagement.png" alt="Mağaza Yönetimi">
             <p>Mağaza Yönetimi</p>
         </div>

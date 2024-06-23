@@ -93,7 +93,7 @@ public class SupplierDAO {
         return supplier;
     }
 
-    public void updateSupplier(SupplierBeans supplier) {
+    public boolean updateSupplier(SupplierBeans supplier) {
         String query = "UPDATE supplier SET supplier_firstName = ?, supplier_lastName = ?, supplier_shopName = ?, supplier_iban = ?, supplier_eMail = ?, supplier_password = ?, supplier_phoneNumber = ? WHERE supplier_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -107,21 +107,66 @@ public class SupplierDAO {
             preparedStatement.setString(7, supplier.getSupplier_phoneNumber());
             preparedStatement.setInt(8, supplier.getSupplier_id());
 
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteSupplier(int id) {
-        String query = "DELETE FROM supplier WHERE supplier_id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public void deleteSupplier(int supplierId) {
+        String deleteSupplierQuery = "DELETE FROM supplier WHERE supplier_id = ?";
+        String deleteProductQuery = "DELETE FROM products WHERE supplier_id = ?";
+        String deleteOrderProductQuery = "DELETE FROM customer_order_products WHERE product_id = ?";
+        String selectProductIdsQuery = "SELECT product_id FROM products WHERE supplier_id = ?";
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            // Otomatik commit özelliğini kapatın, böylece işlemi yönetebilirsiniz
+            connection.setAutoCommit(false);
+
+            // 1. Adım: Supplier'a ait tüm product_id'leri alın
+            List<Integer> productIds = new ArrayList<>();
+            try (PreparedStatement selectProductIdsStmt = connection.prepareStatement(selectProductIdsQuery)) {
+                selectProductIdsStmt.setInt(1, supplierId);
+                try (ResultSet rs = selectProductIdsStmt.executeQuery()) {
+                    while (rs.next()) {
+                        productIds.add(rs.getInt("product_id"));
+                    }
+                }
+            }
+
+            // 2. Adım: Alınan product_id'lere göre customer_order_products tablosunda silme
+            // işlemi yapın
+            try (PreparedStatement deleteOrderProductStmt = connection.prepareStatement(deleteOrderProductQuery)) {
+                for (int productId : productIds) {
+                    deleteOrderProductStmt.setInt(1, productId);
+                    deleteOrderProductStmt.executeUpdate();
+                }
+            }
+
+            // 3. Adım: Supplier'a ait ürünleri silin
+            try (PreparedStatement deleteProductStmt = connection.prepareStatement(deleteProductQuery)) {
+                deleteProductStmt.setInt(1, supplierId);
+                deleteProductStmt.executeUpdate();
+            }
+
+            // 4. Adım: Supplier'ı silin
+            try (PreparedStatement deleteSupplierStmt = connection.prepareStatement(deleteSupplierQuery)) {
+                deleteSupplierStmt.setInt(1, supplierId);
+                deleteSupplierStmt.executeUpdate();
+            }
+
+            // İşlem başarılı olduğunda commit yapın
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try (Connection connection = DatabaseUtil.getConnection()) {
+                // Eğer bir hata oluşursa işlemi geri alın
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
         }
     }
 
@@ -176,4 +221,19 @@ public class SupplierDAO {
         }
         return supplier;
     }
+
+    public boolean updateSupplierPassword(String password, int supplierId) {
+        String query = "UPDATE supplier SET supplier_password = ? WHERE supplier_id = ?";
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, supplierId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

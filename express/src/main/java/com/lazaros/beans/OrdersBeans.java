@@ -18,9 +18,10 @@ public class OrdersBeans {
     private String sellerName;
     private int sellerId;
 
-    public OrdersBeans(int order_id, Date order_date, boolean order_state, double order_totalPrice,
+    public OrdersBeans(int order_id, int sellerId, Date order_date, boolean order_state, double order_totalPrice,
             String customerFirstName, String customerLastName) {
         this.order_id = order_id;
+        this.sellerId = sellerId;
         this.order_date = order_date;
         this.order_state = order_state;
         this.order_totalPrice = order_totalPrice;

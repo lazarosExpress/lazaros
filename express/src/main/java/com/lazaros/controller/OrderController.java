@@ -1,6 +1,7 @@
 package com.lazaros.controller;
 
 import com.google.gson.Gson;
+import com.lazaros.beans.CustomerBeans;
 import com.lazaros.beans.OrdersBeans;
 import com.lazaros.beans.SupplierBeans;
 import com.lazaros.dao.OrderDAO;
@@ -43,6 +44,9 @@ public class OrderController extends HttpServlet {
             case "ORDERDETAILS":
                 getOrderDetails(request, response);
                 break;
+            case "ORDERMANAGEMENTDETAILS":
+                getOrderManagementDetails(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -63,15 +67,15 @@ public class OrderController extends HttpServlet {
 
     private void listCustomerOrders(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loggedInSupplier") == null) {
+        if (session == null || session.getAttribute("loggedInCustomer") == null) {
             response.sendRedirect(request.getContextPath() + "/views/login/login.jsp");
             return;
         }
 
-        SupplierBeans loggedInSupplier = (SupplierBeans) session.getAttribute("loggedInSupplier");
-        int supplierId = loggedInSupplier.getSupplier_id();
+        CustomerBeans loggedInCustomer = (CustomerBeans) session.getAttribute("loggedInCustomer");
+        int customerId = loggedInCustomer.getCustomer_id();
 
-        List<OrdersBeans> customerOrders = orderDAO.getOrdersByCustomerId(supplierId);
+        List<OrdersBeans> customerOrders = orderDAO.getOrdersByCustomerId(customerId);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -122,6 +126,19 @@ public class OrderController extends HttpServlet {
     private void getOrderDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         List<OrdersBeans> orderDetails = orderDAO.getOrderDetailsById(orderId);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.write(new Gson().toJson(orderDetails));
+        out.flush();
+    }
+    private void getOrderManagementDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        int supplierId = Integer.parseInt(request.getParameter("supplierId"));
+
+        List<OrdersBeans> orderDetails = orderDAO.getOrderManagementDetailsById(orderId, supplierId);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -15,8 +15,9 @@ const loadOrders = () => {
             data.forEach(order => {
                 const orderRow = `
                     <tr>
-                        <td>${order.order_totalPrice.toFixed(2)}</td>
-                        <td>${order.address_customerFirstName} ${order.address_customerLastName}</td>
+                        <td>${(order.order_totalPrice).toFixed(2)}</td>
+                        <td>${order.customerFirstName} ${order.customerLastName}</td>
+                        <td><button onclick="getSupplerOrderDetail(${order.order_id},${order.sellerId})">Detay</button></td>
                     </tr>
                 `;
                 if (order.order_state) {
@@ -30,3 +31,7 @@ const loadOrders = () => {
 };
 
 document.addEventListener('DOMContentLoaded', loadOrders);
+
+function getSupplerOrderDetail(orderId, supplerID) {
+    window.location.href = `/express/admin/orderDetailManagement.jsp?orderId=${orderId}&supplierId=${supplerID}`;
+}

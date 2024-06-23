@@ -125,17 +125,17 @@ body {
 }
 
 .update-button {
-    background-color: cornflowerblue;
+    background-color: rgb(240, 186, 39);
 }
 
 .update-button:hover {
-    background-color: darkturquoise;
+    background-color: rgb(150, 116, 24);
 }
 
 .delete-button {
-    background-color: darkred;
+    background-color: rgb(255, 0, 0);
 }
 
 .delete-button:hover {
-    background-color: firebrick;
+    background-color: rgb(139, 2, 2);
 }

@@ -3,6 +3,7 @@ package com.lazaros.beans;
 public class ProductBeans {
     private int product_id;
     private String product_name;
+    private double product_oldPrice;
     private double product_price;
     private String product_imgUrl;
     private int product_stock;
@@ -14,6 +15,14 @@ public class ProductBeans {
     private int category_id;
     private String category_name;
     private String displayCategory;
+
+    public double getProduct_oldPrice() {
+        return product_oldPrice;
+    }
+
+    public void setProduct_oldPrice(double product_oldPrice) {
+        this.product_oldPrice = product_oldPrice;
+    }
 
     public String getDisplayCategory() {
         return displayCategory;
@@ -47,11 +56,12 @@ public class ProductBeans {
         this.brand_name = brand_name;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_oldPrice, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties,
             String supplier_shopName, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.product_oldPrice =  product_oldPrice;
         this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
@@ -61,11 +71,12 @@ public class ProductBeans {
         this.category_id = category_id;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_oldPrice, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties, String brand_name,
             int supplier_id, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.product_oldPrice =  product_oldPrice;
         this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
@@ -76,10 +87,11 @@ public class ProductBeans {
         this.category_id = category_id;
     }
 
-    public ProductBeans(int product_id, String product_name, double product_price, String product_imgUrl,
+    public ProductBeans(int product_id, String product_name, double product_oldPrice, double product_price, String product_imgUrl,
             int product_stock, String product_explanation, String product_properties) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.product_oldPrice = product_oldPrice;
         this.product_price = product_price;
         this.product_imgUrl = product_imgUrl;
         this.product_stock = product_stock;
@@ -91,10 +103,11 @@ public class ProductBeans {
         // TODO Auto-generated constructor stub
     }
 
-    public ProductBeans(int productId, String productName, double productPrice, String productImgUrl, int productStock,
+    public ProductBeans(int productId, String productName,double productOldPrice, double productPrice, String productImgUrl, int productStock,
             String productExplanation, String productProperties, int supplier_id, int categoryId) {
         this.product_id = productId;
         this.product_name = productName;
+        this.product_oldPrice = productOldPrice;
         this.product_price = productPrice;
         this.product_imgUrl = productImgUrl;
         this.product_stock = productStock;

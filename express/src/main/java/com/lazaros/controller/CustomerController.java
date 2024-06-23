@@ -424,6 +424,7 @@ public class CustomerController extends HttpServlet {
 
         BufferedReader reader = request.getReader();
         Gson gson = new Gson();
+        @SuppressWarnings("unchecked")
         Map<String, String> passwordInfo = gson.fromJson(reader, Map.class);
 
         String currentPassword = passwordInfo.get("currentPassword");
@@ -452,6 +453,7 @@ public class CustomerController extends HttpServlet {
     private void deleteAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         BufferedReader reader = request.getReader();
         Gson gson = new Gson();
+        @SuppressWarnings("unchecked")
         Map<String, String> deleteInfo = gson.fromJson(reader, Map.class);
     
         String email = deleteInfo.get("email");

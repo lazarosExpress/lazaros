@@ -26,7 +26,8 @@
                 <thead>
                     <tr id="table-title">
                         <th>Ürün Adı</th>
-                        <th>Fiyat</th>
+                        <th>Liste Fiyat</th>
+                        <th>İndirimli Fiyatı</th>
                         <th>Stok Miktarı</th>
                         <th>Marka</th>
                         <th>Kategori</th>

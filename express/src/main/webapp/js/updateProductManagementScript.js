@@ -19,6 +19,7 @@ function loadProductDetails(productId) {
         .then(product => {
             document.getElementById('product_id').value = product.product_id;
             document.getElementById('product_name').value = product.product_name;
+            document.getElementById('product_oldPrice').value = product.product_oldPrice;
             document.getElementById('product_price').value = product.product_price;
             document.getElementById('product_stock').value = product.product_stock;
             document.getElementById('brand_name').value = product.brand_name;

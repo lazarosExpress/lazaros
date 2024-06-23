@@ -23,7 +23,11 @@
                     <input name="product_name" type="text" id="product_name" required />
                 </div>
                 <div class="form-group">
-                    <label for="product_price">Fiyat:</label>
+                    <label for="product_oldPrice">Liste Fiyatı:</label>
+                    <input name="product_oldPrice" type="number" id="product_oldPrice" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="product_price">İndirimli Fiyatı:</label>
                     <input name="product_price" type="number" id="product_price" step="0.01" required />
                 </div>
                 <div class="form-group">

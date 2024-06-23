@@ -14,7 +14,7 @@ public class ProductDAO {
 
     public List<ProductBeans> getProductsBySupplierId(int supplierId) {
         List<ProductBeans> products = new ArrayList<>();
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, " +
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, " +
                 "p.product_explanation, p.product_properties, p.supplier_id, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
@@ -29,6 +29,7 @@ public class ProductDAO {
                     ProductBeans product = new ProductBeans();
                     product.setProduct_id(resultSet.getInt("product_id"));
                     product.setProduct_name(resultSet.getString("product_name"));
+                    product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                     product.setProduct_price(resultSet.getDouble("product_price"));
                     product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
                     product.setProduct_stock(resultSet.getInt("product_stock"));
@@ -50,7 +51,7 @@ public class ProductDAO {
 
     public List<ProductBeans> getAllProducts(int supplierId) {
         List<ProductBeans> products = new ArrayList<>();
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, " +
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, " +
                 "p.product_explanation, p.product_properties, p.supplier_id, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
@@ -64,6 +65,7 @@ public class ProductDAO {
                     ProductBeans product = new ProductBeans();
                     product.setProduct_id(resultSet.getInt("product_id"));
                     product.setProduct_name(resultSet.getString("product_name"));
+                    product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                     product.setProduct_price(resultSet.getDouble("product_price"));
                     product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
                     product.setProduct_stock(resultSet.getInt("product_stock"));
@@ -85,7 +87,7 @@ public class ProductDAO {
 
     public List<ProductBeans> getFullProduct() {
         List<ProductBeans> products = new ArrayList<>();
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, " +
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, " +
                 "p.product_explanation, p.product_properties, p.supplier_id, s.supplier_shopName, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
@@ -99,6 +101,7 @@ public class ProductDAO {
                 ProductBeans product = new ProductBeans();
                 product.setProduct_id(resultSet.getInt("product_id"));
                 product.setProduct_name(resultSet.getString("product_name"));
+                product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                 product.setProduct_price(resultSet.getDouble("product_price"));
                 product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
                 product.setProduct_stock(resultSet.getInt("product_stock"));
@@ -119,7 +122,7 @@ public class ProductDAO {
 
     public List<ProductBeans> getSupplierProduct(int supplierId) {
         List<ProductBeans> products = new ArrayList<>();
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, " +
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, " +
                 "p.product_explanation, p.product_properties, p.supplier_id, s.supplier_shopName, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
@@ -136,6 +139,7 @@ public class ProductDAO {
                     ProductBeans product = new ProductBeans();
                     product.setProduct_id(resultSet.getInt("product_id"));
                     product.setProduct_name(resultSet.getString("product_name"));
+                    product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                     product.setProduct_price(resultSet.getDouble("product_price"));
                     product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
                     product.setProduct_stock(resultSet.getInt("product_stock"));
@@ -159,7 +163,7 @@ public class ProductDAO {
     }
     public List<ProductBeans> getCategoryProduct(int categoryID) {
         List<ProductBeans> products = new ArrayList<>();
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, " +
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, " +
                 "p.product_explanation, p.product_properties, p.supplier_id, s.supplier_shopName, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
@@ -176,6 +180,7 @@ public class ProductDAO {
                     ProductBeans product = new ProductBeans();
                     product.setProduct_id(resultSet.getInt("product_id"));
                     product.setProduct_name(resultSet.getString("product_name"));
+                    product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                     product.setProduct_price(resultSet.getDouble("product_price"));
                     product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
                     product.setProduct_stock(resultSet.getInt("product_stock"));
@@ -211,6 +216,7 @@ public class ProductDAO {
                 product = new ProductBeans();
                 product.setProduct_id(resultSet.getInt("product_id"));
                 product.setProduct_name(resultSet.getString("product_name"));
+                product.setProduct_oldPrice(resultSet.getDouble("product_oldPrice"));
                 product.setProduct_price(resultSet.getDouble("product_price"));
                 product.setProduct_stock(resultSet.getInt("product_stock"));
                 product.setBrand_name(resultSet.getString("brand_name"));
@@ -229,18 +235,19 @@ public class ProductDAO {
     }
 
     public void addProduct(ProductBeans product) {
-        String sql = "INSERT INTO products (product_name, product_price, product_stock, brand_name, product_explanation, product_properties, category_id, product_imgUrl, supplier_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO products (product_name, product_oldPrice, product_price, product_stock, brand_name, product_explanation, product_properties, category_id, product_imgUrl, supplier_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, product.getProduct_name());
-            preparedStatement.setDouble(2, product.getProduct_price());
-            preparedStatement.setInt(3, product.getProduct_stock());
-            preparedStatement.setString(4, product.getBrand_name());
-            preparedStatement.setString(5, product.getProduct_explanation());
-            preparedStatement.setString(6, product.getProduct_properties());
-            preparedStatement.setInt(7, product.getCategory_id());
-            preparedStatement.setString(8, product.getProduct_imgUrl());
-            preparedStatement.setInt(9, product.getSupplier_id());
+            preparedStatement.setDouble(2, product.getProduct_oldPrice());
+            preparedStatement.setDouble(3, product.getProduct_price());
+            preparedStatement.setInt(4, product.getProduct_stock());
+            preparedStatement.setString(5, product.getBrand_name());
+            preparedStatement.setString(6, product.getProduct_explanation());
+            preparedStatement.setString(7, product.getProduct_properties());
+            preparedStatement.setInt(8, product.getCategory_id());
+            preparedStatement.setString(9, product.getProduct_imgUrl());
+            preparedStatement.setInt(10, product.getSupplier_id());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -248,18 +255,19 @@ public class ProductDAO {
     }
 
     public void updateProduct(ProductBeans product) {
-        String sql = "UPDATE products SET product_name = ?, product_price = ?, product_imgUrl = ?, product_stock = ?, product_explanation = ?, product_properties = ?, category_id = ?, brand_name = ? WHERE product_id = ?";
+        String sql = "UPDATE products SET product_name = ?, product_oldPrice = ?, product_price = ?, product_imgUrl = ?, product_stock = ?, product_explanation = ?, product_properties = ?, category_id = ?, brand_name = ? WHERE product_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, product.getProduct_name());
-            preparedStatement.setDouble(2, product.getProduct_price());
-            preparedStatement.setString(3, product.getProduct_imgUrl());
-            preparedStatement.setInt(4, product.getProduct_stock());
-            preparedStatement.setString(5, product.getProduct_explanation());
-            preparedStatement.setString(6, product.getProduct_properties());
-            preparedStatement.setInt(7, product.getCategory_id());
-            preparedStatement.setString(8, product.getBrand_name());
-            preparedStatement.setInt(9, product.getProduct_id());
+            preparedStatement.setDouble(2, product.getProduct_oldPrice());
+            preparedStatement.setDouble(3, product.getProduct_price());
+            preparedStatement.setString(4, product.getProduct_imgUrl());
+            preparedStatement.setInt(5, product.getProduct_stock());
+            preparedStatement.setString(6, product.getProduct_explanation());
+            preparedStatement.setString(7, product.getProduct_properties());
+            preparedStatement.setInt(8, product.getCategory_id());
+            preparedStatement.setString(9, product.getBrand_name());
+            preparedStatement.setInt(10, product.getProduct_id());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -279,7 +287,7 @@ public class ProductDAO {
 
     public ProductBeans getProductById(int id) {
         ProductBeans product = null;
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, p.product_explanation, p.product_properties, p.supplier_id, s.supplier_shopName, p.category_id, c.category_name, p.brand_name "
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, p.product_explanation, p.product_properties, p.supplier_id, s.supplier_shopName, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
                 "JOIN supplier s ON p.supplier_id = s.supplier_id " +
@@ -293,6 +301,7 @@ public class ProductDAO {
                 if (resultSet.next()) {
                     int productId = resultSet.getInt("product_id");
                     String productName = resultSet.getString("product_name");
+                    double productOldPrice = resultSet.getDouble("product_oldPrice");
                     double productPrice = resultSet.getDouble("product_price");
                     String productImgUrl = resultSet.getString("product_imgUrl");
                     int productStock = resultSet.getInt("product_stock");
@@ -304,7 +313,7 @@ public class ProductDAO {
                     String categoryName = resultSet.getString("category_name");
                     String brandName = resultSet.getString("brand_name");
 
-                    product = new ProductBeans(productId, productName, productPrice, productImgUrl, productStock,
+                    product = new ProductBeans(productId, productName, productOldPrice, productPrice, productImgUrl, productStock,
                             productExplanation, productProperties, brandName, supplierId, categoryId);
                     product.setSupplier_shopName(supplierName);
                     product.setCategory_name(categoryName);
@@ -318,7 +327,7 @@ public class ProductDAO {
 
     public ProductBeans getUpdateProductById(int id) {
         ProductBeans product = null;
-        String query = "SELECT p.product_id, p.product_name, p.product_price, p.product_imgUrl, p.product_stock, p.product_explanation, p.product_properties, p.supplier_id, p.category_id, c.category_name, p.brand_name "
+        String query = "SELECT p.product_id, p.product_name, p.product_oldPrice, p.product_price, p.product_imgUrl, p.product_stock, p.product_explanation, p.product_properties, p.supplier_id, p.category_id, c.category_name, p.brand_name "
                 +
                 "FROM products p " +
                 "JOIN supplier s ON p.supplier_id = s.supplier_id " +
@@ -332,6 +341,7 @@ public class ProductDAO {
                 if (resultSet.next()) {
                     int productId = resultSet.getInt("product_id");
                     String productName = resultSet.getString("product_name");
+                    double productOldPrice = resultSet.getDouble("product_oldPrice");
                     double productPrice = resultSet.getDouble("product_price");
                     String productImgUrl = resultSet.getString("product_imgUrl");
                     int productStock = resultSet.getInt("product_stock");
@@ -342,7 +352,7 @@ public class ProductDAO {
                     String categoryName = resultSet.getString("category_name");
                     String brandName = resultSet.getString("brand_name");
 
-                    product = new ProductBeans(productId, productName, productPrice, productImgUrl, productStock,
+                    product = new ProductBeans(productId, productName, productOldPrice, productPrice, productImgUrl, productStock,
                             productExplanation, productProperties, brandName, supplierId, categoryId);
                     product.setCategory_name(categoryName);
                 }

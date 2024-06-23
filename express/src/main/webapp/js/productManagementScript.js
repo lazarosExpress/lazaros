@@ -12,6 +12,7 @@ function fetchProducts() {
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${product.product_name}</td>
+                    <td>${product.product_oldPrice}</td>
                     <td>${product.product_price}</td>
                     <td>${product.product_stock}</td>
                     <td>${product.brand_name}</td>

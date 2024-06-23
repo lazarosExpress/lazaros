@@ -55,6 +55,7 @@ public class OrderController extends HttpServlet {
                 break;
         }
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -129,6 +130,7 @@ public class OrderController extends HttpServlet {
         out.flush();
     }
 
+    @SuppressWarnings("unused")
     private static class OrderResponse {
         private final List<OrdersBeans> ongoing;
         private final List<OrdersBeans> completed;

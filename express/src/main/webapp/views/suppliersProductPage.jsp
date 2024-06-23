@@ -63,7 +63,7 @@ String supplierShopName = products.isEmpty() ? "" : products.get(0).getSupplier_
                                             <div class="product-name-title"> <%=p.getProduct_name() %> </div>
                                             <div class="product-category-title"><%= displayCategory %></div>
                                             <div class="price-container">
-                                                <span class="product-old-price">₺79.99</span>
+                                                <span class="product-old-price"><%= p.getProduct_oldPrice() %>₺</span>
                                                 <span class="product-price"><%= p.getProduct_price() %>₺</span>
                                             </div>
                                         </div>

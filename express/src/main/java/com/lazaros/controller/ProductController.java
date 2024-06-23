@@ -226,9 +226,8 @@ public class ProductController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
         Part filePart = request.getPart("product_imgUrl");
         String fileName = getFileName(filePart);
-        // String uploadPath = getServletContext().getRealPath("") + File.separator +
-        // "productImg";
-        String uploadPath = System.getProperty("user.home") + "/Desktop/lazaros/express/src/main/webapp/productImg";
+        String uploadPath = getServletContext().getRealPath("") + File.separator +
+                "productImg";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();

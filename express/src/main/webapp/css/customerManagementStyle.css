@@ -26,6 +26,7 @@ body {
     margin-top: 0;
     color: #333;
 }
+
 .add-customer-btn {
     position: absolute;
     top: 100px;
@@ -42,6 +43,7 @@ body {
 .add-customer-btn:hover {
     background-color: #218838;
 }
+
 .customer-table {
     width: 100%;
     border-collapse: collapse;
@@ -86,4 +88,29 @@ body {
 .customer-table th:nth-child(5),
 .customer-table td:nth-child(5) {
     width: auto;
+}
+
+.update-button,
+.delete-button {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-button {
+    background-color: rgb(240, 186, 39);
+}
+
+.update-button:hover {
+    background-color: rgb(150, 116, 24);
+}
+
+.delete-button {
+    background-color: rgb(255, 0, 0);
+}
+
+.delete-button:hover {
+    background-color: rgb(139, 2, 2);
 }

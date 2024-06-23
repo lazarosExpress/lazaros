@@ -23,7 +23,7 @@
         <div class="address-card-container" id="addresses">
             <table>
                 <tbody id="addresses">
-                    <!-- adresler burada listelenecek -->
+                    
                 </tbody>
             </table>
         </div>
@@ -80,7 +80,59 @@
             </form>
         </div>
     </div>
+    <div id="editAddressModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditAddressModal()">&times;</span>
+            <h2>Adresi Düzenle</h2>
+            <form id="editAddressForm" action="${pageContext.request.contextPath}/AddressController?action=update" method="post">
+                <input type="hidden" id="edit_address_id" name="address_id">
+                <label for="edit_address_customerFirstName">Ad*</label>
+                <input type="text" id="edit_address_customerFirstName" name="address_customerFirstName" placeholder="Adınızı Giriniz" required>
+                
+                <label for="edit_address_customerLastName">Soyad*</label>
+                <input type="text" id="edit_address_customerLastName" name="address_customerLastName" placeholder="Soyadınızı Giriniz" required>
+
+                <label for="edit_address_customerPhoneNumber">Telefon*</label>
+                <input type="tel" id="edit_address_customerPhoneNumber" name="address_customerPhoneNumber" placeholder="0 (___) ___ __ __" required>
+                
+                <label for="edit_province">İl:</label>
+                <select id="edit_province" name="province" onchange="loadEditDistricts(this.value)">
+                    <option value="">Seçiniz</option>
+                </select>
+
+                <div id="edit_district-container">
+                    <label for="edit_district">İlçe:</label>
+                    <select id="edit_district" name="district" onchange="loadEditSubDistricts(this.value)">
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+
+                <div id="edit_subdistrict-container">
+                    <label for="edit_subdistrict">Semt:</label>
+                    <select id="edit_subdistrict" name="subdistrict" onchange="loadEditNeighbourhoods(this.value)">
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+
+                <div id="edit_neighbourhood-container">
+                    <label for="edit_neighbourhood">Mahalle:</label>
+                    <select id="edit_neighbourhood" name="neighbourhood">
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+
+                <label for="edit_address_description">Adres*</label>
+                <textarea id="edit_address_description" name="address_description" placeholder="Cadde, mahalle sokak ve diğer bilgileri giriniz." required></textarea>
+
+                <label for="edit_address_title">Adres Başlığı*</label>
+                <input type="text" id="edit_address_title" name="address_title" placeholder="Adres Başlığı Giriniz" required>
+
+                <button type="submit">Kaydet</button>
+            </form>
+        </div>
+    </div>
 </div>
     <script src="${pageContext.request.contextPath}/js/addressScript.js"></script>
 </body>
 </html>
+

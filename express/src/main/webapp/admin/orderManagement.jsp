@@ -24,7 +24,7 @@
                             <tr>
                                 <th>Ürün</th>
                                 <th>Müşteri</th>
-                                <th>Durumu</th>
+                                <th>Detay/Durumu</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +41,7 @@
                             <tr>
                                 <th>Ürün</th>
                                 <th>Müşteri</th>
-                                <th>Detay</th>
+                                <th>Detay/Durum</th>
                             </tr>
                         </thead>
                         <tbody>

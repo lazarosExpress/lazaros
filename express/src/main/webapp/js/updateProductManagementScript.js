@@ -46,6 +46,7 @@ function updateProduct() {
         })
         .catch(error => console.error("Error updating product:", error));
 }
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("http://localhost:8080/express/ProductController?action=GET_CATEGORIES")
         .then(response => response.json())

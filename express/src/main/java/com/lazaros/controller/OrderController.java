@@ -47,6 +47,22 @@ public class OrderController extends HttpServlet {
             case "ORDERMANAGEMENTDETAILS":
                 getOrderManagementDetails(request, response);
                 break;
+            case "CHANGEORDERSTATUS":
+                changeOrderStatus(request, response);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                break;
+        }
+    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        System.out.println("post " + action);
+        switch (action) {
+            case "CHANGEORDERSTATUS":
+                changeOrderStatus(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -134,7 +150,9 @@ public class OrderController extends HttpServlet {
         out.write(new Gson().toJson(orderDetails));
         out.flush();
     }
-    private void getOrderManagementDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    private void getOrderManagementDetails(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         int supplierId = Integer.parseInt(request.getParameter("supplierId"));
 
@@ -146,5 +164,12 @@ public class OrderController extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.write(new Gson().toJson(orderDetails));
         out.flush();
+    }
+
+    private void changeOrderStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        boolean newStatus = Boolean.parseBoolean(request.getParameter("newStatus"));
+        orderDAO.changeOrderStatus(orderId, newStatus);
+        response.getWriter().write("Success");
     }
 }

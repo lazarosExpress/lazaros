@@ -1,6 +1,7 @@
 package com.lazaros.dao;
 
 import com.lazaros.beans.CustomerBeans;
+import com.lazaros.beans.ProductBeans;
 import com.lazaros.utils.DatabaseUtil;
 
 import java.sql.Connection;
@@ -78,19 +79,21 @@ public class CustomerDAO {
         return customer;
     }
 
-    public void updateCustomer(CustomerBeans customer) {
-        String query = "UPDATE customer SET customer_firstName = ?, customer_lastName = ?, customer_password = ?, customer_phoneNumber = ? WHERE customer_id = ?";
+    public boolean updateCustomerWithSupplier(CustomerBeans customer) {
+        String query = "UPDATE customer SET customer_firstName = ?, customer_lastName = ?, customer_phoneNumber = ? WHERE customer_id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, customer.getCustomer_firstName());
             preparedStatement.setString(2, customer.getCustomer_lastName());
-            preparedStatement.setString(3, customer.getCustomer_password());
-            preparedStatement.setString(4, customer.getCustomer_phoneNumber());
-            preparedStatement.setInt(5, customer.getCustomer_id());
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(3, customer.getCustomer_phoneNumber());
+            preparedStatement.setInt(4, customer.getCustomer_id());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -172,5 +175,31 @@ public class CustomerDAO {
             e.printStackTrace();
         }
         return customer;
+    }
+
+    public CustomerBeans getCustomerByIdWithDetail(int customerId) {
+        CustomerBeans customer = null;
+        String sql = "SELECT c.* FROM customer c WHERE c.customer_id=?";
+        try (Connection connection = DatabaseUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, customerId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                customer = new CustomerBeans();
+                customer.setCustomer_id(resultSet.getInt("customer_id"));
+                customer.setCustomer_firstName(resultSet.getString("customer_firstName"));
+                customer.setCustomer_lastName(resultSet.getString("customer_lastName"));
+                customer.setCustomer_eMail(resultSet.getString("customer_eMail"));
+                customer.setCustomer_phoneNumber(resultSet.getString("customer_phoneNumber"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
+
+    public void updateCustomer(CustomerBeans customerToUpdate) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateCustomer'");
     }
 }

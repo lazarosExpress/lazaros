@@ -21,27 +21,35 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let supplierId in groupedBySeller) {
                 const seller = groupedBySeller[supplierId];
                 orderSummaryHTML += `
-                    <div class="seller-section">
-                        ${seller.items.map(item => `
-                            <div class="product-row">
-                                <img src="${window.location.origin}${window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2))}/productImg/${item.productImgUrl}" alt="${item.productImgUrl}" class="product-image">
-                                <div class="product-details">
-                                    <p><strong>Ürün İsmi:</strong> ${item.productName}</p>
-                                    <p><strong>Satın Alınan Adedi:</strong> ${item.productQty}</p>
-                                    <p><strong>Ürün Fiyatı:</strong> ${item.productPrice.toFixed(2)} TL</p>
-                                    <p><strong>Ürünün Toplam Fiyatı:</strong> ${(item.productQty * item.productPrice).toFixed(2)} TL</p>
-                                    <p><strong>Satıcı:</strong> ${item.sellerName}</p>
+                <div class="order-card">
+                    <h2>Sipariş Numarası: ${orderId}</h2>
+                    ${Object.values(groupedBySeller).map(seller => `
+                        <div class="seller-section">
+                            
+                            ${seller.items.map(item => `
+                                <div class="product-card">
+                                    <img src="${window.location.origin}${window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2))}/productImg/${item.productImgUrl}" alt="${item.productImgUrl}" class="product-image">
+                                    <div class="product-details">
+                                        <p><strong>Ürün İsmi:</strong> ${item.productName}</p>
+                                        <p><strong>Satın Alınan Adedi:</strong> ${item.productQty}</p>
+                                        <p><strong>Ürün Fiyatı:</strong> ${item.productPrice.toFixed(2)} TL</p>
+                                        <p><strong>Mağaza İsmi:</strong> ${item.sellerName}</p>
+                                        <p><strong>Ürünün Toplam Fiyatı:</strong> ${(item.productQty * item.productPrice).toFixed(2)} TL</p>
                                     </div>
+                                </div>
+                            `).join('')}
+                            <div class="total-amount">
+                                <p><strong>Toplam Tutar:</strong> ${seller.items.reduce((acc, item) => acc + item.productQty * item.productPrice, 0).toFixed(2)} TL</p>
                             </div>
-                        `).join('')}
-                        <div class="total-amount">
-                            <p><strong>Toplam Tutar:</strong> ${seller.items.reduce((acc, item) => acc + item.productQty * item.productPrice, 0).toFixed(2)} TL</p>
                         </div>
-                    </div>
-                `;
+                    `).join('')}
+                </div>
+            `;
             }
 
             document.getElementById('order-summary').innerHTML = orderSummaryHTML;
         })
         .catch(error => console.error('Error loading order details:', error));
 });
+
+

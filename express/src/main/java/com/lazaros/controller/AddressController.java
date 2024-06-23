@@ -52,6 +52,7 @@ public class AddressController extends HttpServlet {
         if (action == null) {
             action = "list";
         }
+        System.out.println("Address Controller GET: " + action);
 
         switch (action) {
             case "list":
@@ -68,6 +69,9 @@ public class AddressController extends HttpServlet {
                 break;
             case "listNeighbourhood":
                 listNeighbourhoodBySubDistricts(request, response);
+                break;
+            case "LISTUPDATEADDRESS":
+                listUpdateAddress(request, response);
                 break;
             case "delete":
                 deleteAddress(request, response, customerId);
@@ -90,9 +94,11 @@ public class AddressController extends HttpServlet {
 
         int customerId = user.getCustomer_id();
         String action = request.getParameter("action");
+
         if (action == null) {
             action = "list";
         }
+        System.out.println("Address Controller POST: " + action);
 
         switch (action) {
             case "insert":
@@ -187,6 +193,13 @@ public class AddressController extends HttpServlet {
         }
     }
 
+    private void deleteAddress(HttpServletRequest request, HttpServletResponse response, int customerId)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        addressDAO.deleteAddress(id, customerId);
+        response.sendRedirect("AddressController?action=list");
+    }
+
     private void insertAddress(HttpServletRequest request, HttpServletResponse response, int customerId)
             throws ServletException, IOException {
         String firstName = request.getParameter("address_customerFirstName");
@@ -199,20 +212,12 @@ public class AddressController extends HttpServlet {
         String subDistrictsStr = request.getParameter("subdistrict");
         String neighbourhoodStr = request.getParameter("neighbourhood");
 
-        if (provinceStr == null || provinceStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Province is required.");
-            return;
-        }
-        if (districtsStr == null || districtsStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "District is required.");
-            return;
-        }
-        if (subDistrictsStr == null || subDistrictsStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Subdistrict is required.");
-            return;
-        }
-        if (neighbourhoodStr == null || neighbourhoodStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Neighbourhood is required.");
+        // Gerekli alanların doğrulanması
+        if (provinceStr == null || provinceStr.isEmpty() ||
+                districtsStr == null || districtsStr.isEmpty() ||
+                subDistrictsStr == null || subDistrictsStr.isEmpty() ||
+                neighbourhoodStr == null || neighbourhoodStr.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tüm alanlar doldurulmalıdır.");
             return;
         }
 
@@ -229,25 +234,51 @@ public class AddressController extends HttpServlet {
 
     private void updateAddress(HttpServletRequest request, HttpServletResponse response, int customerId)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("address_id"));
         String firstName = request.getParameter("address_customerFirstName");
         String lastName = request.getParameter("address_customerLastName");
         String phoneNumber = request.getParameter("address_customerPhoneNumber");
         String description = request.getParameter("address_description");
         String title = request.getParameter("address_title");
-        int provincesId = Integer.parseInt(request.getParameter("province"));
+        String provinceStr = request.getParameter("province");
+        String districtsStr = request.getParameter("district");
+        String subDistrictsStr = request.getParameter("subdistrict");
+        String neighbourhoodStr = request.getParameter("neighbourhood");
+
+        // Gerekli alanların doğrulanması
+        if (provinceStr == null || provinceStr.isEmpty() ||
+                districtsStr == null || districtsStr.isEmpty() ||
+                subDistrictsStr == null || subDistrictsStr.isEmpty() ||
+                neighbourhoodStr == null || neighbourhoodStr.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tüm alanlar doldurulmalıdır.");
+            return;
+        }
+
+        int provincesId = Integer.parseInt(provinceStr);
+        int districtsId = Integer.parseInt(districtsStr);
+        int subDistrictsId = Integer.parseInt(subDistrictsStr);
+        int neighbourhoodId = Integer.parseInt(neighbourhoodStr);
 
         AddressBeans address = new AddressBeans(id, firstName, lastName, phoneNumber, description, title, provincesId,
-                customerId);
+                districtsId, subDistrictsId, neighbourhoodId, customerId);
         addressDAO.updateAddress(address);
 
-        response.sendRedirect("AddressController?action=list");
+        response.sendRedirect(request.getContextPath() + "/views/address.jsp");
     }
 
-    private void deleteAddress(HttpServletRequest request, HttpServletResponse response, int customerId)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        addressDAO.deleteAddress(id, customerId);
-        response.sendRedirect("AddressController?action=list");
+    private void listUpdateAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int addressId = Integer.parseInt(request.getParameter("address_id"));
+        AddressBeans address = addressDAO.getAddressById(addressId);
+        if (address != null) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            String json = new Gson().toJson(address);
+            out.write(json);
+            out.flush();
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Address not found");
+        }
     }
+
 }

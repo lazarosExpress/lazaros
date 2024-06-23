@@ -16,14 +16,18 @@ function fetchCustomers() {
                     <td>${customer.customer_eMail}</td>
                     <td>${customer.customer_phoneNumber}</td>
                     <td>
-                        <a href="/express/CustomerController?action=EDIT&id=${customer.customer_id}">Düzenle</a>
-                        <button onclick="deleteCustomer(${customer.customer_id})">Sil</button>
+                        <button class="update-button" onclick="updateCustomer(${customer.customer_id})">Düzenle</button>
+                        <button class="delete-button" onclick="deleteCustomer(${customer.customer_id})">Sil</button>
                     </td>
                 `;
                 customerList.appendChild(row);
             });
         })
         .catch(error => console.error("Error fetching customers:", error));
+}
+
+function updateCustomer(customerId) {
+    window.location.href = `updateCustomerManagement.jsp?customerId=` + customerId;
 }
 
 function deleteCustomer(customerId) {

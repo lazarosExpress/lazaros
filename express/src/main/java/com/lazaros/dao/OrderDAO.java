@@ -80,16 +80,16 @@ public class OrderDAO {
     public List<OrdersBeans> getOrdersBySupplierId(int supplierId) {
         List<OrdersBeans> orders = new ArrayList<>();
         String sql = "SELECT o.order_id, o.order_date, o.order_state, " +
-                     "SUM(p.product_price * cop.product_qty) AS order_totalPrice, " +
-                     "a.address_customerFirstName, a.address_customerLastName, " +
-                     "p.supplier_id " +
-                     "FROM orders o " +
-                     "JOIN address a ON o.address_id = a.address_id " +
-                     "JOIN customer_order_products cop ON o.order_id = cop.order_id " +
-                     "JOIN products p ON cop.product_id = p.product_id " +
-                     "WHERE p.supplier_id = ? " +
-                     "GROUP BY o.order_id, o.order_date, o.order_state, " +
-                     "a.address_customerFirstName, a.address_customerLastName, p.supplier_id";
+                "SUM(p.product_price * cop.product_qty) AS order_totalPrice, " +
+                "a.address_customerFirstName, a.address_customerLastName, " +
+                "p.supplier_id " +
+                "FROM orders o " +
+                "JOIN address a ON o.address_id = a.address_id " +
+                "JOIN customer_order_products cop ON o.order_id = cop.order_id " +
+                "JOIN products p ON cop.product_id = p.product_id " +
+                "WHERE p.supplier_id = ? " +
+                "GROUP BY o.order_id, o.order_date, o.order_state, " +
+                "a.address_customerFirstName, a.address_customerLastName, p.supplier_id";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, supplierId);
             ResultSet rs = stmt.executeQuery();
@@ -109,8 +109,6 @@ public class OrderDAO {
         }
         return orders;
     }
-    
-    
 
     public List<OrdersBeans> getOrderDetailsById(int orderId) {
         List<OrdersBeans> orderDetails = new ArrayList<>();
@@ -147,6 +145,7 @@ public class OrderDAO {
         }
         return orderDetails;
     }
+
     public List<OrdersBeans> getOrderManagementDetailsById(int orderId, int supplierId) {
         List<OrdersBeans> orderDetails = new ArrayList<>();
         String sql = "SELECT o.*, p.product_name, p.product_imgUrl, p.product_price, op.product_qty, s.supplier_shopName, s.supplier_id, c.customer_firstName "
@@ -182,5 +181,16 @@ public class OrderDAO {
             e.printStackTrace();
         }
         return orderDetails;
+    }
+
+    public void changeOrderStatus(int orderId, boolean newStatus) {
+        String sql = "UPDATE orders SET order_state = ? WHERE order_id = ?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setBoolean(1, newStatus);
+            stmt.setInt(2, orderId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

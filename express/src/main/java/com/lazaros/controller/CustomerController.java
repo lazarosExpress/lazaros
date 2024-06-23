@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.lazaros.beans.CustomerBeans;
 import com.lazaros.dao.CustomerDAO;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -23,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class CustomerController extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(CustomerController.class.getName());
     private static final long serialVersionUID = 1L;
-    private CustomerDAO customerDAO;
+    private final CustomerDAO customerDAO;
 
     public CustomerController() {
         super();
@@ -34,7 +35,6 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("get" + action);
         if (action == null) {
             action = "LIST";
         }
@@ -51,6 +51,9 @@ public class CustomerController extends HttpServlet {
                 break;
             case "DELETE":
                 deleteCustomer(request, response);
+                break;
+            case "UPDATEDETAILSWITHSUPPLIER":
+                updateDetailCustomerWithSupplier(request, response);
                 break;
             case "LOGIN":
                 loginCustomer(request, response);
@@ -71,15 +74,10 @@ public class CustomerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("post" + action);
         if (action != null) {
             switch (action) {
                 case "ADD":
-                    try {
-                        createCustomer(request, response);
-                    } catch (Exception e) {
-                        throw new ServletException(e);
-                    }
+                    createCustomer(request, response);
                     break;
                 case "DELETE":
                     deleteCustomer(request, response);
@@ -92,6 +90,12 @@ public class CustomerController extends HttpServlet {
                     break;
                 case "LOGIN":
                     loginCustomer(request, response);
+                    break;
+                case "UPDATE":
+                    updateCustomer(request, response);
+                    break;
+                case "UPDATESUPPLIER":
+                    updateCustomerWithSupplier(request, response);
                     break;
                 default:
                     listCustomers(request, response);
@@ -149,10 +153,8 @@ public class CustomerController extends HttpServlet {
         String password = request.getParameter("customer_password");
         String number = request.getParameter("customer_number");
 
-        // Önce e-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
         CustomerBeans existingCustomer = customerDAO.getCustomerByEmail(eMail);
         if (existingCustomer != null) {
-            // E-posta adresi zaten kayıtlı, uyarı gösterin
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
@@ -162,7 +164,6 @@ public class CustomerController extends HttpServlet {
             return;
         }
 
-        // Kayıt işlemini gerçekleştirin
         CustomerBeans newCustomer = new CustomerBeans(0, eMail, firstName, lastName, password, number);
         customerDAO.insertCustomer(newCustomer);
 
@@ -177,10 +178,8 @@ public class CustomerController extends HttpServlet {
         String password = request.getParameter("customer_password");
         String number = request.getParameter("customer_number");
 
-        // Önce e-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
         CustomerBeans existingCustomer = customerDAO.getCustomerByEmail(eMail);
         if (existingCustomer != null) {
-            // E-posta adresi zaten kayıtlı, uyarı gösterin
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
@@ -190,7 +189,6 @@ public class CustomerController extends HttpServlet {
             return;
         }
 
-        // Kayıt işlemini gerçekleştirin
         CustomerBeans newCustomer = new CustomerBeans(0, eMail, firstName, lastName, password, number);
         customerDAO.insertCustomer(newCustomer);
 
@@ -240,7 +238,7 @@ public class CustomerController extends HttpServlet {
             if (rememberMe) {
                 Cookie cookie = new Cookie("customer_eMail", eMail);
                 cookie.setPath("/");
-                cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                cookie.setMaxAge(7 * 24 * 60 * 60);
                 response.addCookie(cookie);
             }
 
@@ -273,4 +271,78 @@ public class CustomerController extends HttpServlet {
 
         response.sendRedirect(request.getContextPath());
     }
+
+    private void updateDetailCustomerWithSupplier(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int customerId;
+        try {
+            customerId = Integer.parseInt(request.getParameter("customerId"));
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Geçersiz müşteri ID formatı.");
+            return;
+        }
+
+        CustomerBeans customer = customerDAO.getCustomerByIdWithDetail(customerId);
+        if (customer == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("Müşteri bulunamadı.");
+            return;
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        String json = new Gson().toJson(customer);
+        out.write(json);
+        out.flush();
+    }
+
+    private void updateCustomerWithSupplier(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String customerIdParam = request.getParameter("customerId");
+        if (customerIdParam == null || customerIdParam.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Geçersiz müşteri ID.");
+            return;
+        }
+
+        int customerId;
+        try {
+            customerId = Integer.parseInt(customerIdParam);
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Geçersiz müşteri ID formatı.");
+            return;
+        }
+
+        // JSON verisini parse et
+        BufferedReader reader = request.getReader();
+        Gson gson = new Gson();
+        CustomerBeans customerData = gson.fromJson(reader, CustomerBeans.class);
+
+        String firstName = customerData.getCustomer_firstName();
+        String lastName = customerData.getCustomer_lastName();
+        String email = customerData.getCustomer_eMail();
+        String phoneNumber = customerData.getCustomer_phoneNumber();
+
+        // Loglama eklendi
+        LOGGER.info("Updating customer with ID: " + customerId);
+        LOGGER.info("First Name: " + firstName);
+        LOGGER.info("Last Name: " + lastName);
+        LOGGER.info("Email: " + email);
+        LOGGER.info("Phone Number: " + phoneNumber);
+
+        CustomerBeans customerToUpdate = new CustomerBeans(customerId, email, firstName, lastName, null, phoneNumber);
+        boolean isUpdated = customerDAO.updateCustomerWithSupplier(customerToUpdate);
+
+        if (isUpdated) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("Müşteri başarıyla güncellendi.");
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Müşteri güncellenemedi.");
+        }
+    }
+
 }

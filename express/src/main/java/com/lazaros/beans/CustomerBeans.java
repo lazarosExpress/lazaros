@@ -8,6 +8,15 @@ public class CustomerBeans {
     private String customer_password;
     private String customer_phoneNumber;
 
+    public CustomerBeans(int customer_id, String customer_eMail, String customer_firstName, String customer_lastName,
+            String customer_phoneNumber) {
+        this.customer_id = customer_id;
+        this.customer_eMail = customer_eMail;
+        this.customer_firstName = customer_firstName;
+        this.customer_lastName = customer_lastName;
+        this.customer_phoneNumber = customer_phoneNumber;
+    }
+
     public CustomerBeans(String customer_eMail, String customer_password) {
         this.customer_eMail = customer_eMail;
         this.customer_password = customer_password;
@@ -21,6 +30,10 @@ public class CustomerBeans {
         this.customer_lastName = customer_lastName;
         this.customer_password = customer_password;
         this.customer_phoneNumber = customer_phoneNumber;
+    }
+
+    public CustomerBeans() {
+        //TODO Auto-generated constructor stub
     }
 
     public int getCustomer_id() {

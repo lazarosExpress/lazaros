@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/updateProductManagementStyle.css" />
 </head>
 
+<%@ include file="../components/adminHeader/adminHeader.jsp" %>
+<%@ include file="../components/footer/footer.jsp" %>
+
 <body>
-    <%@ include file="../components/adminHeader/adminHeader.jsp" %>
     <section class="container">
         <div class="card">
             <h3>Ürün Güncelle</h3>

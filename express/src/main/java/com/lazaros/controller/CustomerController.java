@@ -480,6 +480,7 @@ public class CustomerController extends HttpServlet {
             session.invalidate(); // oturumu geçersiz kıl
         }
         response.getWriter().write("Çıkış yapıldı.");
+        response.sendRedirect(request.getContextPath()+"/views/login/login.jsp");
     }
     
 

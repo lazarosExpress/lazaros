@@ -167,7 +167,7 @@ public class CustomerDAO {
                 deleteBasketStmt.executeUpdate();
             }
     
-            // 6. Adım: Customer'ı silin
+            // 7. Adım: Customer'ı silin
             try (PreparedStatement deleteCustomerStmt = connection.prepareStatement(deleteCustomerQuery)) {
                 deleteCustomerStmt.setInt(1, id);
                 deleteCustomerStmt.executeUpdate();

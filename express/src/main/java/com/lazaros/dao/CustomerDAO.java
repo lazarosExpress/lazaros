@@ -118,6 +118,7 @@ public class CustomerDAO {
         String deleteOrderAddressQuery = "DELETE FROM orders WHERE address_id IN (SELECT address_id FROM address WHERE customer_id = ?)";
         String deleteAddressQuery = "DELETE FROM address WHERE customer_id = ?";
         String deleteCustomerQuery = "DELETE FROM customer WHERE customer_id = ?";
+        String deleteBasketQuery = "DELETE FROM basket WHERE customer_id = ?";
         String selectAddressIdsQuery = "SELECT address_id FROM address WHERE customer_id = ?";
     
         try (Connection connection = DatabaseUtil.getConnection()) {
@@ -159,6 +160,11 @@ public class CustomerDAO {
             try (PreparedStatement deleteAddressStmt = connection.prepareStatement(deleteAddressQuery)) {
                 deleteAddressStmt.setInt(1, id);
                 deleteAddressStmt.executeUpdate();
+            }
+            // 6. Adım: Customer'a ait basket'leri silin
+            try (PreparedStatement deleteBasketStmt = connection.prepareStatement(deleteBasketQuery)) {
+                deleteBasketStmt.setInt(1, id);
+                deleteBasketStmt.executeUpdate();
             }
     
             // 6. Adım: Customer'ı silin

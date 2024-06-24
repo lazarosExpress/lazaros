@@ -7,6 +7,8 @@
     <title>Sipariş Detayları</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/orderDetailStyle.css">
 </head>
+<%@ include file="../components/adminHeader/adminHeader.jsp" %>
+<%@ include file="../components/footer/footer.jsp" %>
 <body>
     <div class="order-details-container">
         <h1>Sipariş Detayım</h1>

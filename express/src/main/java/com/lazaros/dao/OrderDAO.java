@@ -112,13 +112,14 @@ public class OrderDAO {
 
     public List<OrdersBeans> getOrderDetailsById(int orderId) {
         List<OrdersBeans> orderDetails = new ArrayList<>();
-        String sql = "SELECT o.*, p.product_name, p.product_imgUrl, p.product_price, op.product_qty, s.supplier_shopName, s.supplier_id, c.customer_firstName "
+        String sql = "SELECT o.*, p.product_name, p.product_imgUrl, p.product_price, op.product_qty, s.supplier_shopName, s.supplier_id, c.customer_firstName, a.address_title, a.address_customerFirstName, a.address_customerLastName, a.address_description "
                 +
                 "FROM orders o " +
                 "JOIN customer_order_products op ON o.order_id = op.order_id " +
                 "JOIN products p ON op.product_id = p.product_id " +
                 "JOIN supplier s ON p.supplier_id = s.supplier_id " +
                 "JOIN customer c ON c.customer_id = o.customer_id " +
+                "JOIN address a ON a.address_id = o.address_id " +
                 "WHERE o.order_id = ?";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
@@ -131,13 +132,16 @@ public class OrderDAO {
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
+                        rs.getString("address_title"),
+                        rs.getString("address_customerFirstName"),
+                        rs.getString("address_customerLastName"),
+                        rs.getString("customer_firstName"),
                         rs.getString("product_name"),
                         rs.getString("product_imgUrl"),
                         rs.getDouble("product_price"),
                         rs.getInt("product_qty"),
                         rs.getString("supplier_shopName"),
-                        rs.getInt("supplier_id"),
-                        rs.getString("customer_firstName"));
+                        rs.getInt("supplier_id"));
                 orderDetails.add(detail);
             }
         } catch (SQLException e) {
@@ -148,13 +152,14 @@ public class OrderDAO {
 
     public List<OrdersBeans> getOrderManagementDetailsById(int orderId, int supplierId) {
         List<OrdersBeans> orderDetails = new ArrayList<>();
-        String sql = "SELECT o.*, p.product_name, p.product_imgUrl, p.product_price, op.product_qty, s.supplier_shopName, s.supplier_id, c.customer_firstName "
+        String sql = "SELECT o.*, p.product_name, p.product_imgUrl, p.product_price, op.product_qty, s.supplier_shopName, s.supplier_id, c.customer_firstName, a.address_title, a.address_customerFirstName, a.address_customerLastName, a.address_description "
                 +
                 "FROM orders o " +
                 "JOIN customer_order_products op ON o.order_id = op.order_id " +
                 "JOIN products p ON op.product_id = p.product_id " +
                 "JOIN supplier s ON p.supplier_id = s.supplier_id " +
                 "JOIN customer c ON c.customer_id = o.customer_id " +
+                "JOIN address a ON a.address_id = o.address_id " +
                 "WHERE o.order_id = ? AND p.supplier_id = ?";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
@@ -168,13 +173,16 @@ public class OrderDAO {
                         rs.getDouble("order_totalPrice"),
                         rs.getInt("customer_id"),
                         rs.getInt("address_id"),
+                        rs.getString("address_title"),
+                        rs.getString("address_customerFirstName"),
+                        rs.getString("address_customerLastName"),
+                        rs.getString("customer_firstName"),
                         rs.getString("product_name"),
                         rs.getString("product_imgUrl"),
                         rs.getDouble("product_price"),
                         rs.getInt("product_qty"),
                         rs.getString("supplier_shopName"),
-                        rs.getInt("supplier_id"),
-                        rs.getString("customer_firstName"));
+                        rs.getInt("supplier_id"));
                 orderDetails.add(detail);
             }
         } catch (SQLException e) {

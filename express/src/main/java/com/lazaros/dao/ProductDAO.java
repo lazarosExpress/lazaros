@@ -374,7 +374,8 @@ public class ProductDAO {
                 ProductBeans product = new ProductBeans();
                 product.setProduct_id(resultSet.getInt("product_id"));
                 product.setProduct_name(resultSet.getString("product_name"));
-                // Set other fields...
+                product.setProduct_imgUrl(resultSet.getString("product_imgUrl"));
+                product.setProduct_price(resultSet.getDouble("product_price"));
                 products.add(product);
             }
         } catch (Exception e) {

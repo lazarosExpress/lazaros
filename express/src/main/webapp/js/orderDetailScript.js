@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <p><strong>Mağaza İsmi:</strong> ${item.sellerName}</p>
                                         <p><strong>Ürünün Toplam Fiyatı:</strong> ${(item.productQty * item.productPrice).toFixed(2)} TL</p>
                                     </div>
-                                </div>
+                                    </div>
+                                    <p><strong>Adres Bilgisi:</strong> ${item.addressTitle} ${item.addressCustomerFirstName} ${item.addressCustomerLastName} ${item.addressDescription}</p>
+                                    <p><strong>Müşteri Bilgisi:</strong> ${item.customerFirstName}</p>
                             `).join('')}
                             <div class="total-amount">
                                 <p><strong>Toplam Tutar:</strong> ${seller.items.reduce((acc, item) => acc + item.productQty * item.productPrice, 0).toFixed(2)} TL</p>

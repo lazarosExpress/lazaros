@@ -9,16 +9,82 @@ public class OrdersBeans {
     private double order_totalPrice;
     private int customer_id;
     private int address_id;
+    private String addressTitle;
+    private String addressCustomerFirstName;
+    private String addressCustomerLastName;
+    private String addressDescription;
     private String customerFirstName;
     private String customerLastName;
     private String productName;
     private String productImgUrl;
     private double productPrice;
     private int productQty;
+    public OrdersBeans(int order_id, Date order_date, int order_state, double order_totalPrice, int customer_id,
+            int address_id, String addressTitle, String addressCustomerFirstName, String addressCustomerLastName,
+            String customerFirstName, String productName, String productImgUrl, double productPrice, int productQty,
+            String sellerName, int sellerId) {
+        this.order_id = order_id;
+        this.order_date = order_date;
+        this.order_state = order_state;
+        this.order_totalPrice = order_totalPrice;
+        this.customer_id = customer_id;
+        this.address_id = address_id;
+        this.addressTitle = addressTitle;
+        this.addressCustomerFirstName = addressCustomerFirstName;
+        this.addressCustomerLastName = addressCustomerLastName;
+        this.customerFirstName = customerFirstName;
+        this.productName = productName;
+        this.productImgUrl = productImgUrl;
+        this.productPrice = productPrice;
+        this.productQty = productQty;
+        this.sellerName = sellerName;
+        this.sellerId = sellerId;
+    }
+
     private String sellerName;
     private int sellerId;
     private int paymentId;
     private String paymentName;
+
+    public int getOrder_state() {
+        return order_state;
+    }
+
+    public String getAddressTitle() {
+        return addressTitle;
+    }
+
+    public void setAddressTitle(String addressTitle) {
+        this.addressTitle = addressTitle;
+    }
+
+    public String getAddressCustomerFirstName() {
+        return addressCustomerFirstName;
+    }
+
+    public void setAddressCustomerFirstName(String addressCustomerFirstName) {
+        this.addressCustomerFirstName = addressCustomerFirstName;
+    }
+
+    public String getAddressCustomerLastName() {
+        return addressCustomerLastName;
+    }
+
+    public void setAddressCustomerLastName(String addressCustomerLastName) {
+        this.addressCustomerLastName = addressCustomerLastName;
+    }
+
+    public String getAddressDescription() {
+        return addressDescription;
+    }
+
+    public void setAddressDescription(String addressDescription) {
+        this.addressDescription = addressDescription;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
 
     public int getPaymentId() {
         return paymentId;

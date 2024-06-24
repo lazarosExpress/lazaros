@@ -25,9 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const displaySearchResults = (products) => {
         if (products.length > 0) {
             searchResults.innerHTML = '<ul>' + products.map(product => `
-                <li>
-                    <a href="http://localhost:8080/express/ProductController?action=DETAILS&id=${product.product_id}">${product.product_name}</a>
-                </li>
+                <a href="http://localhost:8080/express/ProductController?action=DETAILS&id=${product.product_id}">
+                    <li>
+                        <img src="http://localhost:8080/express/productImg/${product.product_imgUrl}" alt="${product.product_imgUrl}" height="45px">
+                        <h3>${product.product_name}</h3>
+                    </li>
+                </a>  
             `).join('') + '</ul>';
             searchResults.style.display = 'block';
         } else {

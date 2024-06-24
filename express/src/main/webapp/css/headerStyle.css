@@ -253,6 +253,7 @@
     z-index: 1000;
     max-height: 400px;
     overflow-y: auto;
+
   }
 
   .dropdown-search-results ul {
@@ -264,10 +265,14 @@
   .dropdown-search-results li {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    display: ruby-text;
+    color: black;
   }
 
   .dropdown-search-results li:hover {
     background-color: #f0f0f0;
+    color: rgb(43, 43, 43);
+    
   }
 
 }

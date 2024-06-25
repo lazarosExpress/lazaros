@@ -218,6 +218,7 @@ public class ProductController extends HttpServlet {
         int supplierId = loggedInSupplier.getSupplier_id();
 
         String productName = request.getParameter("product_name");
+        double productOldPrice = Double.parseDouble(request.getParameter("product_oldPrice"));
         double productPrice = Double.parseDouble(request.getParameter("product_price"));
         int productStock = Integer.parseInt(request.getParameter("product_stock"));
         String brandName = request.getParameter("brand_name");
@@ -236,6 +237,7 @@ public class ProductController extends HttpServlet {
 
         ProductBeans product = new ProductBeans();
         product.setProduct_name(productName);
+        product.setProduct_oldPrice(productOldPrice);
         product.setProduct_price(productPrice);
         product.setProduct_stock(productStock);
         product.setBrand_name(brandName);
@@ -284,6 +286,7 @@ public class ProductController extends HttpServlet {
     private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int productId = Integer.parseInt(request.getParameter("id"));
         String productName = request.getParameter("product_name");
+        double productOldPrice = Double.parseDouble(request.getParameter("product_oldPrice"));
         double productPrice = Double.parseDouble(request.getParameter("product_price"));
         int productStock = Integer.parseInt(request.getParameter("product_stock"));
         String brandName = request.getParameter("brand_name");
@@ -292,9 +295,17 @@ public class ProductController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
         Part filePart = request.getPart("product_imgUrl");
         String fileName = getFileName(filePart);
+        String uploadPath = getServletContext().getRealPath("") + File.separator +
+                "productImg";
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        filePart.write(uploadPath + File.separator + fileName);
 
         ProductBeans product = productDAO.getUpdateProductById(productId);
         product.setProduct_name(productName);
+        product.setProduct_oldPrice(productOldPrice);
         product.setProduct_price(productPrice);
         product.setProduct_stock(productStock);
         product.setBrand_name(brandName);
@@ -302,15 +313,6 @@ public class ProductController extends HttpServlet {
         product.setProduct_properties(productProperties);
         product.setCategory_id(categoryId);
 
-        if (filePart != null && filePart.getSize() > 0) {
-            String uploadPath = System.getProperty("user.home") + "/Desktop/lazaros/express/src/main/webapp/productImg";
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            filePart.write(uploadPath + File.separator + fileName);
-            product.setProduct_imgUrl(fileName);
-        }
 
         productDAO.updateProduct(product);
         response.sendRedirect(request.getContextPath() + "/admin/productManagement.jsp");
